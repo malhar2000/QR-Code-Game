@@ -1,6 +1,6 @@
-shah4 ShaishavShah04
-malhar malhar2000
-harsh4 harshpp707
-moxil moxil-shah (delete this later, just testing merge conflict)
-sivachow Sivachow
-smit4 smitpatel2
+shah4
+malhar
+harsh4
+moxil moxil-shah
+sivachow
+smit4
