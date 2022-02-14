@@ -10,13 +10,46 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRCodeGame">
         <activity
-            android:name=".MainActivity"
+            android:name=".OwnerViewPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerQRActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".QRCodeCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SingleQRActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FindQRActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LeaderBoardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FirstTimeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
         </activity>
     </application>
 

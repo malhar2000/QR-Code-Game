@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "594440162619",
+    "project_id": "qr-code-game-1ad79",
+    "storage_bucket": "qr-code-game-1ad79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594440162619:android:b793b82534390400213b1e",
+        "android_client_info": {
+          "package_name": "com.example.qrcodegame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "594440162619-nkb2lpamlicnkh6ijgoqmp4cucdgbkki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeskT0Tks4UPbBb0UojbMAPLYqfRCzPmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "594440162619-nkb2lpamlicnkh6ijgoqmp4cucdgbkki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
