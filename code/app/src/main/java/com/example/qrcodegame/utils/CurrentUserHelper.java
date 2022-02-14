@@ -13,7 +13,7 @@ public class CurrentUserHelper {
 
     private String username;
     private String uniqueID;
-    private Boolean isOwner;
+    private boolean isOwner;
 
     private CurrentUserHelper() {
 
