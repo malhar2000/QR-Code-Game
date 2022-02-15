@@ -60,7 +60,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 Intent intent = new Intent(SplashScreenActivity.this, FirstTimeActivity.class);
                                 startActivity(intent);
                                 finish();
-                                // Just incase this hasn't finished
+                                // Just in-case this hasn't finished
                                 return;
                             }
 
