@@ -98,11 +98,11 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
+        android:contentDescription="Click to scan QR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@android:drawable/ic_menu_add"
-        android:contentDescription="Click to scan QR"/>
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
     <TextView
         android:id="@+id/analyzeText"
@@ -197,13 +197,13 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/locationPrompt"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <CheckBox
-        android:id="@+id/savePhotoCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/saveLocationPrompt"
-        app:layout_constraintEnd_toEndOf="parent" />
+ <CheckBox
+     android:id="@+id/savePhotoCheckBox"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:textAlignment="viewStart"
+     app:layout_constraintBaseline_toBaselineOf="@+id/saveLocationPrompt"
+     app:layout_constraintEnd_toEndOf="@+id/takeLocationBtn" />
 
     <Button
         android:id="@+id/button5"

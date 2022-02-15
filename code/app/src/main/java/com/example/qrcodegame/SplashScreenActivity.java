@@ -19,7 +19,7 @@ import java.util.List;
 public class SplashScreenActivity extends AppCompatActivity {
 
     private String android_id;
-    private CollectionReference userCollectionReference = FirebaseFirestore.getInstance().collection("Users");
+    private final CollectionReference userCollectionReference = FirebaseFirestore.getInstance().collection("Users");
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
     @Override
