@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.qrcodegame.models.User;
+import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,10 +28,10 @@ import java.util.Map;
 public class FirstTimeActivity extends AppCompatActivity {
 
     // objects used
-
     private Button btnGo;
     private EditText edtTxtUserName, edtTxtEmail, edtTxtPhoneNumber;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     ArrayList<String> allUsernames = new ArrayList<String>();
 
@@ -39,14 +40,14 @@ public class FirstTimeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_time);
-
+        getSupportActionBar().hide();
 
         btnGo = (Button) findViewById(R.id.buttonGo);
         edtTxtUserName = (EditText)  findViewById(R.id.editTextUsername);
         edtTxtPhoneNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
         edtTxtEmail = (EditText) findViewById(R.id.editTextEmail);
 
-       checkIfUsernameUnique();
+        fetchAllUsernames();
 
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,16 +58,7 @@ public class FirstTimeActivity extends AppCompatActivity {
                 String enteredPhoneNumber = edtTxtPhoneNumber.getText().toString();
 
 
-                boolean uniqueUsername = true;
-                for (int i = 0; i < allUsernames.size(); i++)
-                {
-                    Log.d("all", allUsernames.get(i));
-                    if (enteredUsername.equals(allUsernames.get(i)))
-                    {
-                        uniqueUsername = false;
-                        break;
-                    }
-                }
+                boolean uniqueUsername = !allUsernames.contains(enteredUsername);
 
                 if (enteredUsername.equals(""))
                 {
@@ -81,13 +73,18 @@ public class FirstTimeActivity extends AppCompatActivity {
                 {
                     User newUser = new User();
                     newUser.setUsername(enteredUsername);
+                    newUser.getDevices().add(CurrentUserHelper.getInstance().getUniqueID());
+
                     if (!enteredEmail.equals("")) {
                         newUser.setEmail(enteredEmail);
                     }
                     if (!enteredPhoneNumber.equals("")) {
-                        newUser.setEmail(enteredEmail);
+                        newUser.setPhone(enteredPhoneNumber);
                     }
+
                     addUser(newUser);
+
+                    CurrentUserHelper.getInstance().setUsername(enteredUsername);
 
                     Intent intent = new Intent(FirstTimeActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -98,12 +95,9 @@ public class FirstTimeActivity extends AppCompatActivity {
     }
 
     private void addUser(User newUserToAdd) {
-        // Add a new document with a generated id.
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", newUserToAdd);
 
         db.collection("Users")
-                .add(data)
+                .add(newUserToAdd)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -118,7 +112,7 @@ public class FirstTimeActivity extends AppCompatActivity {
                 });
     }
 
-    protected void checkIfUsernameUnique() {
+    protected void fetchAllUsernames() {
         allUsernames.clear();
         db.collection("Users")
                 .get()

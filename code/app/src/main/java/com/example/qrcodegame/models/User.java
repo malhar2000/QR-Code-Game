@@ -55,11 +55,11 @@ public class User {
         this.totalScore = totalScore;
     }
 
-    public ArrayList<String> getDeviceID() {
+    public ArrayList<String> getDevices() {
         return devices;
     }
 
-    public void setDeviceID(ArrayList<String> deviceID) {
+    public void setDevices(ArrayList<String> deviceID) {
         this.devices = deviceID;
     }
 

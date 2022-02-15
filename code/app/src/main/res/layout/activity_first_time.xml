@@ -4,89 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="0dp"
     tools:context=".FirstTimeActivity">
 
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Legend27"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="Legend27"
-        app:layout_constraintBottom_toTopOf="@+id/textViewEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/textViewUserName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:ems="10"
+        android:hint="Legend27@gmail.com"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="Legend27@gmail.com"
-        app:layout_constraintBottom_toTopOf="@+id/textViewPhoneNumber"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/textViewEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
 
     <EditText
         android:id="@+id/editTextPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
         android:ems="10"
+        android:hint="7802727272"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="7802727272"
-        app:layout_constraintBottom_toTopOf="@+id/buttonGo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/textViewPhoneNumber"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPhoneNumber" />
 
     <TextView
         android:id="@+id/textViewUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
+        android:layout_marginTop="50dp"
         android:text="Enter username (required)"
-        app:layout_constraintBottom_toTopOf="@+id/editTextUsername"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.408"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/firstTimeSetupText"
+        app:layout_constraintTop_toBottomOf="@+id/firstTimeSetupText" />
 
     <TextView
         android:id="@+id/textViewEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Enter email (optional)"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.361"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/editTextUsername"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
 
     <TextView
+        android:layout_marginTop="20dp"
         android:id="@+id/textViewPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Phone Number (optional)"
-        app:layout_constraintBottom_toTopOf="@+id/editTextPhoneNumber"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
     <Button
         android:id="@+id/buttonGo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="252dp"
-        android:text="OK"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="100dp"
+        android:text="GET STARTED!"
+        app:layout_constraintStart_toStartOf="@+id/editTextPhoneNumber"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber" />
+
+    <TextView
+        android:id="@+id/firstTimeSetupText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:text="First Time Setup"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
