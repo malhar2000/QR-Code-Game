@@ -47,7 +47,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, LocationHelper.handleLocationChanged {
 
     TextView welcomeText;
     TextView analyzeText;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resultText.setVisibility(View.INVISIBLE);
 
         currentQRCode = new QRCode();
-        locationHelper = new LocationHelper(this, currentQRCode);
+        locationHelper = new LocationHelper(this, currentQRCode, this);
 
         // Updating listeners
         activityResultLauncher = registerForActivityResult(
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         locationPhotoBtn.setOnClickListener(view -> {
 
-            if (currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
+            if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
                 Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
                 return;
             };
@@ -146,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+                    saveQRtoCloudBtn.setText("WAIT...");
+                    saveQRtoCloudBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
                     locationHelper.getCurrentLocation();
                 } else {
                     currentQRCode.getCoordinates().clear();
@@ -170,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     createNewCode();
                 }
-                resetUi();
             });
     }
 
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         };
 
-        if (currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
+        if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
             Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
             return;
         };
@@ -212,19 +213,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateExistingCode() {
-
         HashMap<String, Object> updates = new HashMap<>();
         updates.put("collectedCodes", FieldValue.arrayUnion(currentQRCode.getId()));
         updates.put("totalScore", FieldValue.increment(currentQRCode.getWorth()));
-
         userDocument
             .update(updates);
-
         qrCollectionReference
             .document(currentQRCode.getId())
             .update("players", FieldValue.arrayUnion(currentUserHelper.getUsername()));
+        resetUi();
     }
-
 
     private void resetUi() {
         Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
@@ -246,8 +244,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     updates.put("collectedCodes", FieldValue.arrayUnion(currentQRCode.getId()));
                     updates.put("totalScore", FieldValue.increment(currentQRCode.getWorth()));
                     userDocument.update(updates);
+                    resetUi();
                 });
     }
+
+
+    @Override
+    public void onLocationReady() {
+        saveQRtoCloudBtn.setText("ADD QR CODE");
+        saveQRtoCloudBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
+    }
+
 
     @Override
     public void onClick(View view) {

@@ -17,16 +17,24 @@ import com.example.qrcodegame.models.QRCode;
 import java.util.ArrayList;
 
 import android.location.LocationListener;
+import android.location.LocationRequest;
+import android.util.Log;
 
 public class LocationHelper implements LocationListener {
 
     private Context context;
     private QRCode currentQRCode;
     private LocationManager locationManager;
+    private handleLocationChanged listener;
 
-    public LocationHelper (Context context, QRCode currentQRCode) {
+    public LocationHelper (Context context, QRCode currentQRCode, handleLocationChanged listener) {
         this.context = context;
         this.currentQRCode = currentQRCode;
+        this.listener = listener;
+    }
+
+    public interface handleLocationChanged {
+        void onLocationReady();
     }
 
     public QRCode getCurrentQRCode() {
@@ -42,11 +50,12 @@ public class LocationHelper implements LocationListener {
         ArrayList<Double> coordinates = new ArrayList<>();
         coordinates.add(location.getLatitude());
         coordinates.add(location.getLongitude());
+        Log.d("CurrentUserUpdated", currentQRCode.toString());
         if (currentQRCode != null) {
             currentQRCode.setCoordinates(coordinates);
             locationManager.removeUpdates(this);
-        }
-        System.out.println("HERE " + currentQRCode);
+            listener.onLocationReady();
+        };
     }
 
     public void getCurrentLocation() {
