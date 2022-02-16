@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         analyzeText.setVisibility(View.INVISIBLE);
         resultText.setVisibility(View.INVISIBLE);
 
-        // Updating listners
+        // Updating listeners
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -210,21 +211,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             final String hashedContent = hashStr.toString();
 
 
+
+
             final char[] hashedArray = hashedContent.toCharArray();
 
             // Calculating String
+            char[] codeArray = new char[hashedContent.length()];
+            int[] intCodeArray = new int[hashedContent.length()+1];
+            int comparer = 0;
             int codeWorth = 0;
-            char lastChar = hashedArray[0];
-            int count = 0;
-            for (char c: hashedArray) {
-                if (c == lastChar) {
-                    count++;
-                } else {
-                    codeWorth += ((int) c) * count;
-                    lastChar = c;
-                    count = 0;
+            int counter = 0;
+
+            // Copy char by char into array
+            for (int i = 0; i < hashedContent.length(); i++) {
+                codeArray[i] = hashedContent.charAt(i);
+            }
+
+            // hex to int. put this int in the intCodeArray
+            // help from https://stackoverflow.com/questions/26839558/hex-char-to-int-conversion
+            for (int i = 0; i < hashedContent.length(); i++) {
+                if (codeArray[i] >= '0' && codeArray[i] <= '9')
+                    intCodeArray[i] = codeArray[i] - '0';
+                if (codeArray[i] >= 'A' && codeArray[i] <= 'F')
+                    intCodeArray[i] = codeArray[i] - 'A' + 10;
+                if (codeArray[i] >= 'a' && codeArray[i] <= 'f')
+                    intCodeArray[i] = codeArray[i] - 'a' + 10;
+            }
+
+            // used for cases like "1000"; the 16 at the end breaks the counter since its the
+                // end of the hash string. And 16 is out of the range of a hex so its safe to use
+            intCodeArray[hashedContent.length()] = 16;
+
+            comparer = intCodeArray[0];
+            for (int i = 1; i < hashedContent.length() + 1; i++) {
+                if (intCodeArray[i] == comparer) {
+                    counter += 1;
+                }
+                else {
+                    if (counter != 0)
+                    {
+                        if (comparer != 0) {
+                            codeWorth += Math.pow(comparer, counter);
+                        }
+                        else {
+                            codeWorth += Math.pow(20, counter);
+                        }
+                        counter = 0;
+                    }
+
+                    else if (comparer == 0) {
+                        codeWorth += 1;
+                    }
+                    comparer = intCodeArray[i];
                 }
             }
+
+
+
 
             // Displaying text
             analyzeText.setVisibility(View.VISIBLE);
