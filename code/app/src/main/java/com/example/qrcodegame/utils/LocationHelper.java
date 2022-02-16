@@ -1,80 +1,54 @@
 package com.example.qrcodegame.utils;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationRequest;
-import android.os.Build;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.example.qrcodegame.MainActivity;
 import com.example.qrcodegame.models.QRCode;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.CancellationToken;
-import com.google.android.gms.tasks.OnTokenCanceledListener;
+
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class LocationHelper {
+import android.location.LocationListener;
 
-    public static int saveLocationInCode(QRCode currentQRCode, Context context) {
+public class LocationHelper implements LocationListener {
 
-        AtomicInteger saveLocationSuccessful = new AtomicInteger();
+    private Context context;
+    private QRCode currentQRCode;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                if (isGPSEnabled(context)) {
-                    FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-                    fusedLocationClient.getCurrentLocation(LocationRequest.QUALITY_BALANCED_POWER_ACCURACY, new CancellationToken() {
-                        @NonNull
-                        @Override
-                        public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
-                            return null;
-                        }
-
-                        @Override
-                        public boolean isCancellationRequested() {
-                            return false;
-                        }
-                    }).addOnSuccessListener(location -> {
-                        currentQRCode.getCoordinates().add(location.getLatitude());
-                        currentQRCode.getCoordinates().add(location.getLongitude());
-                        saveLocationSuccessful.set(1);
-                    }).addOnFailureListener(e -> {
-                        Toast.makeText(context, "Something went wrong with location!", Toast.LENGTH_SHORT).show();
-                        System.err.println(e.getMessage());
-                    });
-                } else {
-                    Toast.makeText(context, "Turn on Location Services!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                System.out.println("HEREEREERE LOCATION THINGYU");
-            }
-        } else {
-            System.err.println("CANT GET LOCATION");
-        }
-
-        if (saveLocationSuccessful.equals(1)) {
-            return 1;
-        }
-        return 0;
+    public LocationHelper (Context context, QRCode currentQRCode) {
+        this.context = context;
+        this.currentQRCode = currentQRCode;
     }
 
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        ArrayList<Double> coordinates = new ArrayList<>();
+        coordinates.add(location.getLatitude());
+        coordinates.add(location.getLongitude());
+        if (currentQRCode != null)
+            currentQRCode.setCoordinates(coordinates);
+        System.out.println("HERE " + currentQRCode);
+    }
 
-    private static boolean isGPSEnabled(Context context) {
-        LocationManager locationManager = null;
-        boolean isEnabled = false;
-        if (locationManager == null) {
-            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    public void getCurrentLocation() {
+        try {
+            LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        return isEnabled;
-    };
+
+    }
 
 }

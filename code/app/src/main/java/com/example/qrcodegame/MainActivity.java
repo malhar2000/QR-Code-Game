@@ -10,15 +10,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
-import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,12 +31,7 @@ import android.widget.Toast;
 import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.example.qrcodegame.utils.LocationHelper;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,7 +44,6 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -66,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     byte[] locationImage;
 
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
-
-    FusedLocationProviderClient fusedLocationProviderClient;
+    LocationHelper locationHelper;
 
     final FirebaseStorage storage = FirebaseStorage.getInstance();
     DocumentReference userDocument;
@@ -82,6 +76,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
+        // Permission
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 100);
+        };
+
+
         // Binding
         welcomeText = findViewById(R.id.welcomeText);
         analyzeText = findViewById(R.id.analyzeText);
@@ -89,24 +92,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scanQRButton = findViewById(R.id.scanQRCodeBtn);
         locationPhotoBtn = findViewById(R.id.takeLocationBtn);
         saveQRtoCloudBtn = findViewById(R.id.saveQRtoCloudBtn);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        ((CheckBox) findViewById(R.id.saveLocationCheckBox)).setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        System.out.println("HERE LOCATION");
-                        getCurrentLocation();
-                    }
-                }
-        );
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
         analyzeText.setVisibility(View.INVISIBLE);
         resultText.setVisibility(View.INVISIBLE);
-        currentQRCode = new QRCode();
 
-        // Updating listners
+        currentQRCode = new QRCode();
+        locationHelper = new LocationHelper(this, currentQRCode);
+
+        // Updating listeners
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -142,14 +137,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         saveQRtoCloudBtn.setOnClickListener(v -> {
             saveCode();
         });
-    }
+
+        ((CheckBox) findViewById(R.id.saveLocationCheckBox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                saveQRtoCloudBtn.setEnabled(false);
+                if (b) {
+                    locationHelper.getCurrentLocation();
+                } else {
+                    currentQRCode.getCoordinates().clear();
+                }
+                saveQRtoCloudBtn.setEnabled(true);
+            }
+        });
+
+    };
+
+
 
     private void saveCode() {
 
         userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
-
         boolean saveLocation = ((CheckBox) findViewById(R.id.saveLocationCheckBox)).isChecked();
 
+        if (saveLocation && currentQRCode.getCoordinates().size() == 0) {
+            return;
+        }
+
+        // Check location
         // Check if QR code already exists
 
         // If so, update QR code,
@@ -160,12 +175,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /// TESTING
         currentQRCode.setId(UUID.randomUUID().toString());
         currentQRCode.setWorth((int) Math.floor(Math.random() * 1000));
-
-
-        // Save Location
-        if (saveLocation) {
-            LocationHelper.saveLocationInCode(currentQRCode, this);
-        }
 
         if (locationImage != null) {
             // Save Image
@@ -189,8 +198,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
     private void resetUi() {
-        Toast.makeText(this, "Reset!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
+        currentQRCode = new QRCode();
+        locationImage = null;
+        ((CheckBox) findViewById(R.id.saveLocationCheckBox)).setChecked(false);
+
     }
 
     private void saveCodeFireStore() {
@@ -206,8 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     resetUi();
                 });
     }
-
-    ;
 
     @Override
     public void onClick(View view) {
@@ -294,41 +307,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             System.err.println(e.getMessage());
-            return;
-        }
-
-    }
-
-    public void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
-
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    String locate = location.getLatitude() + "," + location.getLongitude();
-                    Log.i("location", locate);
-                    FirebaseFirestore.getInstance().collection("Locations").document("places")
-                            .update("location", FieldValue.arrayUnion(locate));
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                getCurrentLocation();
-            }
         }
 
     }
