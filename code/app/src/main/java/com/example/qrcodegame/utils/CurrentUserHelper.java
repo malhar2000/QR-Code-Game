@@ -14,9 +14,18 @@ public class CurrentUserHelper {
     private String username;
     private String uniqueID;
     private boolean isOwner;
+    private String firebaseId;
 
     private CurrentUserHelper() {
 
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
     }
 
     public String getUsername() {

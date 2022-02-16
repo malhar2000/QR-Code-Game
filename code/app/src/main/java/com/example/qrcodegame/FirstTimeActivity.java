@@ -82,13 +82,11 @@ public class FirstTimeActivity extends AppCompatActivity {
                         newUser.setPhone(enteredPhoneNumber);
                     }
 
+                    CurrentUserHelper.getInstance().setUsername(enteredUsername);
+                    CurrentUserHelper.getInstance().setOwner(false);
+
                     addUser(newUser);
 
-                    CurrentUserHelper.getInstance().setUsername(enteredUsername);
-
-                    Intent intent = new Intent(FirstTimeActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
                 }
             }
         });
@@ -102,6 +100,11 @@ public class FirstTimeActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("added user success", "DocumentSnapshot written with ID: " + documentReference.getId());
+
+                        CurrentUserHelper.getInstance().setFirebaseId(documentReference.getId());
+                        Intent intent = new Intent(FirstTimeActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
