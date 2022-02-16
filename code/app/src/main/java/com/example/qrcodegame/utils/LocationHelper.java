@@ -22,9 +22,18 @@ public class LocationHelper implements LocationListener {
 
     private Context context;
     private QRCode currentQRCode;
+    private LocationManager locationManager;
 
     public LocationHelper (Context context, QRCode currentQRCode) {
         this.context = context;
+        this.currentQRCode = currentQRCode;
+    }
+
+    public QRCode getCurrentQRCode() {
+        return currentQRCode;
+    }
+
+    public void setCurrentQRCode(QRCode currentQRCode) {
         this.currentQRCode = currentQRCode;
     }
 
@@ -33,18 +42,20 @@ public class LocationHelper implements LocationListener {
         ArrayList<Double> coordinates = new ArrayList<>();
         coordinates.add(location.getLatitude());
         coordinates.add(location.getLongitude());
-        if (currentQRCode != null)
+        if (currentQRCode != null) {
             currentQRCode.setCoordinates(coordinates);
+            locationManager.removeUpdates(this);
+        }
         System.out.println("HERE " + currentQRCode);
     }
 
     public void getCurrentLocation() {
         try {
-            LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         } catch (Exception e) {
             e.printStackTrace();
         }

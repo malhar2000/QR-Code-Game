@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }, 100);
         };
 
-
         // Binding
         welcomeText = findViewById(R.id.welcomeText);
         analyzeText = findViewById(R.id.analyzeText);
@@ -123,6 +122,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         locationPhotoBtn.setOnClickListener(view -> {
 
+            if (currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
+                Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
+                return;
+            };
+
             if (locationImage == null) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 activityResultLauncher.launch(intent);
@@ -141,13 +145,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((CheckBox) findViewById(R.id.saveLocationCheckBox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                saveQRtoCloudBtn.setEnabled(false);
                 if (b) {
                     locationHelper.getCurrentLocation();
                 } else {
                     currentQRCode.getCoordinates().clear();
                 }
-                saveQRtoCloudBtn.setEnabled(true);
             }
         });
 
@@ -158,23 +160,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void saveCode() {
 
         userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
+        // Check if QR code already exists
+        qrCollectionReference
+            .whereEqualTo("id",currentQRCode.getId())
+            .get()
+            .addOnSuccessListener(queryDocumentSnapshots -> {
+                if (queryDocumentSnapshots.getDocuments().size() > 0) {
+                    updateExistingCode();
+                } else {
+                    createNewCode();
+                }
+                resetUi();
+            });
+    }
+
+    private void createNewCode() {
+
         boolean saveLocation = ((CheckBox) findViewById(R.id.saveLocationCheckBox)).isChecked();
 
         if (saveLocation && currentQRCode.getCoordinates().size() == 0) {
+            System.out.println("RETRY!");
             return;
-        }
+        };
 
-        // Check location
-        // Check if QR code already exists
-
-        // If so, update QR code,
-        // Update player
-
-        // Else
-
-        /// TESTING
-        currentQRCode.setId(UUID.randomUUID().toString());
-        currentQRCode.setWorth((int) Math.floor(Math.random() * 1000));
+        if (currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
+            Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
+            return;
+        };
 
         if (locationImage != null) {
             // Save Image
@@ -196,16 +208,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             saveCodeFireStore();
         }
+
     }
 
+    private void updateExistingCode() {
+
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put("collectedCodes", FieldValue.arrayUnion(currentQRCode.getId()));
+        updates.put("totalScore", FieldValue.increment(currentQRCode.getWorth()));
+
+        userDocument
+            .update(updates);
+
+        qrCollectionReference
+            .document(currentQRCode.getId())
+            .update("players", FieldValue.arrayUnion(currentUserHelper.getUsername()));
+    }
 
 
     private void resetUi() {
         Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
         currentQRCode = new QRCode();
+        locationHelper.setCurrentQRCode(currentQRCode);
         locationImage = null;
+        locationPhotoBtn.setText("TAKE PHOTO");
+        locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         ((CheckBox) findViewById(R.id.saveLocationCheckBox)).setChecked(false);
-
     }
 
     private void saveCodeFireStore() {
@@ -218,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     updates.put("collectedCodes", FieldValue.arrayUnion(currentQRCode.getId()));
                     updates.put("totalScore", FieldValue.increment(currentQRCode.getWorth()));
                     userDocument.update(updates);
-                    resetUi();
                 });
     }
 
