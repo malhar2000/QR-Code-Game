@@ -22,27 +22,12 @@ import android.util.Log;
 
 public class LocationHelper implements LocationListener {
 
-    private Context context;
-    private QRCode currentQRCode;
+    private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
+    final private Context context;
     private LocationManager locationManager;
-    private handleLocationChanged listener;
 
-    public LocationHelper (Context context, QRCode currentQRCode, handleLocationChanged listener) {
+    public LocationHelper(Context context) {
         this.context = context;
-        this.currentQRCode = currentQRCode;
-        this.listener = listener;
-    }
-
-    public interface handleLocationChanged {
-        void onLocationReady();
-    }
-
-    public QRCode getCurrentQRCode() {
-        return currentQRCode;
-    }
-
-    public void setCurrentQRCode(QRCode currentQRCode) {
-        this.currentQRCode = currentQRCode;
     }
 
     @Override
@@ -50,21 +35,21 @@ public class LocationHelper implements LocationListener {
         ArrayList<Double> coordinates = new ArrayList<>();
         coordinates.add(location.getLatitude());
         coordinates.add(location.getLongitude());
-        Log.d("CurrentUserUpdated", currentQRCode.toString());
-        if (currentQRCode != null) {
-            currentQRCode.setCoordinates(coordinates);
-            locationManager.removeUpdates(this);
-            listener.onLocationReady();
-        };
+        currentUserHelper.setCurrentLocation(coordinates);
+        System.out.println("LOCATION UPDATED!");
     }
 
-    public void getCurrentLocation() {
+    public void stopLocationUpdates() {
+        locationManager.removeUpdates(this);
+    }
+
+    public void startLocationUpdates() {
         try {
             locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
