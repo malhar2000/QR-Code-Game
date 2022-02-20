@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button locationPhotoBtn;
     Button saveQRtoCloudBtn;
     Button exploreMap;
-    Button viewProfile;
+    Button leaderboardBtn;
     private Boolean getLocation_TorF = false;
     QRCode currentQRCode;
     byte[] locationImage;
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationPhotoBtn = findViewById(R.id.takeLocationBtn);
         saveQRtoCloudBtn = findViewById(R.id.saveQRtoCloudBtn);
         exploreMap = findViewById(R.id.exploreNearbyBtn);
-        viewProfile = findViewById(R.id.viewProfileBtn);
+        leaderboardBtn = findViewById(R.id.leaderboardBtn);
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getLocation();
         });
 
-        viewProfile.setOnClickListener(new View.OnClickListener() {
+        leaderboardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class));

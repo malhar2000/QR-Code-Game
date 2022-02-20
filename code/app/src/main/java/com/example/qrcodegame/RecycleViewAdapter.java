@@ -2,12 +2,9 @@ package com.example.qrcodegame;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,21 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
 
-    private List<Temp> temps = new ArrayList<>();
+    private List<SaveLeaderInfo> saveLeaderInfos = new ArrayList<>();
     private Context mcontext;
     private int size;
 
 
-    public RecycleViewAdapter(List<Temp> temps, Context context) {
-        this.temps = temps;
+    public RecycleViewAdapter(List<SaveLeaderInfo> saveLeaderInfos, Context context) {
+        this.saveLeaderInfos = saveLeaderInfos;
         this.mcontext = context;
-        size = temps.size();
+        size = saveLeaderInfos.size();
     }
 
     @NonNull
@@ -44,27 +38,27 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.textViewUserName.setText(temps.get(position).getUserName());
-        holder.textViewUserScore.setText(temps.get(position).getScore());
-        holder.textRank.setText(temps.get(position).getNum());
+        holder.textViewUserName.setText(saveLeaderInfos.get(position).getUserName());
+        holder.textViewUserScore.setText(saveLeaderInfos.get(position).getScore());
+        holder.textRank.setText(saveLeaderInfos.get(position).getNum());
 
         //String.valueOf(position+1)
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mcontext, temps.get(position).getUserName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mcontext, saveLeaderInfos.get(position).getUserName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return temps.size();
+        return saveLeaderInfos.size();
     }
 
-    public void filterList(ArrayList<Temp> fList){
-        temps = fList;
+    public void filterList(ArrayList<SaveLeaderInfo> fList){
+        saveLeaderInfos = fList;
         notifyDataSetChanged();
     }
 
