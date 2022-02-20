@@ -66,9 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button locationPhotoBtn;
     Button saveQRtoCloudBtn;
     Button exploreMap;
+    Button viewProfile;
     private Boolean getLocation_TorF = false;
     QRCode currentQRCode;
     byte[] locationImage;
+
 
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
     LocationHelper locationHelper;
@@ -83,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
 
     ActivityResultLauncher<Intent> activityResultLauncher;
+
+
 
 
     @Override
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationPhotoBtn = findViewById(R.id.takeLocationBtn);
         saveQRtoCloudBtn = findViewById(R.id.saveQRtoCloudBtn);
         exploreMap = findViewById(R.id.exploreNearbyBtn);
+        viewProfile = findViewById(R.id.viewProfileBtn);
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
@@ -176,7 +181,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getLocation();
         });
 
-
+        viewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class));
+            }
+        });
 
     }
 
