@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
 
 import android.location.LocationListener;
@@ -49,7 +50,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, LocationHelper.handleLocationChanged {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView welcomeText;
     TextView analyzeText;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
@@ -98,11 +100,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
-        analyzeText.setVisibility(View.INVISIBLE);
-        resultText.setVisibility(View.INVISIBLE);
-
-        currentQRCode = new QRCode();
-        locationHelper = new LocationHelper(this, currentQRCode, this);
+        // TESTING
+        //TODO
+        welcomeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SingleQRActivity.class);
+                intent.putExtra("codeID", "0116cf1f-29c6-4c4d-9b34-c7924b3d786d");
+                startActivity(intent);
+            }
+        });
 
         // Updating listeners
         activityResultLauncher = registerForActivityResult(
@@ -146,21 +153,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             saveCode();
         });
 
-        locationToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    saveQRtoCloudBtn.setText("WAIT...");
-                    saveQRtoCloudBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
-                    locationHelper.getCurrentLocation();
-                } else {
-                    currentQRCode.getCoordinates().clear();
-                }
-            }
-        });
 
     };
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        analyzeText.setVisibility(View.INVISIBLE);
+        resultText.setVisibility(View.INVISIBLE);
+
+        currentQRCode = new QRCode();
+        locationHelper = new LocationHelper(this);
+        locationHelper.startLocationUpdates();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        locationHelper.stopLocationUpdates();
+    }
 
     private void saveCode() {
 
@@ -180,16 +192,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void createNewCode() {
 
-        boolean saveLocation = locationToggle.isChecked();
-
-        if (saveLocation && currentQRCode.getCoordinates().size() == 0) {
-            System.out.println("RETRY!");
-            return;
+        if (locationToggle.isChecked()) {
+            currentQRCode.setCoordinates(currentUserHelper.getCurrentLocation());
         };
 
         if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
             Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
             return;
+
+            // Turn these on for testing
+//            currentQRCode.setId(UUID.randomUUID().toString());
+//            currentQRCode.setWorth((int) Math.floor(Math.random() * 1000));
         };
 
         if (locationImage != null) {
@@ -230,7 +243,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void resetUi() {
         Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
         currentQRCode = new QRCode();
-        locationHelper.setCurrentQRCode(currentQRCode);
         locationImage = null;
         locationPhotoBtn.setText("TAKE PHOTO");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
@@ -249,13 +261,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     userDocument.update(updates);
                     resetUi();
                 });
-    }
-
-
-    @Override
-    public void onLocationReady() {
-        saveQRtoCloudBtn.setText("ADD QR CODE");
-        saveQRtoCloudBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
     }
 
 

@@ -1,5 +1,7 @@
 package com.example.qrcodegame.utils;
 
+import java.util.ArrayList;
+
 public class CurrentUserHelper {
 
     private static CurrentUserHelper single_instance = null;
@@ -15,6 +17,7 @@ public class CurrentUserHelper {
     private String uniqueID;
     private boolean isOwner;
     private String firebaseId;
+    private ArrayList<Double> currentLocation = new ArrayList<>();
 
     private CurrentUserHelper() {
 
@@ -22,6 +25,14 @@ public class CurrentUserHelper {
 
     public String getFirebaseId() {
         return firebaseId;
+    }
+
+    public ArrayList<Double> getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(ArrayList<Double> currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     public void setFirebaseId(String firebaseId) {
