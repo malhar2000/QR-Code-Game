@@ -6,4 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".SingleQRActivity">
 
+    <TextView
+        android:id="@+id/worthTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:text="Worth: XXXX"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/commentBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:drawableRight="@android:drawable/sym_action_chat"
+        android:text="Comments"
+        app:layout_constraintBaseline_toBaselineOf="@+id/worthTxt"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+<!--    <com.google.android.gms.maps.MapView-->
+<!--        android:id="@+id/qrMap"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_marginRight="15dp"-->
+<!--        android:layout_marginLeft="15dp"-->
+<!--        android:layout_height="180dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView3" />-->
+
+        <fragment
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/qrMap"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_height="180dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/worthTxt" />
+
+    <ImageView
+        android:id="@+id/surroundingImage"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="15dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qrMap"
+        app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+    <TextView
+        android:id="@+id/otherPlayersTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="Other Players with this Hash!"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/surroundingImage"
+        app:layout_constraintTop_toBottomOf="@+id/surroundingImage" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/usernameList"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/otherPlayersTxt"
+        tools:layout_editor_absoluteX="1dp"
+        tools:listitem="@layout/element_single_username" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

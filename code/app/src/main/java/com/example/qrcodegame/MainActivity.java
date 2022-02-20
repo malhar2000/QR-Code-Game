@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
 
 import android.location.LocationListener;
@@ -99,7 +100,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
-
+        // TESTING
+        //TODO
+        welcomeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SingleQRActivity.class);
+                intent.putExtra("codeID", "0116cf1f-29c6-4c4d-9b34-c7924b3d786d");
+                startActivity(intent);
+            }
+        });
 
         // Updating listeners
         activityResultLauncher = registerForActivityResult(
@@ -190,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
             return;
 
-            // Turn these on for testing mode
+            // Turn these on for testing
 //            currentQRCode.setId(UUID.randomUUID().toString());
 //            currentQRCode.setWorth((int) Math.floor(Math.random() * 1000));
         };

@@ -18,6 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QRCodeGame">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBbKZg3J4lFw3QXYgYEg3JH-IZfekFfWOs" />
+
         <activity
             android:name=".OwnerViewPlayerActivity"
             android:exported="false" />
