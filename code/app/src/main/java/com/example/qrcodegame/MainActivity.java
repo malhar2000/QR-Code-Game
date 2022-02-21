@@ -166,21 +166,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Image removed!", Toast.LENGTH_SHORT).show();
         });
 
-//        checkBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (checkBox.isChecked())
-//                    getLocation_TorF = true;
-//                else
-//                    getLocation_TorF = false;
-//
-//            }
-//        });
 
         saveQRtoCloudBtn.setOnClickListener(v -> {
             saveCode();
-//            if(getLocation_TorF)
-//                getLocation();
         });
 
         leaderboardBtn.setOnClickListener(new View.OnClickListener() {
@@ -191,31 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
-
-
-    /*
-    @Override
-    protected void onPause() {
-        locationManager.removeUpdates(locationListener);
-        super.onPause();
-    }*/
-
-//    public void getLocation(){
-//            locationListener = new LocationListener() {
-//                @Override
-//                public void onLocationChanged(@NonNull Location location) {
-//                    storeLocation(location);
-//                    locationManager.removeUpdates(locationListener);
-//                }
-//            };
-//            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//                    && ActivityCompat.checkSelfPermission(MainActivity.this,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-//            } else {
-//                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-//            }
-//        }
 
     public void storeLocation(Location location) {
         String locate = location.getLatitude() + "," + location.getLongitude()+","+currentQRCode.getId();
@@ -236,12 +199,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationHelper = new LocationHelper(this);
         locationHelper.startLocationUpdates();
     }
-
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-////        locationHelper.stopLocationUpdates();
-//    }
 
     private void saveCode() {
 
@@ -269,9 +226,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
             return;
 
-            // Turn these on for testing
-//            currentQRCode.setId(UUID.randomUUID().toString());
-//            currentQRCode.setWorth((int) Math.floor(Math.random() * 1000));
         };
 
         if (locationImage != null) {
@@ -368,7 +322,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String message = "This Hash is worth: " + currentQRCode.getWorth();
             resultText.setText(message);
         }
-
     }
 
 }
