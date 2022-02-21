@@ -36,7 +36,7 @@ public class QRCodeDialog extends AppCompatDialogFragment {
 
             MultiFormatWriter writer = new MultiFormatWriter();
             try {
-                BitMatrix matrix = writer.encode("View Profile dfggh " + qrCodeUsername, BarcodeFormat.QR_CODE, 900, 900);
+                BitMatrix matrix = writer.encode("View Profile: " + qrCodeUsername, BarcodeFormat.QR_CODE, 900, 900);
                 BarcodeEncoder encoder = new BarcodeEncoder();
                 Bitmap bitmap = encoder.createBitmap(matrix);
                 imgViewQRCode.setImageBitmap(bitmap);

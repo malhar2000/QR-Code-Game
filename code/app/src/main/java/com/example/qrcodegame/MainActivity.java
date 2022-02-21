@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
-                intent.putExtra("username passed", currentUserHelper.getUsername());
+                intent.putExtra("username", currentUserHelper.getUsername());
                 startActivity(intent);
             }
         });

@@ -2,6 +2,7 @@ package com.example.qrcodegame.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrcodegame.R;
 import com.example.qrcodegame.SaveLeaderInfo;
+import com.example.qrcodegame.ViewProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +47,10 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         holder.textViewUserScore.setText(saveLeaderInfos.get(position).getScore());
         holder.textRank.setText(saveLeaderInfos.get(position).getNum());
 
-        //String.valueOf(position+1)
-
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mcontext, saveLeaderInfos.get(position).getUserName(), Toast.LENGTH_SHORT).show();
-            }
+        holder.parentLayout.setOnClickListener(view -> {
+            Intent intent = new Intent(mcontext, ViewProfileActivity.class);
+            intent.putExtra("username", saveLeaderInfos.get(position).getUserName());
+            mcontext.startActivity(intent);
         });
     }
 
@@ -76,7 +75,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
             super(itemView);
             textViewUserScore = itemView.findViewById(R.id.textViewScore);
             textViewUserName = itemView.findViewById(R.id.userNameLeaderBoard);
-            parentLayout = itemView.findViewById(R.id.parent_layout);
+            parentLayout = itemView.findViewById(R.id.userInLeaderBoardLayout);
             textRank = itemView.findViewById(R.id.textViewLeaderBoardRank);
         }
 
