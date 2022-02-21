@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
 
 import android.location.Location;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 
 import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
+import com.example.qrcodegame.utils.HashHelper;
 import com.example.qrcodegame.utils.LocationHelper;
 import com.example.qrcodegame.utils.MapsActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -65,9 +67,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button locationPhotoBtn;
     Button saveQRtoCloudBtn;
+
     Button exploreMap;
     Button leaderboardBtn;
     private Boolean getLocation_TorF = false;
+
+    CheckBox locationToggle;
+
     QRCode currentQRCode;
     byte[] locationImage;
 
@@ -91,12 +97,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
         // Permission
 
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 100);
+        };
 
         // Binding
         welcomeText = findViewById(R.id.welcomeText);
@@ -107,14 +119,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         saveQRtoCloudBtn = findViewById(R.id.saveQRtoCloudBtn);
         exploreMap = findViewById(R.id.exploreNearbyBtn);
         leaderboardBtn = findViewById(R.id.leaderboardBtn);
+        locationToggle = findViewById(R.id.saveLocationCheckBox);
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
-        analyzeText.setVisibility(View.INVISIBLE);
-        resultText.setVisibility(View.INVISIBLE);
-
-        currentQRCode = new QRCode();
-        locationHelper = new LocationHelper(this, currentQRCode);
+        // TESTING
+        //TODO
+        welcomeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SingleQRActivity.class);
+                intent.putExtra("codeID", "0116cf1f-29c6-4c4d-9b34-c7924b3d786d");
+                startActivity(intent);
+            }
+        });
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -154,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         locationPhotoBtn.setOnClickListener(view -> {
 
+            if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
+                Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
+                return;
+            };
+
             if (locationImage == null) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 activityResultLauncher.launch(intent);
@@ -190,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-/*
+
+    /*
     @Override
     protected void onPause() {
         locationManager.removeUpdates(locationListener);
@@ -221,27 +245,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .update("location", FieldValue.arrayUnion(locate));
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+        analyzeText.setVisibility(View.INVISIBLE);
+        resultText.setVisibility(View.INVISIBLE);
+
+        currentQRCode = new QRCode();
+        locationHelper = new LocationHelper(this);
+        locationHelper.startLocationUpdates();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        locationHelper.stopLocationUpdates();
+    }
 
     private void saveCode() {
 
         userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
-        boolean saveLocation = ((CheckBox) findViewById(R.id.saveLocationCheckBox)).isChecked();
-
-        if (saveLocation && currentQRCode.getCoordinates().size() == 0) {
-            return;
-        }
-
-        // Check location
         // Check if QR code already exists
+        qrCollectionReference
+            .whereEqualTo("id",currentQRCode.getId())
+            .get()
+            .addOnSuccessListener(queryDocumentSnapshots -> {
+                if (queryDocumentSnapshots.getDocuments().size() > 0) {
+                    updateExistingCode();
+                } else {
+                    createNewCode();
+                }
+            });
+    }
 
-        // If so, update QR code,
-        // Update player
+    private void createNewCode() {
 
-        // Else
+        if (locationToggle.isChecked()) {
+            currentQRCode.setCoordinates(currentUserHelper.getCurrentLocation());
+        };
 
-        /// TESTING
-        currentQRCode.setId(UUID.randomUUID().toString());
-        currentQRCode.setWorth((int) Math.floor(Math.random() * 1000));
+        if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
+            Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
+            return;
+
+            // Turn these on for testing
+//            currentQRCode.setId(UUID.randomUUID().toString());
+//            currentQRCode.setWorth((int) Math.floor(Math.random() * 1000));
+        };
 
         if (locationImage != null) {
             // Save Image
@@ -263,15 +315,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             saveCodeFireStore();
         }
+
     }
 
+    private void updateExistingCode() {
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put("collectedCodes", FieldValue.arrayUnion(currentQRCode.getId()));
+        updates.put("totalScore", FieldValue.increment(currentQRCode.getWorth()));
+        userDocument
+            .update(updates);
+        qrCollectionReference
+            .document(currentQRCode.getId())
+            .update("players", FieldValue.arrayUnion(currentUserHelper.getUsername()));
+        resetUi();
+    }
 
     private void resetUi() {
         Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
         currentQRCode = new QRCode();
         locationImage = null;
-        ((CheckBox) findViewById(R.id.saveLocationCheckBox)).setChecked(false);
-
+        locationPhotoBtn.setText("TAKE PHOTO");
+        locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
+        locationToggle.setChecked(false);
     }
 
     private void saveCodeFireStore() {
@@ -287,6 +352,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     resetUi();
                 });
     }
+
 
     @Override
     public void onClick(View view) {
@@ -304,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (result != null) {
             if (result.getContents() != null) {
                 String qrCodeContent = result.getContents();
-                calculateWorth(qrCodeContent);
+                handleHash(qrCodeContent);
             } else {
                 Toast.makeText(this, "Scanning cancelled!", Toast.LENGTH_SHORT).show();
             }
@@ -313,66 +379,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void calculateWorth(String qrCodeContent) {
+    public void handleHash(String qrCodeContent) {
 
-        if (qrCodeContent == null || qrCodeContent.isEmpty()) {
-            return;
-        }
-
-        if (qrCodeContent.startsWith("Account-Transfer=")) {
-            // Transfer account settings
-            return;
-        }
-
-        if (qrCodeContent.startsWith("View-Profile=")) {
-            // View someones profile
-            return;
-        }
-
-        try {
-
-            // calculate sha-256
-            // Citation: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha256-in-java
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(qrCodeContent.getBytes(StandardCharsets.UTF_8));
-
-            final StringBuilder hashStr = new StringBuilder(hash.length);
-            for (byte hashByte : hash)
-                hashStr.append(Integer.toHexString(255 & hashByte));
-
-            // Hashed string here
-            final String hashedContent = hashStr.toString();
-
-
-            final char[] hashedArray = hashedContent.toCharArray();
-
-            // Calculating String
-            int codeWorth = 0;
-            char lastChar = hashedArray[0];
-            int count = 0;
-            for (char c : hashedArray) {
-                if (c == lastChar) {
-                    count++;
-                } else {
-                    codeWorth += ((int) c) * count;
-                    lastChar = c;
-                    count = 0;
-                }
-            }
-
+        int result = HashHelper.handleHash(this, currentQRCode, qrCodeContent);
+        if (result == 1) {
             // Displaying text
             analyzeText.setVisibility(View.VISIBLE);
             resultText.setVisibility(View.VISIBLE);
-            resultText.setText("This Hash is worth: " + codeWorth);
-
-            // Updating the QR code Object
-            currentQRCode.setId(hashedContent);
-            currentQRCode.setWorth(codeWorth);
-
-
-        } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-            System.err.println(e.getMessage());
+            String message = "This Hash is worth: " + currentQRCode.getWorth();
+            resultText.setText(message);
         }
 
     }
