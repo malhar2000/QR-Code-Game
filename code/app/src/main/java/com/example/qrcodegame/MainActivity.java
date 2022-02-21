@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button locationPhotoBtn;
     Button saveQRtoCloudBtn;
+    Button profileViewBtn;
     CheckBox locationToggle;
 
     QRCode currentQRCode;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationPhotoBtn = findViewById(R.id.takeLocationBtn);
         saveQRtoCloudBtn = findViewById(R.id.saveQRtoCloudBtn);
         locationToggle = findViewById(R.id.saveLocationCheckBox);
+        profileViewBtn = findViewById(R.id.viewProfileBtn);
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
@@ -122,6 +124,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         );
 
         // Listeners
+
+        profileViewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
+                intent.putExtra("username passed", currentUserHelper.getUsername());
+                startActivity(intent);
+            }
+        });
+
         scanQRButton.setOnClickListener(this);
 
         locationPhotoBtn.setOnClickListener(view -> {
