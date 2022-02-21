@@ -9,13 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.qrcodegame.models.User;
+import com.example.qrcodegame.adapters.LeaderBoardAdapter;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,18 +41,19 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
     EditText searchPlayer;
     ArrayList<String> forScannedCode = new ArrayList<>();
 
-
-
     private final List<SaveLeaderInfo> saveLeaderInfos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
+
         getContentFromFireBase();
+
         myScoreByCode = findViewById(R.id.editTextRankByScanned);
         myScoreByRank = findViewById(R.id.editTextRankByScore);
         searchPlayer = findViewById(R.id.editTextSearchForPlayers);
+
         searchPlayer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -66,16 +66,11 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
             @Override
             public void afterTextChanged(Editable editable) {
                 filter(editable.toString());
+            }
+        });
 
-            }
-        });
         backBtn = findViewById(R.id.backButtonLeaderBoard);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });
+        backBtn.setOnClickListener(view -> finish());
 
     }
 
@@ -97,10 +92,13 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
     }
 
     public void getContentFromFireBase(){
-        CollectionReference reference = FirebaseFirestore.getInstance().collection("Users");
-        reference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+        FirebaseFirestore.getInstance()
+            .collection("Users")
+            .addSnapshotListener((value, error) -> {
+
+                forScannedCode.clear();
+                saveLeaderInfos.clear();
+
                 int size;
                 for(DocumentSnapshot snapshot: value.getDocuments()){
                     Map<String, Object> map = snapshot.getData();
@@ -138,8 +136,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
                     count++;
                 }
                 initRecyclerView();
-            }
-        });
+            });
 
     }
 

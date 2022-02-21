@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button exploreMap;
     Button leaderboardBtn;
 
-//    private Boolean getLocation_TorF = false;
-
     CheckBox locationToggle;
 
     QRCode currentQRCode;
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     LocationManager locationManager;
     FusedLocationProviderClient fusedLocationProviderClient;
-    LocationListener locationListener;
+
 
 
     final FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -96,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION
             }, 100);
-        };
+        }
 
         // Binding
         welcomeText = findViewById(R.id.welcomeText);
@@ -144,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
         );
-        CheckBox checkBox = ((CheckBox) findViewById(R.id.saveLocationCheckBox));
+
         // Listeners
         scanQRButton.setOnClickListener(this);
 
@@ -180,12 +178,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void storeLocation(Location location) {
-        String locate = location.getLatitude() + "," + location.getLongitude()+","+currentQRCode.getId();
-        Log.i("Location", locate);
-        FirebaseFirestore.getInstance().collection("Locations").document("places")
-                .update("location", FieldValue.arrayUnion(locate));
-    }
+//    public void storeLocation(Location location) {
+//        String locate = location.getLatitude() + "," + location.getLongitude()+","+currentQRCode.getId();
+//        Log.i("Location", locate);
+//        FirebaseFirestore.getInstance().collection("Locations").document("places")
+//                .update("location", FieldValue.arrayUnion(locate));
+//    }
 
     @Override
     protected void onStart() {

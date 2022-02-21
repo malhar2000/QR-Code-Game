@@ -31,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,9 +80,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         FirebaseFirestore.getInstance()
                 .collection("Codes")
                 .whereNotEqualTo("coordinates", new ArrayList<>())
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot ds : queryDocumentSnapshots.getDocuments()){
+                .addSnapshotListener((value, error) -> {
+                    mMap.clear();
+                    for (DocumentSnapshot ds : value.getDocuments()){
                         QRCode tempCode = ds.toObject(QRCode.class);
                         LatLng latLng = new LatLng(tempCode.getCoordinates().get(0), tempCode.getCoordinates().get(1));
                         mMap.addMarker(new MarkerOptions().position(latLng).title(tempCode.getId()));

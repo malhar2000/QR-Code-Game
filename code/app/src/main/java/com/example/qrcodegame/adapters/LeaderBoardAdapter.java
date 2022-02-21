@@ -1,4 +1,4 @@
-package com.example.qrcodegame;
+package com.example.qrcodegame.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.qrcodegame.R;
+import com.example.qrcodegame.SaveLeaderInfo;
 
 import java.util.ArrayList;
 import java.util.List;
