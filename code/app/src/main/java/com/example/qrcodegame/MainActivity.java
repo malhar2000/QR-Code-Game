@@ -1,7 +1,5 @@
 package com.example.qrcodegame;
 
-import static android.location.LocationManager.GPS_PROVIDER;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -16,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
-import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
 
 import android.location.Location;
@@ -28,7 +25,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,11 +33,8 @@ import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.example.qrcodegame.utils.HashHelper;
 import com.example.qrcodegame.utils.LocationHelper;
-import com.example.qrcodegame.utils.MapsActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -52,10 +45,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.HashMap;
-import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -67,10 +57,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button locationPhotoBtn;
     Button saveQRtoCloudBtn;
-
     Button exploreMap;
     Button leaderboardBtn;
-    private Boolean getLocation_TorF = false;
+
+//    private Boolean getLocation_TorF = false;
 
     CheckBox locationToggle;
 
@@ -91,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
 
     ActivityResultLauncher<Intent> activityResultLauncher;
-
-
 
 
     @Override
@@ -123,16 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Update
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
-        // TESTING
-        //TODO
-        welcomeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SingleQRActivity.class);
-                intent.putExtra("codeID", "0116cf1f-29c6-4c4d-9b34-c7924b3d786d");
-                startActivity(intent);
-            }
-        });
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -187,21 +165,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
             Toast.makeText(this, "Image removed!", Toast.LENGTH_SHORT).show();
         });
-        checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkBox.isChecked())
-                    getLocation_TorF = true;
-                else
-                    getLocation_TorF = false;
 
-            }
-        });
+//        checkBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (checkBox.isChecked())
+//                    getLocation_TorF = true;
+//                else
+//                    getLocation_TorF = false;
+//
+//            }
+//        });
 
         saveQRtoCloudBtn.setOnClickListener(v -> {
             saveCode();
-            if(getLocation_TorF)
-                getLocation();
+//            if(getLocation_TorF)
+//                getLocation();
         });
 
         leaderboardBtn.setOnClickListener(new View.OnClickListener() {
@@ -221,22 +200,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
     }*/
 
-    public void getLocation(){
-            locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                    storeLocation(location);
-                    locationManager.removeUpdates(locationListener);
-                }
-            };
-            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(MainActivity.this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            } else {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-            }
-        }
+//    public void getLocation(){
+//            locationListener = new LocationListener() {
+//                @Override
+//                public void onLocationChanged(@NonNull Location location) {
+//                    storeLocation(location);
+//                    locationManager.removeUpdates(locationListener);
+//                }
+//            };
+//            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//                    && ActivityCompat.checkSelfPermission(MainActivity.this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+//            } else {
+//                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+//            }
+//        }
 
     public void storeLocation(Location location) {
         String locate = location.getLatitude() + "," + location.getLongitude()+","+currentQRCode.getId();
@@ -258,11 +237,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationHelper.startLocationUpdates();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        locationHelper.stopLocationUpdates();
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+////        locationHelper.stopLocationUpdates();
+//    }
 
     private void saveCode() {
 

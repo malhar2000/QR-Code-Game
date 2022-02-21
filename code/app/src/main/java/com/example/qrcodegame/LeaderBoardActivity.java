@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class LeaderBoardActivity extends AppCompatActivity implements Comparable<String>{
 
-    RecycleViewAdapter adapter;
+    LeaderBoardAdapter adapter;
     RecyclerView recyclerView;
 
     TextView myScoreByRank;
@@ -91,7 +91,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
 
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.recycle_view);
-        adapter = new RecycleViewAdapter(saveLeaderInfos, this);
+        adapter = new LeaderBoardAdapter(saveLeaderInfos, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

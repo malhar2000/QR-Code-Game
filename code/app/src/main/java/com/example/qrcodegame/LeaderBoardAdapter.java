@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
+public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.ViewHolder> {
 
     private List<SaveLeaderInfo> saveLeaderInfos = new ArrayList<>();
     private Context mcontext;
     private int size;
 
 
-    public RecycleViewAdapter(List<SaveLeaderInfo> saveLeaderInfos, Context context) {
+    public LeaderBoardAdapter(List<SaveLeaderInfo> saveLeaderInfos, Context context) {
         this.saveLeaderInfos = saveLeaderInfos;
         this.mcontext = context;
         size = saveLeaderInfos.size();
