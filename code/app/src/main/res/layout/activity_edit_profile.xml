@@ -68,7 +68,6 @@
         android:id="@+id/editPhone"
         android:paddingLeft="10dp"
         android:layout_width="300dp"
-        android:textColor="#7569f6"
         android:layout_height="59dp"
         android:background="@drawable/shape"
         android:hint="Phone Number (Optional)"
