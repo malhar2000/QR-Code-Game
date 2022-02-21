@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -26,6 +27,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -44,9 +48,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    implementation 'com.google.zxing:core:3.4.0'
+    //recycle view
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     // For control over item selection of both touch and mouse driven selection
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
-    implementation 'com.google.zxing:core:3.4.0'
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+    // circle imageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // For images from url
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 }
