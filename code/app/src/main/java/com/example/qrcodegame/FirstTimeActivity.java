@@ -1,6 +1,7 @@
 package com.example.qrcodegame;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,8 +18,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +32,7 @@ import java.util.Map;
 public class FirstTimeActivity extends AppCompatActivity {
 
     // objects used
-    private Button btnGo;
+    private Button btnGo; //, scanQRcodeNewUserBtn;
     private EditText edtTxtUserName, edtTxtEmail, edtTxtPhoneNumber;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -46,6 +50,7 @@ public class FirstTimeActivity extends AppCompatActivity {
         edtTxtUserName = (EditText)  findViewById(R.id.editTextUsername);
         edtTxtPhoneNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
         edtTxtEmail = (EditText) findViewById(R.id.editTextEmail);
+//        scanQRcodeNewUserBtn = (Button) findViewById(R.id.scanQRBtnNewUser);
 
         fetchAllUsernames();
 
@@ -90,22 +95,62 @@ public class FirstTimeActivity extends AppCompatActivity {
                 }
             }
         });
+
+//        scanQRcodeNewUserBtn.setOnClickListener(view -> {
+//            IntentIntegrator integrator = new IntentIntegrator(this);
+//            integrator.setCaptureActivity(CaptureAct.class);
+//            integrator.setOrientationLocked(true);
+//            integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+//            integrator.setPrompt("New User Scanning Code");
+//            integrator.initiateScan();
+//        });
     }
+
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//        if (result != null) {
+//            if (result.getContents() != null) {
+//                String resultString = result.getContents();
+//                if (resultString.startsWith("QRCODEGAME_Username=")) {
+//                    // Get username
+//                    String username = resultString.split("=")[1];
+//                    // Updates
+//                    HashMap<String, Object> updates = new HashMap<>();
+//                    updates.put("devices", FieldValue.arrayUnion(CurrentUserHelper.getInstance().getUniqueID()));
+//                    db.collection("Users")
+//                            .document(username)
+//                            .update(updates)
+//                            .addOnSuccessListener(v -> {
+//                               Intent intent = new Intent(this, SplashScreenActivity.class);
+//                               startActivity(intent);
+//                               finish();
+//                            })
+//                            .addOnFailureListener(e -> {
+//                                Toast.makeText(this, "User not found!", Toast.LENGTH_SHORT).show();
+//                            });
+//
+//                } else {
+//                    Toast.makeText(this, "Invalid QR Code!", Toast.LENGTH_SHORT).show();
+//                }
+//            } else {
+//                Toast.makeText(this, "Scanning cancelled!", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            super.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
 
     private void addUser(User newUserToAdd) {
 
         db.collection("Users")
-                .add(newUserToAdd)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("added user success", "DocumentSnapshot written with ID: " + documentReference.getId());
-
-                        CurrentUserHelper.getInstance().setFirebaseId(documentReference.getId());
-                        Intent intent = new Intent(FirstTimeActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                .document(newUserToAdd.getUsername())
+                .set(newUserToAdd)
+                .addOnSuccessListener(v -> {
+//                    Log.d("added user success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    CurrentUserHelper.getInstance().setFirebaseId(newUserToAdd.getUsername());
+                    Intent intent = new Intent(FirstTimeActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override

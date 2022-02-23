@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Your Unique QR CODE"
+        android:text="Share Profile QR Code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonEditProfile"
@@ -82,6 +82,16 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTotalScore" />
+
+    <Button
+        android:id="@+id/profileTransferBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOAD PROFILE INTO NEW DEVICE"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOpenQRCode"
+        app:layout_constraintEnd_toEndOf="@+id/buttonOpenQRCode"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="@+id/buttonOpenQRCode" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

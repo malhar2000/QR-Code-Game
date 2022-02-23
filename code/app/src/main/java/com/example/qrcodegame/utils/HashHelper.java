@@ -1,12 +1,19 @@
 package com.example.qrcodegame.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
+import com.example.qrcodegame.SplashScreenActivity;
+import com.example.qrcodegame.ViewProfileActivity;
 import com.example.qrcodegame.models.QRCode;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HashHelper {
 
@@ -16,14 +23,40 @@ public class HashHelper {
             return 0;
         }
 
-        if (qrCodeContent.startsWith("Account-Transfer=")) {
-            // Transfer account settings
+        if (qrCodeContent.startsWith("View-Profile=")) {
+            // View someones profile
+            String usernameToView = qrCodeContent.split("=")[1];
+            Intent intent = new Intent(context, ViewProfileActivity.class);
+            intent.putExtra("username", usernameToView);
             return 0;
         }
 
-        if (qrCodeContent.startsWith("View-Profile=")) {
-            // View someones profile
-            return 0;
+        if (qrCodeContent.startsWith("Transfer-Profile=")) {
+            AtomicInteger success = new AtomicInteger();
+            //
+            HashMap<String, Object> updates = new HashMap<>();
+            updates.put("devices", FieldValue.arrayUnion(CurrentUserHelper.getInstance().getUniqueID()));
+            // Transfer
+            String usernameToTransferTo = qrCodeContent.split("=")[1];
+            FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(usernameToTransferTo)
+                    .update(updates)
+                    .addOnSuccessListener(v -> {
+                        FirebaseFirestore.getInstance()
+                                .collection("Users")
+                                .document(CurrentUserHelper.getInstance().getFirebaseId())
+                                .update("devices", FieldValue.arrayRemove(CurrentUserHelper.getInstance().getUniqueID()))
+                                .addOnSuccessListener(v1 -> {
+                                    Intent intent = new Intent(context, SplashScreenActivity.class);
+                                    context.startActivity(intent);
+                                    success.set(2);
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show();
+                    });
+            return success.get();
         }
 
         calculateWorth(context, currentQRCode, qrCodeContent);

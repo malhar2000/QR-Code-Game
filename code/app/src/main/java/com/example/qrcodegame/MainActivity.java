@@ -46,6 +46,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -237,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
             Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
             return;
-
         };
 
         if (locationImage != null) {
@@ -333,6 +333,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             resultText.setVisibility(View.VISIBLE);
             String message = "This Hash is worth: " + currentQRCode.getWorth();
             resultText.setText(message);
+        }
+        if (result == 2) { // This means we restarting!
+            finish();
         }
     }
 

@@ -32,11 +32,11 @@ public class QRCodeDialog extends AppCompatDialogFragment {
 
         Bundle passedUsername = getArguments();
         if (passedUsername != null) {
-            String qrCodeUsername = (String) passedUsername.get("the username");
+            String content = (String) passedUsername.get("content");
 
             MultiFormatWriter writer = new MultiFormatWriter();
             try {
-                BitMatrix matrix = writer.encode("View Profile: " + qrCodeUsername, BarcodeFormat.QR_CODE, 900, 900);
+                BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, 900, 900);
                 BarcodeEncoder encoder = new BarcodeEncoder();
                 Bitmap bitmap = encoder.createBitmap(matrix);
                 imgViewQRCode.setImageBitmap(bitmap);
