@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,10 +32,13 @@ import com.squareup.picasso.Picasso;
      private ImageView surroudingImage;
      private TextView worthTxt;
      private RecyclerView usernamesRecyclerView;
+     Button commentBtn;
 
      private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
      private GoogleMap map;
      private QRCode currentQRcode;
+     String codeID;
+     String worth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +52,25 @@ import com.squareup.picasso.Picasso;
         surroudingImage = findViewById(R.id.surroundingImage);
         usernamesRecyclerView = findViewById(R.id.usernameList);
         worthTxt = findViewById(R.id.worthTxt);
+        commentBtn = findViewById(R.id.commentBtn);
+
+        // Malhar's Edit
+        commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), QRCodeCommentActivity.class);
+                intent.putExtra("QRCodeCommentActivity", codeID);
+                intent.putExtra("Worth", worth);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Intent intent = getIntent();
-        String codeID = intent.getStringExtra("codeID");
+        codeID = intent.getStringExtra("codeID");
 
         getSupportActionBar().setTitle("QR CODE: " + codeID);
 
@@ -77,6 +94,7 @@ import com.squareup.picasso.Picasso;
                              currentQRcode = documentSnapshot.toObject(QRCode.class);
 
                              // Worth Text
+                             worth = String.valueOf(currentQRcode.getWorth());
                              worthTxt.setText("Worth: " + currentQRcode.getWorth());
 
                              // QR Code Location
