@@ -47,7 +47,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         qrCodeNames = new ArrayList<String>();
         qrCodeScores = new ArrayList<String>();
         Button btnEditProfile = findViewById(R.id.buttonEditProfile);
-        btnOpenQRCode = findViewById(R.id.buttonOpenQRCode);
+        btnOpenQRCode = findViewById(R.id.buttonOpenShareQRCode);
         txtViewTotalCodes = findViewById(R.id.textViewTotalCodes);
         txtViewTotalScore = findViewById(R.id.textViewTotalScore);
         totalScore = 0;
@@ -65,23 +65,13 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                ///////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////
-
                 startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
-                            /// MAKE INTENT TO CONTACT PROFILE EDIT PAGE HERE ////////
-
-                ///////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////
             }
         });
 
-
+        btnOpenQRCode.setOnClickListener(v -> {
+            openDialog("View-Profile=" + username);
+        });
 
         ((Button) findViewById(R.id.profileTransferBtn)).setOnClickListener(v -> {
             openDialog("Transfer-Profile=" + username);

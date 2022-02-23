@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.example.qrcodegame.SplashScreenActivity;
 import com.example.qrcodegame.ViewProfileActivity;
 import com.example.qrcodegame.models.QRCode;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class HashHelper {
 
     public static int handleHash(Context context, QRCode currentQRCode, String qrCodeContent) {
+    CollectionReference userCollection = FirebaseFirestore.getInstance().collection("Users");
 
         if (qrCodeContent == null || qrCodeContent.isEmpty()) {
             return 0;
@@ -33,28 +35,37 @@ public class HashHelper {
 
         if (qrCodeContent.startsWith("Transfer-Profile=")) {
             AtomicInteger success = new AtomicInteger();
-            //
+//            //
             HashMap<String, Object> updates = new HashMap<>();
             updates.put("devices", FieldValue.arrayUnion(CurrentUserHelper.getInstance().getUniqueID()));
-            // Transfer
+//            // Transfer
             String usernameToTransferTo = qrCodeContent.split("=")[1];
-            FirebaseFirestore.getInstance()
-                    .collection("Users")
-                    .document(usernameToTransferTo)
-                    .update(updates)
-                    .addOnSuccessListener(v -> {
-                        FirebaseFirestore.getInstance()
-                                .collection("Users")
-                                .document(CurrentUserHelper.getInstance().getFirebaseId())
-                                .update("devices", FieldValue.arrayRemove(CurrentUserHelper.getInstance().getUniqueID()))
-                                .addOnSuccessListener(v1 -> {
-                                    Intent intent = new Intent(context, SplashScreenActivity.class);
-                                    context.startActivity(intent);
-                                    success.set(2);
+
+            userCollection
+                    .whereEqualTo("username",usernameToTransferTo)
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            return;
+                        }
+                        String idToUpdate = queryDocumentSnapshots.getDocuments().get(0).getId();
+
+                        userCollection
+                                .document(idToUpdate)
+                                .update(updates)
+                                .addOnSuccessListener(v ->
+                                        userCollection
+                                         .document(CurrentUserHelper.getInstance().getFirebaseId())
+                                         .update("devices", FieldValue.arrayRemove(CurrentUserHelper.getInstance().getUniqueID()))
+                                         .addOnSuccessListener(v1 -> {
+                                             Intent intent = new Intent(context, SplashScreenActivity.class);
+                                             context.startActivity(intent);
+                                             success.set(2);
+                                         }))
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show();
                                 });
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show();
                     });
             return success.get();
         }

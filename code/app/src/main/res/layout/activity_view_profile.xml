@@ -56,12 +56,12 @@
         android:layout_marginTop="30dp"
         android:text="TextView"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/buttonOpenQRCode"
-        app:layout_constraintStart_toStartOf="@+id/buttonOpenQRCode"
-        app:layout_constraintTop_toBottomOf="@+id/buttonOpenQRCode" />
+        app:layout_constraintEnd_toEndOf="@+id/buttonOpenShareQRCode"
+        app:layout_constraintStart_toStartOf="@+id/buttonOpenShareQRCode"
+        app:layout_constraintTop_toBottomOf="@+id/buttonOpenShareQRCode" />
 
     <Button
-        android:id="@+id/buttonOpenQRCode"
+        android:id="@+id/buttonOpenShareQRCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -88,10 +88,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LOAD PROFILE INTO NEW DEVICE"
-        app:layout_constraintBottom_toTopOf="@+id/buttonOpenQRCode"
-        app:layout_constraintEnd_toEndOf="@+id/buttonOpenQRCode"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOpenShareQRCode"
+        app:layout_constraintEnd_toEndOf="@+id/buttonOpenShareQRCode"
         app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="@+id/buttonOpenQRCode" />
+        app:layout_constraintStart_toStartOf="@+id/buttonOpenShareQRCode" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

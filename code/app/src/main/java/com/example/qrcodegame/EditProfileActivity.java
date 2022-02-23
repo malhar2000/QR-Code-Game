@@ -17,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 public class EditProfileActivity extends AppCompatActivity {
-    Button linkAccount, backBtn;
+    Button backBtn;
     EditText editUsername, editEmail, editPhone;
     DocumentReference userDocument, emailDocument, phoneDocument;
     CurrentUserHelper currentUserHelper;
@@ -39,7 +39,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 .document(currentUserHelper.getFirebaseId());
         phoneDocument = FirebaseFirestore.getInstance().collection("Users")
                 .document(currentUserHelper.getFirebaseId());
-        linkAccount = findViewById(R.id.linkAccount);
+//        linkAccount = findViewById(R.id.linkAccount);
         backBtn = findViewById(R.id.backBtn);
         editEmail = findViewById(R.id.editEmail);
         editEmail.setText(currentUserHelper.getEmail());
@@ -48,13 +48,15 @@ public class EditProfileActivity extends AppCompatActivity {
         editUsername = findViewById(R.id.editUsername);
         editUsername.setText(currentUserHelper.getUsername());
     }
+
     /**
      * OnClick function for back Button
      * Returns : None
      * @param view Takes Back Button View as input
      */
     public void backBtnOnClick(View view){
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     /**
@@ -62,7 +64,7 @@ public class EditProfileActivity extends AppCompatActivity {
      * Returns : None
      * @param view Takes Link Button View as input
      */
-    public void linkAccountOnClick(View view){
+    public void saveAccountOnClick(View view){
         HashMap<String, Object> updates = new HashMap<>();
         String username = editUsername.getText().toString();
         String email = editEmail.getText().toString();
