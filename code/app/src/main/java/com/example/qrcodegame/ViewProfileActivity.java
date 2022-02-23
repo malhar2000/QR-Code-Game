@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ViewProfileActivity extends AppCompatActivity {
+public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecyclerViewAdapter.QRProfileListener {
 
     private ArrayList<String> qrCodeNames;
     private ArrayList<String> qrCodeScores;
@@ -47,7 +47,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         qrCodeNames = new ArrayList<String>();
         qrCodeScores = new ArrayList<String>();
         Button btnEditProfile = findViewById(R.id.buttonEditProfile);
-        Button btnOpenQRCode = findViewById(R.id.buttonOpenQRCode);
+        btnOpenQRCode = findViewById(R.id.buttonOpenQRCode);
         txtViewTotalCodes = findViewById(R.id.textViewTotalCodes);
         txtViewTotalScore = findViewById(R.id.textViewTotalScore);
         totalScore = 0;
@@ -55,11 +55,11 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        String username = (String) intent.getExtras().get("username passed");
+        String username = (String) intent.getExtras().get("username");
         Objects.requireNonNull(getSupportActionBar()).setTitle(username+"'s " + "profile");
-        if (!username.equals(currentUserHelper.getUsername()))
-        {
+        if (!username.equals(currentUserHelper.getUsername())) {
             btnEditProfile.setVisibility(View.INVISIBLE);
+            ((Button) findViewById(R.id.profileTransferBtn)).setVisibility(View.INVISIBLE);
         }
 
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -81,18 +81,18 @@ public class ViewProfileActivity extends AppCompatActivity {
             }
         });
 
-        btnOpenQRCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog(username);
-            }
+
+
+        ((Button) findViewById(R.id.profileTransferBtn)).setOnClickListener(v -> {
+            openDialog("Transfer-Profile=" + username);
         });
+
         fetchQRCodesOfUser(username);
     }
 
-    public void openDialog(String username) {
+    public void openDialog(String message) {
         Intent intent = new Intent(this, QRCodeDialog.class);
-        intent.putExtra("the username", username);
+        intent.putExtra("content", message);
         Bundle args = (intent.getExtras());
 
         QRCodeDialog qrCodeDialog = new QRCodeDialog();
@@ -102,7 +102,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.qrCodeRecyclerView);
-        qrCodeRecyclerViewAdapter adapter = new qrCodeRecyclerViewAdapter(qrCodeNames, qrCodeScores);
+        qrCodeRecyclerViewAdapter adapter = new qrCodeRecyclerViewAdapter(qrCodeNames, qrCodeScores, this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -114,7 +114,7 @@ public class ViewProfileActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     for (DocumentSnapshot existingUser : queryDocumentSnapshots) {
-                        qrCodeNames.add("Name: "+existingUser.get("id").toString());
+                        qrCodeNames.add("" + existingUser.get("id"));
                         qrCodeScores.add("Score: "+existingUser.get("worth").toString());
                         totalScore += Integer.parseInt(existingUser.get("worth").toString());
                     }
@@ -123,5 +123,12 @@ public class ViewProfileActivity extends AppCompatActivity {
                     txtViewTotalCodes.setText("Total number of codes scanned: " + qrCodeNames.size());
                 }
             });
+    }
+
+    @Override
+    public void onQRclicked(String qrId) {
+            Intent intent = new Intent(ViewProfileActivity.this , SingleQRActivity.class);
+            intent.putExtra("codeID", qrId);
+            startActivity(intent);
     }
 }

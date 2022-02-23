@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.example.qrcodegame.models.QRCode;
+import com.google.android.gms.maps.model.LatLng;
 
 
 import java.util.ArrayList;
@@ -22,49 +23,47 @@ import android.util.Log;
 
 public class LocationHelper implements LocationListener {
 
-    private Context context;
-    private QRCode currentQRCode;
+    static public ArrayList<LocationHelperListener> listeners = new ArrayList<>();
+
+    private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
+    final private Context context;
     private LocationManager locationManager;
-    private handleLocationChanged listener;
 
-    public LocationHelper (Context context, QRCode currentQRCode, handleLocationChanged listener) {
+    public interface LocationHelperListener {
+        void onCurrentUserLocationUpdated(Double latitude, Double longitude);
+    }
+
+    public LocationHelper(Context context) {
         this.context = context;
-        this.currentQRCode = currentQRCode;
-        this.listener = listener;
-    }
-
-    public interface handleLocationChanged {
-        void onLocationReady();
-    }
-
-    public QRCode getCurrentQRCode() {
-        return currentQRCode;
-    }
-
-    public void setCurrentQRCode(QRCode currentQRCode) {
-        this.currentQRCode = currentQRCode;
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+
+        Double lat = location.getLatitude();
+        Double lng = location.getLongitude();
+
         ArrayList<Double> coordinates = new ArrayList<>();
-        coordinates.add(location.getLatitude());
-        coordinates.add(location.getLongitude());
-        Log.d("CurrentUserUpdated", currentQRCode.toString());
-        if (currentQRCode != null) {
-            currentQRCode.setCoordinates(coordinates);
-            locationManager.removeUpdates(this);
-            listener.onLocationReady();
-        };
+        coordinates.add(lat);
+        coordinates.add(lng);
+        currentUserHelper.setCurrentLocation(coordinates);
+        System.out.println("LOCATION UPDATED!");
+        for (LocationHelperListener listener: listeners) {
+            listener.onCurrentUserLocationUpdated(lat, lng);
+        }
     }
 
-    public void getCurrentLocation() {
+    public void stopLocationUpdates() {
+        locationManager.removeUpdates(this);
+    }
+
+    public void startLocationUpdates() {
         try {
             locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
         } catch (Exception e) {
             e.printStackTrace();
         }

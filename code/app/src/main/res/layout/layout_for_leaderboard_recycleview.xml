@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:padding="15dp"
+    android:id="@+id/userInLeaderBoardLayout">
+
+    <TextView
+        android:id="@+id/userNameLeaderBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UserName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userNameLeaderBoard"
+        android:paddingTop="15dp"
+        android:text="Score: "
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/textViewScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userNameLeaderBoard"
+        android:layout_toRightOf="@+id/score"
+        android:paddingTop="15dp"
+        android:text="XXX"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="50sp"
+        android:text="1"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textViewLeaderBoardRank"/>
+
+
+</RelativeLayout>
