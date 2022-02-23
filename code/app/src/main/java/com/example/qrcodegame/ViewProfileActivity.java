@@ -71,7 +71,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
                 ///////////////////////////////////////////////////////////
                 ///////////////////////////////////////////////////////////
 
-
+                startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
                             /// MAKE INTENT TO CONTACT PROFILE EDIT PAGE HERE ////////
 
                 ///////////////////////////////////////////////////////////

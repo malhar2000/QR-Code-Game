@@ -141,13 +141,16 @@ public class FirstTimeActivity extends AppCompatActivity {
 //    }
 
     private void addUser(User newUserToAdd) {
-
         db.collection("Users")
                 .document(newUserToAdd.getUsername())
                 .set(newUserToAdd)
                 .addOnSuccessListener(v -> {
 //                    Log.d("added user success", "DocumentSnapshot written with ID: " + documentReference.getId());
-                    CurrentUserHelper.getInstance().setFirebaseId(newUserToAdd.getUsername());
+                    CurrentUserHelper.getInstance().setFirebaseId(documentReference.getId());
+                    CurrentUserHelper.getInstance().setPhone(newUserToAdd.getPhone());
+                    CurrentUserHelper.getInstance().setEmail(newUserToAdd.getEmail());
+                    CurrentUserHelper.getInstance().setUsername(newUserToAdd.getUsername());
+                  
                     Intent intent = new Intent(FirstTimeActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

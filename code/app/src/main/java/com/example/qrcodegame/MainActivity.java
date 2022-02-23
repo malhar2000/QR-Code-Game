@@ -214,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void saveCode() {
-
         userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
         // Check if QR code already exists
         qrCollectionReference
