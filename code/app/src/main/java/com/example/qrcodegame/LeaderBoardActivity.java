@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,11 +26,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class LeaderBoardActivity extends AppCompatActivity implements Comparable<String>{
+public class LeaderBoardActivity extends AppCompatActivity{
 
     LeaderBoardAdapter adapter;
     RecyclerView recyclerView;
@@ -116,11 +118,19 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
                 }
                 int count = 1;
                 Collections.sort(saveLeaderInfos, Collections.reverseOrder());
-                Collections.sort(forScannedCode, Collections.reverseOrder());
+                Collections.sort(forScannedCode, new Comparator<String>() {
+                    @Override
+                    public int compare(String s, String t1) {
+                        String arr[] = s.split(",");
+                        String arr1[] = t1.split(",");
+                        return Integer.parseInt(arr1[0]) - Integer.parseInt(arr[0]);
+                    }
+                });
 
                 //This is for Rank by Code
                 for(String s : forScannedCode) {
-                    if (s.split(",")[1].contains(currentUserHelper.getUsername())){
+                    Log.i("San", s);
+                    if (s.split(",")[1].equals(currentUserHelper.getUsername())){
                         myScoreByCode.setText(String.valueOf(count));
                         break;
                     }
@@ -141,9 +151,4 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
 
     }
 
-    @Override
-    public int compareTo(String s) {
-        String arr[] = s.split(",");
-        return Integer.parseInt(arr[0]);
-    }
 }
