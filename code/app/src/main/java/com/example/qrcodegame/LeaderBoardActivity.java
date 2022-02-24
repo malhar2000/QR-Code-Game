@@ -37,6 +37,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
     TextView myScoreByRank;
     TextView myScoreByCode;
     Button backBtn;
+    private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
     EditText searchPlayer;
     ArrayList<String> forScannedCode = new ArrayList<>();
@@ -119,7 +120,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
 
                 //This is for Rank by Code
                 for(String s : forScannedCode) {
-                    if (s.split(",")[1].contains(CurrentUserHelper.getInstance().getUsername())){
+                    if (s.split(",")[1].contains(currentUserHelper.getUsername())){
                         myScoreByCode.setText(String.valueOf(count));
                         break;
                     }
@@ -130,7 +131,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
                 count = 1;
                 for(SaveLeaderInfo t : saveLeaderInfos){
                     t.setNum(count+"");
-                    if(t.getUserName().equals(CurrentUserHelper.getInstance().getUsername())) {
+                    if(t.getUserName().equals(currentUserHelper.getUsername())) {
                         myScoreByRank.setText(t.getNum());
                     }
                     count++;

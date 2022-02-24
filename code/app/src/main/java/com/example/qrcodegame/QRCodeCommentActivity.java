@@ -73,6 +73,8 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         comments.put(currentUserHelper.getUsername(), FieldValue.arrayUnion(currentUserHelper.getUsername()+": "+addComments.getText().toString()));
         db.collection("Comments").document(getIntent().getStringExtra("QRCodeCommentActivity"))
                 .set(comments, SetOptions.merge());
+        getComments.add(currentUserHelper.getUsername()+": "+addComments.getText().toString());
+        adapter.notifyDataSetChanged();
         addComments.setText("");
     }
 
@@ -84,7 +86,11 @@ public class QRCodeCommentActivity extends AppCompatActivity {
                 Map<String, Object> map = new HashMap<>();
                 DocumentSnapshot doc = task.getResult();
                 map = doc.getData();
-                if(map == null)return;
+                if(map == null)
+                {
+                    initRecyclerView();
+                    return;
+                }
                 for(Map.Entry<String, Object> e: map.entrySet()){
                     ArrayList<String> n = (ArrayList<String>) e.getValue();
                     getComments.addAll(n);
