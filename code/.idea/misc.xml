@@ -46,8 +46,9 @@
         <entry key="app/src/main/res/layout/activity_first_time.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_leader_board.xml" value="0.22560975609756098" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2712962962962963" />
-        <entry key="app/src/main/res/layout/activity_qrcode_comment.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/layout_comment_display.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_qrcode_comment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_single_qractivity.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/layout_comment_display.xml" value="0.375" />
         <entry key="app/src/main/res/layout/layout_for_leaderboard_recycleview.xml" value="0.335" />
       </map>
     </option>

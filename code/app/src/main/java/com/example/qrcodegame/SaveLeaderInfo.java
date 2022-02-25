@@ -1,8 +1,8 @@
 package com.example.qrcodegame;
 
 public class SaveLeaderInfo implements Comparable<SaveLeaderInfo> {
-    private String userName;
-    private String score;
+    private final String userName;
+    private final String score;
     private String num;
 
     public SaveLeaderInfo(String userName, String score) {
@@ -29,7 +29,7 @@ public class SaveLeaderInfo implements Comparable<SaveLeaderInfo> {
 
     @Override
     public int compareTo(SaveLeaderInfo saveLeaderInfo) {
-        return this.getScore().compareTo(saveLeaderInfo.getScore());
+        return Integer.parseInt(this.getScore())-Integer.parseInt(saveLeaderInfo.getScore());
     }
 
 }

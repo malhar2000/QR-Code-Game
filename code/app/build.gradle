@@ -31,9 +31,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+    buildToolsVersion '32.0.0'
 }
 
-dependencies {
+dependencies{
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -61,5 +62,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     // For images from url
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 
 }
