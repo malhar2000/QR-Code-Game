@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,12 +25,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class LeaderBoardActivity extends AppCompatActivity implements Comparable<String>{
+public class LeaderBoardActivity extends AppCompatActivity{
 
     LeaderBoardAdapter adapter;
     RecyclerView recyclerView;
@@ -37,6 +40,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
     TextView myScoreByRank;
     TextView myScoreByCode;
     Button backBtn;
+    private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
     EditText searchPlayer;
     ArrayList<String> forScannedCode = new ArrayList<>();
@@ -100,11 +104,14 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
                 saveLeaderInfos.clear();
 
                 int size;
+                assert value != null;
                 for(DocumentSnapshot snapshot: value.getDocuments()){
                     Map<String, Object> map = snapshot.getData();
                     assert map != null;
-                    size = map.get("collectedCodes").toString().split(",").length;
-
+                    ArrayList<String> arr = (ArrayList<String>) map.get("collectedCodes");
+                    assert arr != null;
+                    size = arr.size();
+                    arr.clear();
                     for(String key: map.keySet()){
                         if(key.equals("username")) {
                             forScannedCode.add(size+","+map.get(key).toString());
@@ -113,13 +120,20 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
                         }
                     }
                 }
-                int count = 1;
-                Collections.sort(saveLeaderInfos, Collections.reverseOrder());
-                Collections.sort(forScannedCode, Collections.reverseOrder());
 
+                Collections.sort(saveLeaderInfos, Collections.reverseOrder());
+                Collections.sort(forScannedCode, new Comparator<String>() {
+                    @Override
+                    public int compare(String s, String t1) {
+                        String[] arr = s.split(",");
+                        String[] arr1 = t1.split(",");
+                        return Integer.parseInt(arr1[0]) - Integer.parseInt(arr[0]);
+                    }
+                });
+                int count = 1;
                 //This is for Rank by Code
                 for(String s : forScannedCode) {
-                    if (s.split(",")[1].contains(CurrentUserHelper.getInstance().getUsername())){
+                    if (s.split(",")[1].equals(currentUserHelper.getUsername())){
                         myScoreByCode.setText(String.valueOf(count));
                         break;
                     }
@@ -130,7 +144,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
                 count = 1;
                 for(SaveLeaderInfo t : saveLeaderInfos){
                     t.setNum(count+"");
-                    if(t.getUserName().equals(CurrentUserHelper.getInstance().getUsername())) {
+                    if(t.getUserName().equals(currentUserHelper.getUsername())) {
                         myScoreByRank.setText(t.getNum());
                     }
                     count++;
@@ -140,9 +154,4 @@ public class LeaderBoardActivity extends AppCompatActivity implements Comparable
 
     }
 
-    @Override
-    public int compareTo(String s) {
-        String arr[] = s.split(",");
-        return Integer.parseInt(arr[0]);
-    }
 }

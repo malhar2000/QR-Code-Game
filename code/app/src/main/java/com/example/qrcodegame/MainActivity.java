@@ -46,6 +46,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -162,10 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         locationPhotoBtn.setOnClickListener(view -> {
 
-            if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
-                Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
-                return;
-            };
+
 
             if (locationImage == null) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -213,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void saveCode() {
-
         userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
         // Check if QR code already exists
         qrCollectionReference
@@ -235,8 +232,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
-            Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
-            return;
+            /*Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
+            return;*/
+            currentQRCode.setId(UUID.randomUUID().toString());
+            currentQRCode.setWorth((int) Math.floor(Math.random()*1000));
 
         };
 
@@ -333,6 +332,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             resultText.setVisibility(View.VISIBLE);
             String message = "This Hash is worth: " + currentQRCode.getWorth();
             resultText.setText(message);
+        }
+        if (result == 2) { // This means we restarting!
+            finish();
         }
     }
 
