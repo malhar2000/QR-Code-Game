@@ -14,6 +14,8 @@ public class CurrentUserHelper {
     }
 
     private String username;
+    private String email;
+    private String phone;
     private String uniqueID;
     private boolean isOwner;
     private String firebaseId;
@@ -21,6 +23,14 @@ public class CurrentUserHelper {
 
     private CurrentUserHelper() {
 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public String getFirebaseId() {
@@ -45,6 +55,14 @@ public class CurrentUserHelper {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getUniqueID() {

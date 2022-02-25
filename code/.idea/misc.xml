@@ -8,6 +8,7 @@
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_owner_home.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_owner_view_player.xml" value="0.34010416666666665" />
+        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_qrcode_comment.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_single_qractivity.xml" value="0.33" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_splash_screen.xml" value="0.32447916666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_view_profile.xml" value="0.33" />
@@ -20,6 +21,25 @@
         <entry key="..\:/Users/shahm/CodingProjects/QR-Code-Game/code/app/src/main/res/layout/activity_first_time.xml" value="0.4" />
         <entry key="..\:/Users/shahm/CodingProjects/QR-Code-Game/code/app/src/main/res/layout/activity_splash_screen.xml" value="0.4" />
         <entry key="..\:/Users/shahm/CodingProjects/QR-Code-Game/code/app/src/main/res/layout/activity_view_profile.xml" value="0.2" />
+        <entry key="..\:/Users/shahm/Moxil's Things/University Things/CMPUT 301/Final Project/QR-Code-Game/code/app/src/main/res/layout/activity_main.xml" value="0.7881873727087576" />
+        <entry key="..\:/Users/shahm/Moxil's Things/University Things/CMPUT 301/Final Project/QR-Code-Game/code/app/src/main/res/layout/activity_view_profile.xml" value="0.4" />
+        <entry key="..\:/Users/shahm/Moxil's Things/University Things/CMPUT 301/Final Project/QR-Code-Game/code/app/src/main/res/layout/qr_code_layout.xml" value="0.6" />
+        <entry key="..\:/Users/shahm/Moxil's Things/University Things/CMPUT 301/Final Project/QR-Code-Game/code/app/src/main/res/layout/qr_code_recycler_view_layout.xml" value="0.4" />
+        <entry key="app/src/main/res/drawable/edit_text_shape.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/shape.xml" value="0.2535" />
+        <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_find_qractivity.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_first_time.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_leader_board.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_owner_home.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_owner_qractivity.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_owner_view_player.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_qrcode_comment.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_single_qractivity.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/activity_view_profile.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/qr_code_layout.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.1" />

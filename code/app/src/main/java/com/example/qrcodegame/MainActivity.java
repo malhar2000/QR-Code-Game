@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void saveCode() {
-
         userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
         // Check if QR code already exists
         qrCollectionReference
@@ -333,6 +332,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             resultText.setVisibility(View.VISIBLE);
             String message = "This Hash is worth: " + currentQRCode.getWorth();
             resultText.setText(message);
+        }
+        if (result == 2) { // This means we restarting!
+            finish();
         }
     }
 
