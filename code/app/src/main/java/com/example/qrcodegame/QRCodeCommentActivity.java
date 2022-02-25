@@ -2,18 +2,17 @@ package com.example.qrcodegame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.qrcodegame.adapters.CommentRecycleViewAdapter;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +28,6 @@ import java.util.Map;
 
 public class QRCodeCommentActivity extends AppCompatActivity {
 
-    TextView setQRCodeId;
     TextView setQRCodeWorth;
     EditText addComments;
     Button backButton;
@@ -47,7 +45,6 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_comment);
 
-        setQRCodeId = findViewById(R.id.textViewQRCodeId);
         setQRCodeWorth = findViewById(R.id.textViewDisplayWorth);
         addComments = findViewById(R.id.add_comments);
         backButton = findViewById(R.id.back_button_comments);
@@ -55,16 +52,14 @@ public class QRCodeCommentActivity extends AppCompatActivity {
 
         getData();
 
-        setQRCodeId.setText("QR CODE: "+getIntent().getStringExtra("QRCodeCommentActivity"));
+        getSupportActionBar().setTitle("Comments for: "+getIntent().getStringExtra("QRCodeCommentActivity"));
         setQRCodeWorth.setText("Worth: "+getIntent().getStringExtra("Worth"));
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QRCodeCommentActivity.this, SingleQRActivity.class);
-                intent.putExtra("codeID", getIntent().getStringExtra("QRCodeCommentActivity"));
-                startActivity(intent);
+                finish();
             }
         });
     }

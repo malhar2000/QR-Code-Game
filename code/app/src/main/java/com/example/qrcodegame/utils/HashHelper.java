@@ -35,10 +35,10 @@ public class HashHelper {
 
         if (qrCodeContent.startsWith("Transfer-Profile=")) {
             AtomicInteger success = new AtomicInteger();
-//            //
+
             HashMap<String, Object> updates = new HashMap<>();
             updates.put("devices", FieldValue.arrayUnion(CurrentUserHelper.getInstance().getUniqueID()));
-//            // Transfer
+            // Transfer
             String usernameToTransferTo = qrCodeContent.split("=")[1];
 
             userCollection
