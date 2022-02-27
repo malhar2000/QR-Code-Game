@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -26,9 +27,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
     }
 
+    /**
+     * Fetches user info from DB. If the user is not found, it will redirect to the sign-up page. Else, it will take them to the correct home page depending on admin status.
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -37,6 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+
                     // Fetching the device's unique ID
                     android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                     System.out.println("id " + android_id);
@@ -66,7 +71,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                             // This means there are users found, lets get the first user
                             User currentUser = results.get(0).toObject(User.class);
-                            currentUserHelper.setUsername(currentUser.getUsername());
+                            currentUserHelper.setUsername(Objects.requireNonNull(currentUser).getUsername());
                             currentUserHelper.setOwner(currentUser.getIsOwner());
                             currentUserHelper.setFirebaseId(results.get(0).getId());
 

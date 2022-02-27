@@ -30,6 +30,7 @@ public class HashHelper {
             String usernameToView = qrCodeContent.split("=")[1];
             Intent intent = new Intent(context, ViewProfileActivity.class);
             intent.putExtra("username", usernameToView);
+            context.startActivity(intent);
             return 0;
         }
 
