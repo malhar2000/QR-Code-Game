@@ -2,7 +2,6 @@ package com.example.qrcodegame;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,12 +15,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -46,6 +42,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -76,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LocationManager locationManager;
     FusedLocationProviderClient fusedLocationProviderClient;
 
-
-
     final FirebaseStorage storage = FirebaseStorage.getInstance();
     DocumentReference userDocument;
     CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
@@ -85,15 +80,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ActivityResultLauncher<Intent> activityResultLauncher;
 
 
+    /**
+     * Binds views and attaches listeners
+     * @param savedInstanceState android default
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
-        // Permission
-
+        // Permissions
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -124,12 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-        exploreMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MapsActivity.class));
-            }
-        });
+        exploreMap.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MapsActivity.class)));
 
         // Updating listeners
         activityResultLauncher = registerForActivityResult(
@@ -150,20 +143,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Listeners
 
-        profileViewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        profileViewBtn.setOnClickListener(v -> {
                 Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
                 intent.putExtra("username", currentUserHelper.getUsername());
                 startActivity(intent);
-            }
-        });
+            });
 
         scanQRButton.setOnClickListener(this);
 
         locationPhotoBtn.setOnClickListener(view -> {
 
-
+            // TODO
+            // ADD CHECK HERE
 
             if (locationImage == null) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -177,30 +168,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-        saveQRtoCloudBtn.setOnClickListener(v -> {
-            saveCode();
-        });
+        saveQRtoCloudBtn.setOnClickListener(v -> saveCode());
 
-        leaderboardBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class));
-            }
-        });
+        leaderboardBtn.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class)));
 
     }
 
-//    public void storeLocation(Location location) {
-//        String locate = location.getLatitude() + "," + location.getLongitude()+","+currentQRCode.getId();
-//        Log.i("Location", locate);
-//        FirebaseFirestore.getInstance().collection("Locations").document("places")
-//                .update("location", FieldValue.arrayUnion(locate));
-//    }
 
+    /**
+     * Updates the UI, as well starts location services
+     */
     @Override
     protected void onStart() {
         super.onStart();
-
 
         analyzeText.setVisibility(View.INVISIBLE);
         resultText.setVisibility(View.INVISIBLE);
@@ -208,8 +188,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         currentQRCode = new QRCode();
         locationHelper = new LocationHelper(this);
         locationHelper.startLocationUpdates();
+
+        resetUi();
     }
 
+    /**
+     * Initial step in saving code. It checks if the hash already exists.
+     * If it does, it will update the info, else, creates the code.
+     */
     private void saveCode() {
         userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
         // Check if QR code already exists
@@ -225,6 +211,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
     }
 
+    /**
+     * Create a new Hash object in db
+     * Also stores the image if set.
+     */
     private void createNewCode() {
 
         if (locationToggle.isChecked()) {
@@ -234,9 +224,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (currentQRCode.getId() == null || currentQRCode.getId().isEmpty() || currentQRCode.getWorth() == 0) {
             /*Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
             return;*/
+
+            // TODO
+            // REMOVE
             currentQRCode.setId(UUID.randomUUID().toString());
             currentQRCode.setWorth((int) Math.floor(Math.random()*1000));
-
         };
 
         if (locationImage != null) {
@@ -259,9 +251,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             saveCodeFireStore();
         }
-
     }
 
+    /**
+     * Updates the existing hash in DB
+     */
     private void updateExistingCode() {
         HashMap<String, Object> updates = new HashMap<>();
         updates.put("collectedCodes", FieldValue.arrayUnion(currentQRCode.getId()));
@@ -274,6 +268,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resetUi();
     }
 
+    /**
+     * Resets the UI to match a new state.
+     */
     private void resetUi() {
         Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
         currentQRCode = new QRCode();
@@ -283,6 +280,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationToggle.setChecked(false);
     }
 
+    /**
+     * Saves the code to the DB, then updates the player who saved it.
+     */
     private void saveCodeFireStore() {
         currentQRCode.getPlayers().add(currentUserHelper.getUsername());
         qrCollectionReference
@@ -298,6 +298,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    /**
+     * Event called implicitly! So don't call it yourself.
+     * Opens QR scanner
+     * @param view default view which was click.
+     */
     @Override
     public void onClick(View view) {
         IntentIntegrator integrator = new IntentIntegrator(this);
@@ -308,6 +313,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         integrator.initiateScan();
     }
 
+    /**
+     * Event called implicitly! So don't call it yourself.
+     * Handles QR results!
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -323,6 +335,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Handles the hash results from scanning!
+     * It will update the QR code with scores. Display the worth on UI
+     * It will also handle special QR code commands like view-profiles, and switch-profiles
+     * @param qrCodeContent String which was found in the QR code
+     */
     public void handleHash(String qrCodeContent) {
 
         int result = HashHelper.handleHash(this, currentQRCode, qrCodeContent);

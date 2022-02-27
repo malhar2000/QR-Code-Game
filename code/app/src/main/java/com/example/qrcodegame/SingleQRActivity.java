@@ -40,6 +40,11 @@ import com.squareup.picasso.Picasso;
      String codeID;
      String worth;
 
+     /**
+      * Binds and adds listeners.
+      * Also initalizes the map.
+      * @param savedInstanceState
+      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,9 @@ import com.squareup.picasso.Picasso;
         });
     }
 
+     /**
+      * Sets the app bar title.
+      */
     @Override
     protected void onStart() {
         super.onStart();
@@ -79,6 +87,10 @@ import com.squareup.picasso.Picasso;
     }
 
 
+     /**
+      * Once the map is ready, it will get all the QR code locations and plot them.
+      * @param googleMap
+      */
      @Override
      public void onMapReady(@NonNull GoogleMap googleMap) {
 

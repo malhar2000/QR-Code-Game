@@ -2,10 +2,19 @@ package com.example.qrcodegame.utils;
 
 import java.util.ArrayList;
 
+/**
+ * CurrentUserHelper Class:
+ *
+ * This handles all the user info across the app
+ */
 public class CurrentUserHelper {
 
     private static CurrentUserHelper single_instance = null;
 
+    /**
+     * Singleton constructor
+     * @return returns the singular object
+     */
     public static CurrentUserHelper getInstance() {
         if (single_instance == null) {
             single_instance = new CurrentUserHelper();
