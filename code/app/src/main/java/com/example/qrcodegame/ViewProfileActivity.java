@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.qrcodegame.adapters.qrCodeRecyclerViewAdapter;
@@ -46,7 +47,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         super.onStart();
         qrCodeNames = new ArrayList<String>();
         qrCodeScores = new ArrayList<String>();
-        Button btnEditProfile = findViewById(R.id.buttonEditProfile);
+        ImageButton btnEditProfile = findViewById(R.id.buttonEditProfile);
         btnOpenQRCode = findViewById(R.id.buttonOpenShareQRCode);
         txtViewTotalCodes = findViewById(R.id.textViewTotalCodes);
         txtViewTotalScore = findViewById(R.id.textViewTotalScore);

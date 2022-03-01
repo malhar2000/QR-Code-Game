@@ -6,7 +6,7 @@
      android:layout_height="match_parent"
      android:padding="20dp"
      tools:context=".MainActivity"
-    android:background="#F0FFC2">
+    android:background="#FFE4C4">
 
    <TextView
        android:id="@+id/welcomeText"
@@ -20,13 +20,14 @@
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/viewProfileBtn"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_my_calendar"
-        android:text="Profile"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/profile"
         app:layout_constraintBaseline_toBaselineOf="@+id/welcomeText"
         app:layout_constraintEnd_toEndOf="parent" />
 
