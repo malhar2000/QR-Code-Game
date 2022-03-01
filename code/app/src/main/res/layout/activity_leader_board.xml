@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LeaderBoardActivity"
     android:padding="15dp"
-    android:background="#FFF1BD">
+    android:background="#C2FFF9">
 
     <Button
         android:id="@+id/backButtonLeaderBoard"

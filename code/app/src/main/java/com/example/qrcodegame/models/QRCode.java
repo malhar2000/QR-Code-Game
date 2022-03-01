@@ -9,6 +9,15 @@ public class QRCode {
     private ArrayList<Double> coordinates = new ArrayList<>();
     private ArrayList<String> players = new ArrayList<>();
     private String imageUrl;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public QRCode() {
     }
@@ -60,6 +69,7 @@ public class QRCode {
                 ", worth=" + worth +
                 ", coordinates=" + coordinates +
                 ", players=" + players +
+                ", city="+ address+
                 ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }

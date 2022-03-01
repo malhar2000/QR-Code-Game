@@ -82,8 +82,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .whereNotEqualTo("coordinates", new ArrayList<>())
                 .addSnapshotListener((value, error) -> {
                     mMap.clear();
+                    assert value != null;
                     for (DocumentSnapshot ds : value.getDocuments()){
                         QRCode tempCode = ds.toObject(QRCode.class);
+                        assert tempCode != null;
                         LatLng latLng = new LatLng(tempCode.getCoordinates().get(0), tempCode.getCoordinates().get(1));
                         mMap.addMarker(new MarkerOptions().position(latLng).title(tempCode.getId()));
                     }
@@ -95,6 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(MapsActivity.this, SingleQRActivity.class);
         intent.putExtra("codeID", marker.getTitle());
         startActivity(intent);
+        finish();
         return false;
     }
 
