@@ -37,6 +37,7 @@ public class FireStoreController {
 
     // Firestore Variables
     private final DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
+    private final CollectionReference userCollectionReference = FirebaseFirestore.getInstance().collection("Users");
     private final CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
     final FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -44,22 +45,8 @@ public class FireStoreController {
         return qrCollectionReference.whereNotEqualTo("coordinates", new ArrayList<>()).get();
     };
 
-
-
-//    public
-//
-//        qrCollectionReference
-//        .whereNotEqualTo("coordinates", new ArrayList<>())
-//                .addSnapshotListener((value, error) -> {
-//                    mMap.clear();
-//                    assert value != null;
-//                    for (DocumentSnapshot ds : value.getDocuments()){
-//                        QRCode tempCode = ds.toObject(QRCode.class);
-//                        assert tempCode != null;
-//                        LatLng latLng = new LatLng(tempCode.getCoordinates().get(0), tempCode.getCoordinates().get(1));
-//                        mMap.addMarker(new MarkerOptions().position(latLng).title(tempCode.getId()));
-//                    }
-//                });
-//    }
+    public Task<QuerySnapshot> getAllPlayers() {
+        return userCollectionReference.whereNotEqualTo("isOwner", true).get();
+    }
 
 }

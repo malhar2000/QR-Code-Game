@@ -14,8 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.qrcodegame.adapters.LeaderBoardAdapter;
+import com.example.qrcodegame.controllers.FireStoreController;
+import com.example.qrcodegame.controllers.LeaderBoardController;
+import com.example.qrcodegame.models.User;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,25 +38,28 @@ import java.util.Map;
 
 public class LeaderBoardActivity extends AppCompatActivity{
 
+    // View elements
     LeaderBoardAdapter adapter;
     RecyclerView recyclerView;
-
     TextView myScoreByRank;
     TextView myScoreByCode;
     Button backBtn;
-    private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
-
     EditText searchPlayer;
-    ArrayList<String> forScannedCode = new ArrayList<>();
 
-    private final List<SaveLeaderInfo> saveLeaderInfos = new ArrayList<>();
+    // Other things we need
+    private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
+    private final FireStoreController fireStoreController = FireStoreController.getInstance();
+    private final LeaderBoardController leaderBoardController = new LeaderBoardController();
+
+    // Storing Data for activity
+    private ArrayList<User> allPlayers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
 
-        getContentFromFireBase();
+        setup();
 
         myScoreByCode = findViewById(R.id.editTextRankByScanned);
         myScoreByRank = findViewById(R.id.editTextRankByScore);
@@ -79,10 +86,10 @@ public class LeaderBoardActivity extends AppCompatActivity{
     }
 
     private void filter(String text){
-        ArrayList<SaveLeaderInfo> fList = new ArrayList<>();
-        for(SaveLeaderInfo t : saveLeaderInfos){
-            if(t.getUserName().toLowerCase(Locale.ROOT).contains(text.toLowerCase(Locale.ROOT))){
-                fList.add(t);
+        ArrayList<User> fList = new ArrayList<>();
+        for(User u : allPlayers){
+            if(u.getUsername().toLowerCase(Locale.ROOT).contains(text.toLowerCase(Locale.ROOT))){
+                fList.add(u);
             }
         }
         adapter.filterList(fList);
@@ -90,67 +97,34 @@ public class LeaderBoardActivity extends AppCompatActivity{
 
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.recycle_view);
-        adapter = new LeaderBoardAdapter(saveLeaderInfos, this);
+        adapter = new LeaderBoardAdapter(allPlayers, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void getContentFromFireBase(){
-        FirebaseFirestore.getInstance()
-            .collection("Users")
-            .addSnapshotListener((value, error) -> {
+    public void setup(){
 
-                forScannedCode.clear();
-                saveLeaderInfos.clear();
+        allPlayers.clear();
+        fireStoreController.getAllPlayers()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    // Adding users to list
+                    queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> {
+                        allPlayers.add(documentSnapshot.toObject(User.class));
+                    });
 
-                int size;
-                assert value != null;
-                for(DocumentSnapshot snapshot: value.getDocuments()){
-                    Map<String, Object> map = snapshot.getData();
-                    assert map != null;
-                    ArrayList<String> arr = (ArrayList<String>) map.get("collectedCodes");
-                    assert arr != null;
-                    size = arr.size();
-                    arr.clear();
-                    for(String key: map.keySet()){
-                        if(key.equals("username")) {
-                            forScannedCode.add(size+","+map.get(key).toString());
-                            saveLeaderInfos.add(new SaveLeaderInfo(map.get(key).toString(),
-                                    map.get("totalScore").toString()));
-                        }
-                    }
-                }
+                    // Set Ranks
+                    int rankByNumOfCodes = leaderBoardController.getScoreByNumberOfQrScanned(allPlayers);
+                    int rankByScore = leaderBoardController.getScoreByRank(allPlayers);
+                    myScoreByCode.setText( rankByNumOfCodes != -1 ? "" + rankByNumOfCodes : "Not-Found!");
+                    myScoreByRank.setText( rankByScore != -1 ? "" + rankByScore : "Not-Found!");
 
-                Collections.sort(saveLeaderInfos, Collections.reverseOrder());
-                Collections.sort(forScannedCode, new Comparator<String>() {
-                    @Override
-                    public int compare(String s, String t1) {
-                        String[] arr = s.split(",");
-                        String[] arr1 = t1.split(",");
-                        return Integer.parseInt(arr1[0]) - Integer.parseInt(arr[0]);
-                    }
+                    initRecyclerView();
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                 });
-                int count = 1;
-                //This is for Rank by Code
-                for(String s : forScannedCode) {
-                    if (s.split(",")[1].equals(currentUserHelper.getUsername())){
-                        myScoreByCode.setText(String.valueOf(count));
-                        break;
-                    }
-                    count++;
-                }
 
-                //This is for the Rank by Score
-                count = 1;
-                for(SaveLeaderInfo t : saveLeaderInfos){
-                    t.setNum(count+"");
-                    if(t.getUserName().equals(currentUserHelper.getUsername())) {
-                        myScoreByRank.setText(t.getNum());
-                    }
-                    count++;
-                }
-                initRecyclerView();
-            });
 
     }
 

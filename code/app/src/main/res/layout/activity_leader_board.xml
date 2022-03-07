@@ -42,11 +42,11 @@
         android:id="@+id/editTextRankByScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="XXth"
-        android:textSize="19dp"
-        android:paddingTop="15dp"
         android:layout_below="@+id/textView4"
         android:layout_toRightOf="@+id/textView3"
+        android:paddingTop="15dp"
+        android:text="XXth"
+        android:textSize="19dp"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
@@ -63,10 +63,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
-        android:textSize="19dp"
-        android:text="XXth"
-        android:paddingTop="15dp"
         android:layout_toRightOf="@+id/textView2"
+        android:paddingTop="15dp"
+        android:text="XXth"
+        android:textSize="19dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent" />
 
