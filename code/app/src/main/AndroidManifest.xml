@@ -46,9 +46,6 @@
             android:name=".SingleQRActivity"
             android:exported="false" />
         <activity
-            android:name=".FindQRActivity"
-            android:exported="false" />
-        <activity
             android:name=".LeaderBoardActivity"
             android:exported="false" />
         <activity

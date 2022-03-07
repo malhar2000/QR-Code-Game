@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.qrcodegame.adapters.qrCodeRecyclerViewAdapter;
+import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.example.qrcodegame.utils.QRCodeDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,7 +30,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
     private ArrayList<String> qrCodeScores;
     private TextView txtViewTotalScore;
     private TextView txtViewTotalCodes;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FireStoreController fireStoreController = FireStoreController.getInstance();
     private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
     private int totalScore;
     private Button btnOpenQRCode;
@@ -99,8 +100,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
     }
 
     protected void fetchQRCodesOfUser(String username) {
-        db.collection("Codes").whereArrayContains("players", username)
-            .get()
+       fireStoreController.getAllCurrentUserCodes()
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
