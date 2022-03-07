@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewProfileActivity">
+    tools:context=".ViewProfileActivity"
+    android:background="#E8A87C">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/qrCodeRecyclerView"
@@ -13,26 +14,29 @@
         android:layout_height="250dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:backgroundTint="#39CCCC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview6"
         app:layout_constraintVertical_bias="0.511"
-        tools:listitem="@layout/qr_code_recycler_view_layout">
+        tools:listitem="@layout/qr_code_recycler_view_layout"
+        android:background="@color/white">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonEditProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="56dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:text="Edit Profile"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#41b3a3"
+        android:src="@drawable/editprofile"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="30dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewTotalScore"
@@ -41,7 +45,9 @@
         android:layout_alignParentStart="true"
         android:layout_centerHorizontal="true"
         android:text="TextView"
+        android:backgroundTint="#7FDBFF"
         android:textSize="20sp"
+        android:background="@color/white"
         android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="@+id/textViewTotalCodes"
         app:layout_constraintStart_toStartOf="@+id/textViewTotalCodes"
@@ -55,7 +61,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="TextView"
+        android:backgroundTint="#7FDBFF"
         android:textSize="20sp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/buttonOpenShareQRCode"
         app:layout_constraintStart_toStartOf="@+id/buttonOpenShareQRCode"
         app:layout_constraintTop_toBottomOf="@+id/buttonOpenShareQRCode" />
@@ -66,6 +74,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Share Profile QR Code"
+        android:backgroundTint="#7FDBFF"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonEditProfile"
@@ -79,7 +89,9 @@
         android:layout_marginTop="30dp"
         android:text="Collected Hashes:"
         android:textSize="16sp"
+        android:backgroundTint="#7FDBFF"
         android:textStyle="bold"
+        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTotalScore" />
 
@@ -87,7 +99,9 @@
         android:id="@+id/profileTransferBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#7FDBFF"
         android:text="LOAD PROFILE INTO NEW DEVICE"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/buttonOpenShareQRCode"
         app:layout_constraintEnd_toEndOf="@+id/buttonOpenShareQRCode"
         app:layout_constraintHorizontal_bias="0.492"

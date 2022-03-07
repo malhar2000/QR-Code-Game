@@ -26,8 +26,7 @@ import java.util.Random;
 public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.ViewHolder> {
 
     private List<SaveLeaderInfo> saveLeaderInfos = new ArrayList<>();
-    private Context mcontext;
-    private int size;
+    private final Context mcontext;
     String[] mColors = {"#C2DFFF", "#C6DEFF", "#BDEDFF", "#B0E0E6", "#AFDCEC", "#ADD8E6", "#CFECEC",
             "#AAF0D1", "#99C68E", "#DBF9DB", "#FAEBD7", "#FFEFD5", "#FFE4C4", "#FDD7E4",
             "#FFE6E8", "#DCD0FF", "#FCDFFF", "#F8F6F0", "#FAF0DD", "#FBFBF9", "#FFFAFA",
@@ -39,7 +38,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
     public LeaderBoardAdapter(List<SaveLeaderInfo> saveLeaderInfos, Context context) {
         this.saveLeaderInfos = saveLeaderInfos;
         this.mcontext = context;
-        size = saveLeaderInfos.size();
+        int size = saveLeaderInfos.size();
     }
 
     @NonNull
@@ -56,6 +55,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         holder.textViewUserScore.setText(saveLeaderInfos.get(position).getScore());
         holder.textRank.setText(saveLeaderInfos.get(position).getNum());
 
+        //For multiple colors inside the recycle View
         holder.parentLayout.setBackgroundColor(Color.parseColor(mColors[random.nextInt(40)]));
         holder.parentLayout.setOnClickListener(view -> {
             Intent intent = new Intent(mcontext, ViewProfileActivity.class);
@@ -74,7 +74,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewUserScore;
         TextView textViewUserName;
