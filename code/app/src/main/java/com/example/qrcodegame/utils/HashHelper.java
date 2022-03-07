@@ -18,6 +18,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class HashHelper {
 
+    /**
+     * This method handles the hash content and takes the correct next steps if needed
+     * @param context Context
+     * @param currentQRCode The Current QR code the main-activity is dealing with.
+     * @param qrCodeContent The String stored within the QR code
+     * @return status code
+     */
     public static int handleHash(Context context, QRCode currentQRCode, String qrCodeContent) {
     CollectionReference userCollection = FirebaseFirestore.getInstance().collection("Users");
 
@@ -30,6 +37,7 @@ public class HashHelper {
             String usernameToView = qrCodeContent.split("=")[1];
             Intent intent = new Intent(context, ViewProfileActivity.class);
             intent.putExtra("username", usernameToView);
+            context.startActivity(intent);
             return 0;
         }
 
@@ -74,6 +82,12 @@ public class HashHelper {
         return 1;
     }
 
+    /**
+     * Calculates the worth of the code.
+     * @param context Context
+     * @param currentQRCode Current QR code
+     * @param qrCodeContent String content of the hash scanned
+     */
     public static void calculateWorth(Context context, QRCode currentQRCode, String qrCodeContent) {
         try {
 
