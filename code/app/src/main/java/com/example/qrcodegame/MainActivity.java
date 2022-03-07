@@ -9,18 +9,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
-
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -32,28 +25,14 @@ import android.widget.Toast;
 
 import com.example.qrcodegame.controllers.QRCodeController;
 import com.example.qrcodegame.interfaces.CodeSavedListener;
-import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
-import com.example.qrcodegame.utils.HashHelper;
-import com.example.qrcodegame.utils.LocationHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
-
 
 public class MainActivity extends AppCompatActivity implements CodeSavedListener {
 
@@ -192,30 +171,6 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         qrCodeController = new QRCodeController(this, this);
 
-//        currentQRCode.setCoordinates(currentUserHelper.getCurrentLocation());
-//             String address = "";
-
-//             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-//             try {
-//                 List<Address> listAddress = geocoder.getFromLocation(currentUserHelper.getCurrentLocation().get(0), currentUserHelper.getCurrentLocation().get(1), 1);
-//                 if(listAddress != null && listAddress.size() > 0){
-//                     if(listAddress.get(0).getLocality() != null){
-//                         address += listAddress.get(0).getLocality()+", ";
-//                     }
-//                     if(listAddress.get(0).getAdminArea() != null){
-//                         address += listAddress.get(0).getAdminArea()+", ";
-//                     }
-//                     if(listAddress.get(0).getCountryName() != null){
-//                         address += listAddress.get(0).getCountryName()+", ";
-//                     }
-//                 }
-//             }catch (Exception e){
-//                 e.printStackTrace();
-//             }
-//             currentQRCode.setAddress(address);
-      
-      
         resetUI();
     }
 
@@ -223,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
      * Resets the UI to match a new state.
      */
     public void resetUI() {
+        locationPhotoBtn.setText("TAKE PHOTO");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         locationToggle.setChecked(false);
     }

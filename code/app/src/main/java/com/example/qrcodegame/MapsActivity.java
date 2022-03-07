@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.databinding.ActivityMapsBinding;
 import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
@@ -38,9 +39,10 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationHelper.LocationHelperListener {
 
-    CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+    private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
+    private FireStoreController fireStoreController = FireStoreController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +78,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void restoreMarkers() {
-
-        FirebaseFirestore.getInstance()
-                .collection("Codes")
-                .whereNotEqualTo("coordinates", new ArrayList<>())
-                .addSnapshotListener((value, error) -> {
-                    mMap.clear();
-                    assert value != null;
-                    for (DocumentSnapshot ds : value.getDocuments()){
-                        QRCode tempCode = ds.toObject(QRCode.class);
-                        assert tempCode != null;
-                        LatLng latLng = new LatLng(tempCode.getCoordinates().get(0), tempCode.getCoordinates().get(1));
-                        mMap.addMarker(new MarkerOptions().position(latLng).title(tempCode.getId()));
-                    }
-                });
+        fireStoreController.getAllCodesWithLocation().addOnSuccessListener(queryDocumentSnapshots -> {
+            mMap.clear();
+            for (DocumentSnapshot ds : queryDocumentSnapshots.getDocuments()) {
+                QRCode tempCode = ds.toObject(QRCode.class);
+                if (tempCode != null) {
+                    LatLng latLng = new LatLng(tempCode.getCoordinates().get(0), tempCode.getCoordinates().get(1));
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(tempCode.getId()));
+                }
+            }
+        });
     }
 
     @Override

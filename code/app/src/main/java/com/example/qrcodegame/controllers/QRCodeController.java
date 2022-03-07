@@ -2,6 +2,8 @@ package com.example.qrcodegame.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.widget.Toast;
 
 import com.example.qrcodegame.SplashScreenActivity;
@@ -21,6 +23,8 @@ import com.google.firebase.storage.StorageReference;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -219,6 +223,25 @@ public class QRCodeController {
         // Add location if checked and location is ready
         if (locationIsChecked && !Objects.isNull(currentUserHelper.getCurrentLocation()) && currentUserHelper.getCurrentLocation().size() > 0 ) {
             currentQrCode.setCoordinates(currentUserHelper.getCurrentLocation());
+            String address = "";
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            try {
+                 List<Address> listAddress = geocoder.getFromLocation(currentUserHelper.getCurrentLocation().get(0), currentUserHelper.getCurrentLocation().get(1), 1);
+                 if(listAddress != null && listAddress.size() > 0){
+                     if(listAddress.get(0).getLocality() != null){
+                         address += listAddress.get(0).getLocality()+", ";
+                     }
+                     if(listAddress.get(0).getAdminArea() != null){
+                         address += listAddress.get(0).getAdminArea()+", ";
+                     }
+                     if(listAddress.get(0).getCountryName() != null){
+                         address += listAddress.get(0).getCountryName()+", ";
+                     }
+                 }
+                 currentQrCode.setAddress(address);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         };
 
         if (currentQrCode.getId() == null || currentQrCode.getId().isEmpty() || currentQrCode.getWorth() == 0) {
@@ -226,7 +249,7 @@ public class QRCodeController {
             return;*/
             // TODO
             // REMOVE
-            currentQrCode.setId( "TEST"  + UUID.randomUUID().toString());
+            currentQrCode.setId(UUID.randomUUID().toString());
             currentQrCode.setWorth((int) Math.floor(Math.random()*1000));
         };
 
