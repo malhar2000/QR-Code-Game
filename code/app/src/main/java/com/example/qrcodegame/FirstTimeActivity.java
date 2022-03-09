@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.models.User;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,11 +25,11 @@ public class FirstTimeActivity extends AppCompatActivity {
     private EditText edtTxtPhoneNumber;
     private EditText edtTxtAdminPin;
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FireStoreController fireStoreController = FireStoreController.getInstance();
+    private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
     ArrayList<String> allUsernames = new ArrayList<>();
-    CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
-    private Integer ADMIN_PIN = 9999;
+    private final Integer ADMIN_PIN = 9999;
 
     /**
      * Binds elements, as well as fetches al usernames from db
@@ -60,12 +61,10 @@ public class FirstTimeActivity extends AppCompatActivity {
      * @param newUserToAdd user object
      */
     private void addUser(User newUserToAdd) {
-        db.collection("Users")
-                .add(newUserToAdd)
+        fireStoreController.addUser(newUserToAdd)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d("added user success", "DocumentSnapshot written with ID: " + documentReference.getId());
 
-                    currentUserHelper.setFirebaseId(documentReference.getId());
+                    currentUserHelper.setFirebaseId(newUserToAdd.getUsername());
                     currentUserHelper.setPhone(newUserToAdd.getPhone());
                     currentUserHelper.setEmail(newUserToAdd.getEmail());
                     currentUserHelper.setUsername(newUserToAdd.getUsername());
@@ -92,8 +91,7 @@ public class FirstTimeActivity extends AppCompatActivity {
      */
     protected void fetchAllUsernames() {
         allUsernames.clear();
-        db.collection("Users")
-                .get()
+        fireStoreController.getAllUsers()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot existingUser : queryDocumentSnapshots) {
                         allUsernames.add(Objects.requireNonNull(existingUser.get("username")).toString());
@@ -109,8 +107,13 @@ public class FirstTimeActivity extends AppCompatActivity {
         String enteredUsername = edtTxtUserName.getText().toString();
         String enteredEmail = edtTxtEmail.getText().toString();
         String enteredPhoneNumber = edtTxtPhoneNumber.getText().toString();
-        Integer enteredAdminPin = Integer.parseInt(edtTxtAdminPin.getText().toString());
 
+        Integer enteredAdminPin = 0000;
+        try {
+            enteredAdminPin = Integer.parseInt(edtTxtAdminPin.getText().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         boolean uniqueUsername = !allUsernames.contains(enteredUsername);
 
@@ -131,7 +134,6 @@ public class FirstTimeActivity extends AppCompatActivity {
             if (!enteredPhoneNumber.equals("")) {
                 newUser.setPhone(enteredPhoneNumber);
             }
-
             addUser(newUser);
         }
     }

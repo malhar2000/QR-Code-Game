@@ -1,11 +1,12 @@
 package com.example.qrcodegame.models;
 
-public class Comment {
 
-    private String username;
-    private String message;
+// Nested Inner Class
+public class SingleComment {
+    public String username;
+    public String message;
 
-    public Comment() {
+    public SingleComment() {
     }
 
     public String getUsername() {

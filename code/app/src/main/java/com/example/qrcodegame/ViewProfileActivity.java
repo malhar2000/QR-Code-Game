@@ -100,7 +100,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
     }
 
     protected void fetchQRCodesOfUser(String username) {
-       fireStoreController.getAllCurrentUserCodes()
+       fireStoreController.getSpecifiedUsersCodes(username)
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.qrcodegame.controllers.QRCodeController;
 import com.example.qrcodegame.interfaces.CodeSavedListener;
+import com.example.qrcodegame.interfaces.OnProfileTransferedListener;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -34,7 +35,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements CodeSavedListener {
+public class MainActivity extends AppCompatActivity implements CodeSavedListener, OnProfileTransferedListener {
 
     // View Elements
     TextView welcomeText;
@@ -151,9 +152,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         });
 
 
-        saveQRtoCloudBtn.setOnClickListener(v -> qrCodeController.saveCode(
-                locationToggle.isChecked()
-        ));
+        saveQRtoCloudBtn.setOnClickListener(v -> {
+            qrCodeController.saveCode(locationToggle.isChecked());
+            Toast.makeText(this, "Starting to save! Wait!", Toast.LENGTH_SHORT).show();
+        });
 
         leaderboardBtn.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class)));
 
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         analyzeText.setVisibility(View.INVISIBLE);
         resultText.setVisibility(View.INVISIBLE);
 
-        qrCodeController = new QRCodeController(this, this);
+        qrCodeController = new QRCodeController(this, this, this);
 
         resetUI();
     }
@@ -213,10 +215,12 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
             String message = "This Hash is worth: " + qrCodeController.getCurrentQrCode().getWorth();
             resultText.setText(message);
         }
-        if (result == 2) {
-            // This means we restarting!
-            finish();
-        }
     }
 
+    @Override
+    public void OnProfileTransfered() {
+            Intent intent = new Intent(this, SplashScreenActivity.class);
+            startActivity(intent);
+            finish();
+    }
 }
