@@ -61,8 +61,8 @@ public class FireStoreController {
         return userCollectionReference.get();
     }
 
-    public Task<QuerySnapshot> getAllCurrentUserCodes() {
-        return qrCollectionReference.whereArrayContains("players", currentUserHelper.getUsername()).get();
+    public Task<QuerySnapshot> getSpecifiedUsersCodes(String username) {
+        return qrCollectionReference.whereArrayContains("players", username).get();
     }
 
     public Task<DocumentSnapshot> getSingleQRCode(String qrCodeId) {

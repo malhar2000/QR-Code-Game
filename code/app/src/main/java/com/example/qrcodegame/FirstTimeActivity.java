@@ -107,8 +107,13 @@ public class FirstTimeActivity extends AppCompatActivity {
         String enteredUsername = edtTxtUserName.getText().toString();
         String enteredEmail = edtTxtEmail.getText().toString();
         String enteredPhoneNumber = edtTxtPhoneNumber.getText().toString();
-        Integer enteredAdminPin = Integer.parseInt(edtTxtAdminPin.getText().toString());
 
+        Integer enteredAdminPin = 0000;
+        try {
+            enteredAdminPin = Integer.parseInt(edtTxtAdminPin.getText().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         boolean uniqueUsername = !allUsernames.contains(enteredUsername);
 
