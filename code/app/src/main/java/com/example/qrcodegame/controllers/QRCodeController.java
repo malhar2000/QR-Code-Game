@@ -9,9 +9,11 @@ import android.widget.Toast;
 import com.example.qrcodegame.SplashScreenActivity;
 import com.example.qrcodegame.ViewProfileActivity;
 import com.example.qrcodegame.interfaces.CodeSavedListener;
+import com.example.qrcodegame.interfaces.OnProfileTransferedListener;
 import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.example.qrcodegame.utils.LocationHelper;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,6 +39,7 @@ public class QRCodeController {
     private Context context;
     public byte[] locationImage;
     private CodeSavedListener codeSavedListener;
+    private OnProfileTransferedListener onProfileTransferedListener;
 
     // Helper Var
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
@@ -45,20 +48,21 @@ public class QRCodeController {
     private final DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
     private final CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
     final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FireStoreController fireStoreController = FireStoreController.getInstance();
 
     private void initNewCode(){
         currentQrCode = new QRCode();
         locationImage = null;
     }
 
-    public QRCodeController(Context context, CodeSavedListener codeSavedListener) {
+    public QRCodeController(Context context, CodeSavedListener codeSavedListener, OnProfileTransferedListener onProfileTransferedListener) {
         this.context = context;
         currentQrCode = new QRCode();
         locationHelper = new LocationHelper(context);
         locationHelper.startLocationUpdates();
         this.codeSavedListener = codeSavedListener;
+        this.onProfileTransferedListener = onProfileTransferedListener;
     }
-
 
     /**
      * This method handles the hash content and takes the correct next steps if needed
@@ -82,41 +86,15 @@ public class QRCodeController {
         }
 
         if (qrCodeContent.startsWith("Transfer-Profile=")) {
-            AtomicInteger success = new AtomicInteger();
-
-            HashMap<String, Object> updates = new HashMap<>();
-            updates.put("devices", FieldValue.arrayUnion(CurrentUserHelper.getInstance().getUniqueID()));
-            // Transfer
             String usernameToTransferTo = qrCodeContent.split("=")[1];
-
-            userCollection
-                    .whereEqualTo("username",usernameToTransferTo)
-                    .limit(1)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            return;
-                        }
-                        String idToUpdate = queryDocumentSnapshots.getDocuments().get(0).getId();
-
-                        userCollection
-                                .document(idToUpdate)
-                                .update(updates)
-                                .addOnSuccessListener(v ->
-                                        userCollection
-                                                .document(CurrentUserHelper.getInstance().getFirebaseId())
-                                                .update("devices", FieldValue.arrayRemove(CurrentUserHelper.getInstance().getUniqueID()))
-                                                .addOnSuccessListener(v1 -> {
-                                                    Intent intent = new Intent(context, SplashScreenActivity.class);
-                                                    context.startActivity(intent);
-                                                    success.set(2);
-                                                }))
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show();
-                                });
-                    });
-            return success.get();
+            fireStoreController.switchProfile(usernameToTransferTo)
+                    .addOnSuccessListener(unused -> {
+                        onProfileTransferedListener.OnProfileTransfered();
+                    })
+                    .addOnFailureListener(Throwable::printStackTrace);
+            return 2;
         }
+
         calculateWorth(qrCodeContent);
         return 1;
     }
@@ -205,7 +183,7 @@ public class QRCodeController {
      */
     public void saveCode(Boolean locationIsChecked) {
         // Check if QR code already exists
-        qrCollectionReference.whereEqualTo("id",currentQrCode.getId()).get()
+        fireStoreController.checkQRExists(currentQrCode.getId())
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots.getDocuments().size() > 0) {
                         updateExistingCode();
@@ -215,6 +193,7 @@ public class QRCodeController {
                 });
     }
 
+
     /**
      * Create a new Hash object in db
      * Also stores the image if set.
@@ -222,26 +201,7 @@ public class QRCodeController {
     private void createNewCode(Boolean locationIsChecked) {
         // Add location if checked and location is ready
         if (locationIsChecked && !Objects.isNull(currentUserHelper.getCurrentLocation()) && currentUserHelper.getCurrentLocation().size() > 0 ) {
-            currentQrCode.setCoordinates(currentUserHelper.getCurrentLocation());
-            String address = "";
-            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-            try {
-                 List<Address> listAddress = geocoder.getFromLocation(currentUserHelper.getCurrentLocation().get(0), currentUserHelper.getCurrentLocation().get(1), 1);
-                 if(listAddress != null && listAddress.size() > 0){
-                     if(listAddress.get(0).getLocality() != null){
-                         address += listAddress.get(0).getLocality()+", ";
-                     }
-                     if(listAddress.get(0).getAdminArea() != null){
-                         address += listAddress.get(0).getAdminArea()+", ";
-                     }
-                     if(listAddress.get(0).getCountryName() != null){
-                         address += listAddress.get(0).getCountryName()+", ";
-                     }
-                 }
-                 currentQrCode.setAddress(address);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+            addLocationThingsToQrCode();
         };
 
         if (currentQrCode.getId() == null || currentQrCode.getId().isEmpty() || currentQrCode.getWorth() == 0) {
@@ -279,17 +239,12 @@ public class QRCodeController {
      * Updates the existing hash in DB
      */
     private void updateExistingCode() {
-        HashMap<String, Object> updates = new HashMap<>();
-        updates.put("collectedCodes", FieldValue.arrayUnion(currentQrCode.getId()));
-        updates.put("totalScore", FieldValue.increment(currentQrCode.getWorth()));
-        userDocument
-                .update(updates);
-        qrCollectionReference
-                .document(currentQrCode.getId())
-                .update("players", FieldValue.arrayUnion(currentUserHelper.getUsername()));
-        initNewCode();
-        Toast.makeText(context, "Stored!", Toast.LENGTH_SHORT).show();
-        codeSavedListener.resetUI();
+        fireStoreController.updateExistingQrCode(currentQrCode)
+                .addOnSuccessListener(v -> {
+                    initNewCode();
+                    Toast.makeText(context, "Stored!", Toast.LENGTH_SHORT).show();
+                    codeSavedListener.resetUI();
+                });
     }
 
     /**
@@ -297,18 +252,13 @@ public class QRCodeController {
      */
     private void saveCodeFireStore() {
         currentQrCode.getPlayers().add(currentUserHelper.getUsername());
-        qrCollectionReference
-            .document(currentQrCode.getId())
-            .set(currentQrCode)
-            .addOnSuccessListener(v -> {
-                HashMap<String, Object> updates = new HashMap<>();
-                updates.put("collectedCodes", FieldValue.arrayUnion(currentQrCode.getId()));
-                updates.put("totalScore", FieldValue.increment(currentQrCode.getWorth()));
-                userDocument.update(updates);
-                initNewCode();
-                Toast.makeText(context, "Created!", Toast.LENGTH_SHORT).show();
-                codeSavedListener.resetUI();
-            });
+        fireStoreController.saveNewQrCode(currentQrCode)
+                .addOnSuccessListener(v -> {
+                    initNewCode();
+                    Toast.makeText(context, "Created!", Toast.LENGTH_SHORT).show();
+                    codeSavedListener.resetUI();
+                })
+                .addOnFailureListener(e -> e.printStackTrace());
     }
 
     public QRCode getCurrentQrCode() {
@@ -326,4 +276,31 @@ public class QRCodeController {
     public void setLocationImage(byte[] locationImage) {
         this.locationImage = locationImage;
     }
+
+    /**
+     * Adds location and address to qr code
+     */
+    private void addLocationThingsToQrCode() {
+        currentQrCode.setCoordinates(currentUserHelper.getCurrentLocation());
+        String address = "";
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            List<Address> listAddress = geocoder.getFromLocation(currentUserHelper.getCurrentLocation().get(0), currentUserHelper.getCurrentLocation().get(1), 1);
+            if (listAddress != null && listAddress.size() > 0) {
+                if (listAddress.get(0).getLocality() != null) {
+                    address += listAddress.get(0).getLocality() + ", ";
+                }
+                if (listAddress.get(0).getAdminArea() != null) {
+                    address += listAddress.get(0).getAdminArea() + ", ";
+                }
+                if (listAddress.get(0).getCountryName() != null) {
+                    address += listAddress.get(0).getCountryName() + ", ";
+                }
+            }
+            currentQrCode.setAddress(address);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }
