@@ -66,6 +66,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                             currentUserHelper.setUsername(Objects.requireNonNull(currentUser).getUsername());
                             currentUserHelper.setOwner(currentUser.getIsOwner());
                             currentUserHelper.setFirebaseId(currentUser.getUsername());
+                            currentUserHelper.setEmail(currentUser.getEmail());
+                            currentUserHelper.setPhone(currentUser.getPhone());
 
                             // Switch to the correct activity.
                             Intent intent;

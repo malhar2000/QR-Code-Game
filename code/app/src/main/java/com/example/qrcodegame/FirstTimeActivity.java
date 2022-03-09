@@ -129,7 +129,6 @@ public class FirstTimeActivity extends AppCompatActivity {
             if (!enteredPhoneNumber.equals("")) {
                 newUser.setPhone(enteredPhoneNumber);
             }
-
             addUser(newUser);
         }
     }
