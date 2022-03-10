@@ -20,10 +20,13 @@ import java.util.Objects;
 
 public class FirstTimeActivity extends AppCompatActivity {
 
+
     private EditText edtTxtUserName;
     private EditText edtTxtEmail;
     private EditText edtTxtPhoneNumber;
     private EditText edtTxtAdminPin;
+
+    private Button btnGo; //, scanQRCodeNewUserBtn;
 
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
     private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
@@ -54,6 +57,7 @@ public class FirstTimeActivity extends AppCompatActivity {
         btnGo.setOnClickListener(v -> submitDetails());
     }
 
+
     /**
      * Given a User object, this method saves it to the database. User must be checked for unique username before calling this method.
      * Afterwards, this method redirects to the correct next activity depending on admin status
@@ -81,6 +85,7 @@ public class FirstTimeActivity extends AppCompatActivity {
                     }
                     // Switch
                     startActivity(intent);
+                    // finish this activity
                     finish();
                 })
                 .addOnFailureListener(e -> Log.w("add user fail", "Error adding document", e));
