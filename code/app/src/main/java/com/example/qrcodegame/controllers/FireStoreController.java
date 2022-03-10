@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class FireStoreController {
 
-    private static FireStoreController single_instance = null;
+    private static FireStoreController singleInstance = null;
 
     /**
      * Singleton constructor
@@ -30,10 +30,10 @@ public class FireStoreController {
      */
     public static FireStoreController getInstance() {
         System.out.println("FirestoreID = " + CurrentUserHelper.getInstance().getFirebaseId());
-        if (single_instance == null) {
-            single_instance = new FireStoreController();
+        if (singleInstance == null) {
+            singleInstance = new FireStoreController();
         }
-        return single_instance;
+        return singleInstance;
     }
 
     public FireStoreController() {
