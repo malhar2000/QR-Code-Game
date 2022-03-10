@@ -32,7 +32,7 @@ import java.util.Map;
 public class FirstTimeActivity extends AppCompatActivity {
 
     // objects used
-    private Button btnGo; //, scanQRcodeNewUserBtn;
+    private Button btnGo; //, scanQRCodeNewUserBtn;
     private EditText edtTxtUserName, edtTxtEmail, edtTxtPhoneNumber;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -140,19 +140,24 @@ public class FirstTimeActivity extends AppCompatActivity {
 //        }
 //    }
 
+    /**
+     * This adds the new user's username to the firebase database
+     *
+     * @param newUserToAdd This is the String representation of the new username to add
+     */
     private void addUser(User newUserToAdd) {
         db.collection("Users")
-//                .document(newUserToAdd.getUsername())
                 .add(newUserToAdd)
                 .addOnSuccessListener(documentReference -> {
-//                    Log.d("added user success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    // add the accompanying fields
                     CurrentUserHelper.getInstance().setFirebaseId(documentReference.getId());
                     CurrentUserHelper.getInstance().setPhone(newUserToAdd.getPhone());
                     CurrentUserHelper.getInstance().setEmail(newUserToAdd.getEmail());
                     CurrentUserHelper.getInstance().setUsername(newUserToAdd.getUsername());
-                  
+                    // go to MainActivity
                     Intent intent = new Intent(FirstTimeActivity.this, MainActivity.class);
                     startActivity(intent);
+                    // finish this activity
                     finish();
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -163,6 +168,9 @@ public class FirstTimeActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Fetches all the usernames from firestore to user to check for duplicates
+     */
     protected void fetchAllUsernames() {
         allUsernames.clear();
         db.collection("Users")
