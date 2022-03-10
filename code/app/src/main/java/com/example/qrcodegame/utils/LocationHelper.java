@@ -11,16 +11,13 @@ import android.location.LocationManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.example.qrcodegame.models.QRCode;
-import com.google.android.gms.maps.model.LatLng;
-
-
 import java.util.ArrayList;
 
 import android.location.LocationListener;
-import android.location.LocationRequest;
-import android.util.Log;
 
+/**
+ * Class to handle Location services within the app
+ */
 public class LocationHelper implements LocationListener {
 
     static public ArrayList<LocationHelperListener> listeners = new ArrayList<>();
@@ -37,6 +34,10 @@ public class LocationHelper implements LocationListener {
         this.context = context;
     }
 
+    /**
+     * Gets the updated location and puts results in CurrentUserHelper
+     * @param location new location
+     */
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
@@ -53,10 +54,16 @@ public class LocationHelper implements LocationListener {
         }
     }
 
+    /**
+     * Stops location updates.
+     */
     public void stopLocationUpdates() {
         locationManager.removeUpdates(this);
     }
 
+    /**
+     * Starts the location updates. The results are stored within the CurrentUserHelper
+     */
     public void startLocationUpdates() {
         try {
             locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);

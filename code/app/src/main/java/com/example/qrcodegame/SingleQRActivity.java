@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.qrcodegame.adapters.QrUsernameAdapter;
+import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,13 +34,18 @@ import com.squareup.picasso.Picasso;
      private TextView worthTxt;
      private RecyclerView usernamesRecyclerView;
      Button commentBtn;
-
-     private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
-     private GoogleMap map;
      private QRCode currentQRcode;
+     private GoogleMap map;
+
      String codeID;
      String worth;
 
+     private FireStoreController fireStoreController = FireStoreController.getInstance();
+     /**
+      * Binds and adds listeners.
+      * Also initalizes the map.
+      * @param savedInstanceState
+      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,9 @@ import com.squareup.picasso.Picasso;
         });
     }
 
+     /**
+      * Sets the app bar title.
+      */
     @Override
     protected void onStart() {
         super.onStart();
@@ -79,17 +88,17 @@ import com.squareup.picasso.Picasso;
     }
 
 
+     /**
+      * Once the map is ready, it will get all the QR code locations and plot them.
+      * @param googleMap
+      */
      @Override
      public void onMapReady(@NonNull GoogleMap googleMap) {
 
          new Thread(){
              @Override
              public void run() {
-                 FirebaseFirestore
-                         .getInstance()
-                         .collection("Codes")
-                         .document(currentQRcode.getId())
-                         .get()
+                 fireStoreController.getSingleQRCode(currentQRcode.getId())
                          .addOnSuccessListener(documentSnapshot -> {
                              currentQRcode = documentSnapshot.toObject(QRCode.class);
 
@@ -115,9 +124,7 @@ import com.squareup.picasso.Picasso;
                              usernamesRecyclerView.setLayoutManager(new LinearLayoutManager(SingleQRActivity.this));
 
                          })
-                         .addOnFailureListener(e->{
-                             e.printStackTrace();
-                         });
+                         .addOnFailureListener(e-> e.printStackTrace());
              }
          }.start();
     }

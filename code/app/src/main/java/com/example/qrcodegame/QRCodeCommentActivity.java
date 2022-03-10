@@ -32,7 +32,8 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     EditText addComments;
     Button backButton;
     Button addButton;
-    private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
+
+    private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
     Map<String, Object> comments = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CommentRecycleViewAdapter adapter;

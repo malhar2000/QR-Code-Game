@@ -19,26 +19,26 @@ import java.util.HashMap;
 public class EditProfileActivity extends AppCompatActivity {
     Button backBtn;
     EditText editUsername, editEmail, editPhone;
-    DocumentReference userDocument, emailDocument, phoneDocument;
+    DocumentReference userDocument; //, emailDocument, phoneDocument;
     CurrentUserHelper currentUserHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        init_items();
+        initItems();
     }
 
     /**
      * Initialising Buttons and Edit Text items. Returns void, Arguments: None
      */
-    private void init_items(){
+    private void initItems(){
         currentUserHelper = CurrentUserHelper.getInstance();
         userDocument = FirebaseFirestore.getInstance().collection("Users")
                 .document(currentUserHelper.getFirebaseId());
-        emailDocument = FirebaseFirestore.getInstance().collection("Users")
-                .document(currentUserHelper.getFirebaseId());
-        phoneDocument = FirebaseFirestore.getInstance().collection("Users")
-                .document(currentUserHelper.getFirebaseId());
+//        emailDocument = FirebaseFirestore.getInstance().collection("Users")
+//                .document(currentUserHelper.getFirebaseId());
+//        phoneDocument = FirebaseFirestore.getInstance().collection("Users")
+//                .document(currentUserHelper.getFirebaseId());
 //        linkAccount = findViewById(R.id.linkAccount);
         backBtn = findViewById(R.id.backBtn);
         editEmail = findViewById(R.id.editEmail);
@@ -87,6 +87,7 @@ public class EditProfileActivity extends AppCompatActivity {
         CurrentUserHelper.getInstance().setPhone(phone);
         CurrentUserHelper.getInstance().setEmail(email);
         CurrentUserHelper.getInstance().setUsername(username);
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }
