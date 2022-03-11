@@ -30,8 +30,7 @@ public class FirstTimeActivity extends AppCompatActivity {
 
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
     private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
-    ArrayList<String> allUsernames = new ArrayList<>();
-
+    private final ArrayList<String> allUsernames = new ArrayList<>();
     private final Integer ADMIN_PIN = 9999;
 
     /**
