@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrcodegame.R;
@@ -76,7 +77,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
         TextView textViewUserScore;
         TextView textViewUserName;
-        RelativeLayout parentLayout;
+        CardView parentLayout;
         TextView textRank;
 
         public ViewHolder(@NonNull View itemView) {

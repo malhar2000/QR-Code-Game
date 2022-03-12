@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,14 +33,14 @@ public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecycl
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final ConstraintLayout layout;
+        public final CardView layout;
         private final TextView txtViewQRCodeName;
         private final TextView txtViewQRCodeScores;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            layout = (ConstraintLayout) view.findViewById(R.id.qrCodeInProfileLayout);
+            layout = view.findViewById(R.id.qrCodeInProfileLayout);
             txtViewQRCodeName = (TextView) view.findViewById(R.id.eachQRCode);
             txtViewQRCodeScores = (TextView) view.findViewById(R.id.eachQRCodeScore);
 

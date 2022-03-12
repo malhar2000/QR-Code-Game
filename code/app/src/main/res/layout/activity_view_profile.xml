@@ -6,23 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ViewProfileActivity"
-    android:background="#E8A87C">
+   >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/qrCodeRecyclerView"
         android:layout_width="387dp"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:backgroundTint="#39CCCC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview6"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewCollection"
         app:layout_constraintVertical_bias="0.511"
         tools:listitem="@layout/qr_code_recycler_view_layout"
         android:background="@color/white">
-
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageButton
@@ -37,36 +35,45 @@
         android:src="@drawable/editprofile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewTotalScore"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"
-        android:text="TextView"
-        android:backgroundTint="#7FDBFF"
-        android:textSize="20sp"
-        android:background="@color/white"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewTotalCodes"
-        app:layout_constraintStart_toStartOf="@+id/textViewTotalCodes"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalCodes" />
-
-    <TextView
-        android:id="@+id/textViewTotalCodes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
-        android:backgroundTint="#7FDBFF"
-        android:textSize="20sp"
-        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/buttonOpenShareQRCode"
         app:layout_constraintStart_toStartOf="@+id/buttonOpenShareQRCode"
-        app:layout_constraintTop_toBottomOf="@+id/buttonOpenShareQRCode" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonOpenShareQRCode"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        android:id="@+id/cardViewViewProfile"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:paddingLeft="15dp">
+            <TextView
+                android:id="@+id/textViewTotalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                />
+
+            <TextView
+                android:id="@+id/textViewTotalCodes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewTotalScore"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:text="TextView"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/buttonOpenShareQRCode"
@@ -81,20 +88,26 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonEditProfile"
         android:layout_marginTop="100dp"/>
 
-    <TextView
-        android:id="@+id/textview6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:text="Collected Hashes:"
-        android:textSize="16sp"
-        android:backgroundTint="#7FDBFF"
-        android:textStyle="bold"
-        android:background="@color/white"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalScore" />
-
+        app:layout_constraintTop_toBottomOf="@+id/cardViewViewProfile"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        android:id="@+id/cardViewCollection">
+        <TextView
+            android:id="@+id/textview6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Collected Hashes:"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:paddingLeft="15dp"
+            android:background="@color/white"
+            />
+    </androidx.cardview.widget.CardView>
     <Button
         android:id="@+id/profileTransferBtn"
         android:layout_width="wrap_content"
