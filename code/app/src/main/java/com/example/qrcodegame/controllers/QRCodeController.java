@@ -42,11 +42,15 @@ public class QRCodeController {
     // Helper Var
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
+
     // Firestore Variables
     final FirebaseStorage storage = FirebaseStorage.getInstance();
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
 
-    private void initNewCode(){
+    /**
+     * Resets the code and image data
+     */
+    public void initNewCode(){
         currentQrCode = new QRCode();
         locationImage = null;
     }
@@ -85,9 +89,7 @@ public class QRCodeController {
         if (qrCodeContent.startsWith("Transfer-Profile=")) {
             String usernameToTransferTo = qrCodeContent.split("=")[1];
             fireStoreController.switchProfile(usernameToTransferTo)
-                    .addOnSuccessListener(unused -> {
-                        onProfileTransferedListener.OnProfileTransfered();
-                    })
+                    .addOnSuccessListener(unused -> onProfileTransferedListener.OnProfileTransfered())
                     .addOnFailureListener(Throwable::printStackTrace);
             return 2;
         }
