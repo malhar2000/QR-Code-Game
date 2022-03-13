@@ -45,9 +45,6 @@ public class QRCodeController {
     // Helper Var
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
-    // Firestore Variables
-    private final DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
-    private final CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
     final FirebaseStorage storage = FirebaseStorage.getInstance();
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrcodegame.R;
 import com.example.qrcodegame.SingleQRActivity;
+import com.example.qrcodegame.models.QRCode;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,9 +26,8 @@ import java.util.Random;
 public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecyclerViewAdapter.ViewHolder> {
 
     private final Context context;
-    private final ArrayList<String> localDataSetQRCodeNames;
-    private final ArrayList<String> localDataSetQRCodeScores;
-    private final ArrayList<String> localDataSetQRCodeCountry;
+    private final ArrayList<QRCode> qrCodes;
+
     private final QRProfileListener listener;
     Random random = new Random();
     private final String[] mColors = {"#FFE5D9","#FBFAF0","#FFE9EE","#FFDDE4","#CBE4F9","#CDF5F6"
@@ -67,13 +67,11 @@ public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecycl
     /**
      * Initialize the dataset of the Adapter.
      *
-     * @param dataSet Arraylist containing the data to populate views to be used
+//     * @param dataSet Arraylist containing the data to populate views to be used
      * by RecyclerView.
      */
-    public qrCodeRecyclerViewAdapter(ArrayList<String> dataSet, ArrayList<String> dataSet2, ArrayList<String> dataSet3, Context context1, QRProfileListener listener1) {
-        localDataSetQRCodeNames = dataSet;
-        localDataSetQRCodeScores = dataSet2;
-        localDataSetQRCodeCountry = dataSet3;
+    public qrCodeRecyclerViewAdapter(ArrayList<QRCode> qrCodes, Context context1, QRProfileListener listener1) {
+        this.qrCodes = qrCodes;
         context = context1;
         listener = listener1;
     }
@@ -94,19 +92,19 @@ public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecycl
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextViewQRCodeName().setText("Name: " + localDataSetQRCodeNames.get(position));
-        viewHolder.getTxtViewQRCodeScore().setText(localDataSetQRCodeScores.get(position));
-        viewHolder.txtViewQRCodeCountry.setText(localDataSetQRCodeCountry.get(position)+" ");
+        viewHolder.getTextViewQRCodeName().setText("Name: " + qrCodes.get(position).getId());
+        viewHolder.getTxtViewQRCodeScore().setText(""+qrCodes.get(position).getWorth());
+        viewHolder.txtViewQRCodeCountry.setText(qrCodes.get(position).getAddress());
         viewHolder.layout.setCardBackgroundColor(Color.parseColor(mColors[random.nextInt(10)]));
         viewHolder.layout.setOnClickListener(view -> {
-            listener.onQRclicked(localDataSetQRCodeNames.get(position));
+            listener.onQRclicked(qrCodes.get(position).getId());
         });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return localDataSetQRCodeNames.size();
+        return qrCodes.size();
     }
 }
 
