@@ -28,6 +28,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
 
     private ArrayList<String> qrCodeNames;
     private ArrayList<String> qrCodeScores;
+    private ArrayList<String> qrCodeCountry;
     private TextView txtViewTotalScore;
     private TextView txtViewTotalCodes;
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
@@ -48,6 +49,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         super.onStart();
         qrCodeNames = new ArrayList<String>();
         qrCodeScores = new ArrayList<String>();
+        qrCodeCountry = new ArrayList<String>();
         ImageButton btnEditProfile = findViewById(R.id.buttonEditProfile);
         btnOpenQRCode = findViewById(R.id.buttonOpenShareQRCode);
         txtViewTotalCodes = findViewById(R.id.textViewTotalCodes);
@@ -94,7 +96,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.qrCodeRecyclerView);
-        qrCodeRecyclerViewAdapter adapter = new qrCodeRecyclerViewAdapter(qrCodeNames, qrCodeScores, this, this);
+        qrCodeRecyclerViewAdapter adapter = new qrCodeRecyclerViewAdapter(qrCodeNames, qrCodeScores, qrCodeCountry, this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -107,6 +109,10 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
                     for (DocumentSnapshot existingUser : queryDocumentSnapshots) {
                         qrCodeNames.add("" + existingUser.get("id"));
                         qrCodeScores.add("Score: "+existingUser.get("worth").toString());
+                        if(existingUser.get("address") == null)
+                            qrCodeCountry.add("No Location");
+                        else
+                            qrCodeCountry.add(existingUser.get("address").toString());
                         totalScore += Integer.parseInt(existingUser.get("worth").toString());
                     }
                     initRecyclerView();

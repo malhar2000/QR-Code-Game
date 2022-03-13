@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrcodegame.R;
@@ -51,10 +52,10 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.textViewUserName.setText(saveLeaderInfos.get(position).getUsername());
         holder.textViewUserScore.setText("" + saveLeaderInfos.get(position).getTotalScore());
-        holder.textRank.setText("" + (position + 1));
+        holder.textRank.setText("" + saveLeaderInfos.get(position).getUserRank());
 
         //For multiple colors inside the recycle View
-        holder.parentLayout.setBackgroundColor(Color.parseColor(mColors[random.nextInt(40)]));
+        holder.parentLayout.setCardBackgroundColor(Color.parseColor(mColors[random.nextInt(40)]));
         holder.parentLayout.setOnClickListener(view -> {
             Intent intent = new Intent(mcontext, ViewProfileActivity.class);
             intent.putExtra("username", saveLeaderInfos.get(position).getUsername());
@@ -76,7 +77,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
         TextView textViewUserScore;
         TextView textViewUserName;
-        RelativeLayout parentLayout;
+        CardView parentLayout;
         TextView textRank;
 
         public ViewHolder(@NonNull View itemView) {

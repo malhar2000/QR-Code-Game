@@ -44,8 +44,9 @@
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/activity_view_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_comment_display.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/layout_for_leaderboard_recycleview.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/layout_for_leaderboard_recycleview.xml" value="0.25" />
         <entry key="app/src/main/res/layout/qr_code_layout.xml" value="0.3880208333333333" />
+        <entry key="app/src/main/res/layout/qr_code_recycler_view_layout.xml" value="0.4058334350585938" />
         <entry key="app/src/main/res/layout/test.xml" value="0.2953125" />
       </map>
     </option>
