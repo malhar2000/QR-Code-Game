@@ -33,8 +33,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class QRCodeController {
 
-    // Variables we use
-    private LocationHelper locationHelper;
     private QRCode currentQrCode;
     private Context context;
     public byte[] locationImage;
@@ -45,8 +43,6 @@ public class QRCodeController {
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
     // Firestore Variables
-    private final DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId());
-    private final CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
     final FirebaseStorage storage = FirebaseStorage.getInstance();
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
 
@@ -58,7 +54,8 @@ public class QRCodeController {
     public QRCodeController(Context context, CodeSavedListener codeSavedListener, OnProfileTransferedListener onProfileTransferedListener) {
         this.context = context;
         currentQrCode = new QRCode();
-        locationHelper = new LocationHelper(context);
+        // Variables we use
+        LocationHelper locationHelper = new LocationHelper(context);
         locationHelper.startLocationUpdates();
         this.codeSavedListener = codeSavedListener;
         this.onProfileTransferedListener = onProfileTransferedListener;
@@ -105,7 +102,6 @@ public class QRCodeController {
      */
     public  void calculateWorth(String qrCodeContent) {
         try {
-
             // calculate sha-256
             // Citation: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha256-in-java
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -218,14 +214,10 @@ public class QRCodeController {
             StorageReference imageLocationStorage = storage.getReference().child("images").child(currentQrCode.getId() + ".jpg");
             imageLocationStorage
                     .putBytes(locationImage)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        imageLocationStorage.getDownloadUrl().addOnSuccessListener(uri -> {
-                            currentQrCode.setImageUrl(uri.toString());
-                            saveCodeFireStore();
-                        }).addOnFailureListener(e -> {
-                            System.err.println(e.getMessage());
-                        });
-                    })
+                    .addOnSuccessListener(taskSnapshot -> imageLocationStorage.getDownloadUrl().addOnSuccessListener(uri -> {
+                        currentQrCode.setImageUrl(uri.toString());
+                        saveCodeFireStore();
+                    }))
                     .addOnFailureListener(e -> {
                         Toast.makeText(context, "Image could not be saved!", Toast.LENGTH_SHORT).show();
                         System.err.println(e.getMessage());
@@ -258,7 +250,7 @@ public class QRCodeController {
                     Toast.makeText(context, "Created!", Toast.LENGTH_SHORT).show();
                     codeSavedListener.resetUI();
                 })
-                .addOnFailureListener(e -> e.printStackTrace());
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 
     public QRCode getCurrentQrCode() {
