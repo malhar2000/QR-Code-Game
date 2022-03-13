@@ -9,17 +9,17 @@ import java.util.ArrayList;
  */
 public class CurrentUserHelper {
 
-    private static CurrentUserHelper single_instance = null;
+    private static CurrentUserHelper singleInstance = null;
 
     /**
      * Singleton constructor
      * @return returns the singular object
      */
     public static CurrentUserHelper getInstance() {
-        if (single_instance == null) {
-            single_instance = new CurrentUserHelper();
+        if (singleInstance == null) {
+            singleInstance = new CurrentUserHelper();
         }
-        return single_instance;
+        return singleInstance;
     }
 
     private String username;

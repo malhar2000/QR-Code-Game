@@ -2,6 +2,7 @@ package com.example.qrcodegame.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,38 +11,45 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrcodegame.R;
 import com.example.qrcodegame.SingleQRActivity;
+import com.example.qrcodegame.models.QRCode;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecyclerViewAdapter.ViewHolder> {
 
     private final Context context;
-    private final ArrayList<String> localDataSetQRCodeNames;
-    private final ArrayList<String> localDataSetQRCodeScores;
-    private final QRProfileListener listener;
+    private final ArrayList<QRCode> qrCodes;
 
+    private final QRProfileListener listener;
+    Random random = new Random();
+    private final String[] mColors = {"#FFE5D9","#FBFAF0","#FFE9EE","#FFDDE4","#CBE4F9","#CDF5F6"
+    ,"#EFF9DA", "#F9EBDF","#F9D8D6","#D6CDEA"};
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final ConstraintLayout layout;
+        public final CardView layout;
         private final TextView txtViewQRCodeName;
         private final TextView txtViewQRCodeScores;
+        private final TextView txtViewQRCodeCountry;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            layout = (ConstraintLayout) view.findViewById(R.id.qrCodeInProfileLayout);
+            layout = view.findViewById(R.id.qrCodeInProfileLayout);
             txtViewQRCodeName = (TextView) view.findViewById(R.id.eachQRCode);
             txtViewQRCodeScores = (TextView) view.findViewById(R.id.eachQRCodeScore);
+            txtViewQRCodeCountry = (TextView) view.findViewById(R.id.eachQRCodeCountry);
 
         }
 
@@ -59,12 +67,11 @@ public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecycl
     /**
      * Initialize the dataset of the Adapter.
      *
-     * @param dataSet Arraylist containing the data to populate views to be used
+//     * @param dataSet Arraylist containing the data to populate views to be used
      * by RecyclerView.
      */
-    public qrCodeRecyclerViewAdapter(ArrayList<String> dataSet, ArrayList<String> dataSet2, Context context1, QRProfileListener listener1) {
-        localDataSetQRCodeNames = dataSet;
-        localDataSetQRCodeScores = dataSet2;
+    public qrCodeRecyclerViewAdapter(ArrayList<QRCode> qrCodes, Context context1, QRProfileListener listener1) {
+        this.qrCodes = qrCodes;
         context = context1;
         listener = listener1;
     }
@@ -85,17 +92,19 @@ public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecycl
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextViewQRCodeName().setText("Name: " + localDataSetQRCodeNames.get(position));
-        viewHolder.getTxtViewQRCodeScore().setText(localDataSetQRCodeScores.get(position));
+        viewHolder.getTextViewQRCodeName().setText("Name: " + qrCodes.get(position).getId());
+        viewHolder.getTxtViewQRCodeScore().setText(""+qrCodes.get(position).getWorth());
+        viewHolder.txtViewQRCodeCountry.setText(qrCodes.get(position).getAddress());
+        viewHolder.layout.setCardBackgroundColor(Color.parseColor(mColors[random.nextInt(10)]));
         viewHolder.layout.setOnClickListener(view -> {
-            listener.onQRclicked(localDataSetQRCodeNames.get(position));
+            listener.onQRclicked(qrCodes.get(position).getId());
         });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return localDataSetQRCodeNames.size();
+        return qrCodes.size();
     }
 }
 

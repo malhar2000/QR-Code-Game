@@ -11,6 +11,15 @@ public class User {
     private boolean isOwner;
     private ArrayList<String> collectedCodes = new ArrayList<>();
     private ArrayList<String> devices = new ArrayList<>();
+    private int userRank;
+
+    public int getUserRank() {
+        return userRank;
+    }
+
+    public void setUserRank(int userRank) {
+        this.userRank = userRank;
+    }
 
     public User() {
     }
