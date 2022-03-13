@@ -34,8 +34,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class QRCodeController {
 
-    // Variables we use
-    private LocationHelper locationHelper;
     private QRCode currentQrCode;
     private Context context;
     public byte[] locationImage;
@@ -45,10 +43,14 @@ public class QRCodeController {
     // Helper Var
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
+    // Firestore Variables
     final FirebaseStorage storage = FirebaseStorage.getInstance();
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
 
-    private void initNewCode(){
+    /**
+     * Resets the code and image data
+     */
+    public void initNewCode(){
         currentQrCode = new QRCode();
         locationImage = null;
     }
@@ -56,7 +58,8 @@ public class QRCodeController {
     public QRCodeController(Context context, CodeSavedListener codeSavedListener, OnProfileTransferedListener onProfileTransferedListener) {
         this.context = context;
         currentQrCode = new QRCode();
-        locationHelper = new LocationHelper(context);
+        // Variables we use
+        LocationHelper locationHelper = new LocationHelper(context);
         locationHelper.startLocationUpdates();
         this.codeSavedListener = codeSavedListener;
         this.onProfileTransferedListener = onProfileTransferedListener;
@@ -86,9 +89,7 @@ public class QRCodeController {
         if (qrCodeContent.startsWith("Transfer-Profile=")) {
             String usernameToTransferTo = qrCodeContent.split("=")[1];
             fireStoreController.switchProfile(usernameToTransferTo)
-                    .addOnSuccessListener(unused -> {
-                        onProfileTransferedListener.OnProfileTransfered();
-                    })
+                    .addOnSuccessListener(unused -> onProfileTransferedListener.OnProfileTransfered())
                     .addOnFailureListener(Throwable::printStackTrace);
             return 2;
         }
@@ -103,7 +104,6 @@ public class QRCodeController {
      */
     public  void calculateWorth(String qrCodeContent) {
         try {
-
             // calculate sha-256
             // Citation: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha256-in-java
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -216,14 +216,10 @@ public class QRCodeController {
             StorageReference imageLocationStorage = storage.getReference().child("images").child(currentQrCode.getId() + ".jpg");
             imageLocationStorage
                     .putBytes(locationImage)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        imageLocationStorage.getDownloadUrl().addOnSuccessListener(uri -> {
-                            currentQrCode.setImageUrl(uri.toString());
-                            saveCodeFireStore();
-                        }).addOnFailureListener(e -> {
-                            System.err.println(e.getMessage());
-                        });
-                    })
+                    .addOnSuccessListener(taskSnapshot -> imageLocationStorage.getDownloadUrl().addOnSuccessListener(uri -> {
+                        currentQrCode.setImageUrl(uri.toString());
+                        saveCodeFireStore();
+                    }))
                     .addOnFailureListener(e -> {
                         Toast.makeText(context, "Image could not be saved!", Toast.LENGTH_SHORT).show();
                         System.err.println(e.getMessage());
@@ -256,7 +252,7 @@ public class QRCodeController {
                     Toast.makeText(context, "Created!", Toast.LENGTH_SHORT).show();
                     codeSavedListener.resetUI();
                 })
-                .addOnFailureListener(e -> e.printStackTrace());
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 
     public QRCode getCurrentQrCode() {
