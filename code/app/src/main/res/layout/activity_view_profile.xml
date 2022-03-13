@@ -46,6 +46,7 @@
         android:layout_marginTop="20dp"
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="#CED2C2"
         android:id="@+id/cardViewViewProfile"
         >
 
@@ -60,7 +61,6 @@
                 android:text="TextView"
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
                 />
 
             <TextView
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewTotalScore"
                 android:layout_marginTop="20dp"
-                android:background="@color/white"
+
                 android:text="TextView"
                 android:textSize="20sp" />
         </RelativeLayout>
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Share Profile QR Code"
-        android:backgroundTint="#7FDBFF"
+        android:backgroundTint="#4faaa1"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +95,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardViewViewProfile"
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="#92B1B6"
         android:id="@+id/cardViewCollection">
         <TextView
             android:id="@+id/textview6"
@@ -105,14 +106,13 @@
             android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:paddingLeft="15dp"
-            android:background="@color/white"
             />
     </androidx.cardview.widget.CardView>
     <Button
         android:id="@+id/profileTransferBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#7FDBFF"
+        android:backgroundTint="#4faaa1"
         android:text="LOAD PROFILE INTO NEW DEVICE"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/buttonOpenShareQRCode"

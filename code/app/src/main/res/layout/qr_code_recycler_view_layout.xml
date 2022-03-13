@@ -12,7 +12,7 @@
     >
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="90dp"
         android:paddingLeft="15dp">
         <TextView
             android:id='@+id/eachQRCode'
@@ -30,5 +30,12 @@
             android:layout_marginTop="8dp"
             android:layout_below="@+id/eachQRCode" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eachQRCodeScore"
+            android:text="Country"
+            android:layout_marginTop="8dp"
+            android:id="@+id/eachQRCodeCountry"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

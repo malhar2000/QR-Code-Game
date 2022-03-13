@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.qrcodegame.SplashScreenActivity;
@@ -288,7 +289,7 @@ public class QRCodeController {
             List<Address> listAddress = geocoder.getFromLocation(currentUserHelper.getCurrentLocation().get(0), currentUserHelper.getCurrentLocation().get(1), 1);
             if (listAddress != null && listAddress.size() > 0) {
                 if (listAddress.get(0).getLocality() != null) {
-                    address += listAddress.get(0).getLocality() + ", ";
+                    address = listAddress.get(0).getLocality() + ", ";
                 }
                 if (listAddress.get(0).getAdminArea() != null) {
                     address += listAddress.get(0).getAdminArea() + ", ";

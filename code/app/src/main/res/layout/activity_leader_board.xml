@@ -14,6 +14,7 @@
         android:layout_height="45dp"
         android:layout_weight="1"
         android:text="Go Back"
+        android:backgroundTint="#4faaa1"
         />
 
 
@@ -36,7 +37,7 @@
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
         android:id="@+id/cardViewLeaderB"
-        app:cardBackgroundColor="#AFDCEC">
+        app:cardBackgroundColor="#D8E2DC">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +101,7 @@
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
         android:id="@+id/cardViewSearch"
-        app:cardBackgroundColor="#99C68E">
+        app:cardBackgroundColor="#FFE5D9">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="60dp"
