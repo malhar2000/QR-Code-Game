@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.qrcodegame.adapters.CommentRecycleViewAdapter;
@@ -31,6 +32,7 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     TextView setQRCodeWorth;
     EditText addComments;
     Button backButton;
+    ImageButton homeButton;
     Button addButton;
 
     //gets detail about current User
@@ -42,7 +44,7 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     ArrayList<String> getComments = new ArrayList<>();
 
     /**
-     *
+     * Deafult onCreate method
      * @param savedInstanceState
      */
     @Override
@@ -54,6 +56,8 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         addComments = findViewById(R.id.add_comments);
         backButton = findViewById(R.id.back_button_comments);
         addButton = findViewById(R.id.addButtonComments);
+        homeButton = findViewById(R.id.imageHomeButton);
+
 
         getData();
 
@@ -65,6 +69,13 @@ public class QRCodeCommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }

@@ -4,19 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QRCodeCommentActivity"
     android:padding="15dp"
-    >
+    tools:context=".QRCodeCommentActivity">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:src="@drawable/homebutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/imageHomeButton"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_comments"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -34,13 +43,13 @@
 
         <Button
             android:id="@+id/addButtonComments"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="storeComments"
             android:layout_marginLeft="5dp"
-            android:text="Add"
-            android:textSize="15dp"
             android:layout_weight="1"
-            android:layout_width="wrap_content" />
+            android:onClick="storeComments"
+            android:text="Add"
+            android:textSize="15dp" />
 
     </LinearLayout>
 
@@ -52,30 +61,43 @@
         android:paddingHorizontal="50dp"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewDisplayWorth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewTextViewWorth"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/black"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="15dp">
+
+        <TextView
+            android:id="@+id/textViewDisplayWorth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="39dp"
         android:text="Comments:"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/textViewDisplayWorth"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDisplayWorth" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewTextViewWorth" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
