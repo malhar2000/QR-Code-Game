@@ -32,6 +32,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// aids in getting and setting QR Code data
+// no issues
 public class QRCodeController {
 
     private QRCode currentQrCode;

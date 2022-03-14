@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
 
+// what a user sees when they view another users profile
+// no issues
 public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecyclerViewAdapter.QRProfileListener {
 
 //    private ArrayList<String> qrCodeNames;

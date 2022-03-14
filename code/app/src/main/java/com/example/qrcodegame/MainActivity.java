@@ -35,6 +35,8 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
+// glues all the other activities together
+// no issues
 public class MainActivity extends AppCompatActivity implements CodeSavedListener, OnProfileTransferedListener {
 
     TextView welcomeText;

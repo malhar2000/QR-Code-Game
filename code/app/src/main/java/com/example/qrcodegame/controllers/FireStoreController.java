@@ -20,6 +20,8 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// controller class that aids in fetching data from the firestore
+// no issues
 public class FireStoreController {
 
     private static FireStoreController singleInstance = null;
