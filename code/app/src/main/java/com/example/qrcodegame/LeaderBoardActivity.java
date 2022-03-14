@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class LeaderBoardActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     TextView myScoreByRank;
     TextView myScoreByCode;
-    Button backBtn;
+    ImageButton backBtn;
     EditText searchPlayer;
 
     // Other things we need
@@ -54,6 +55,10 @@ public class LeaderBoardActivity extends AppCompatActivity{
     // Storing Data for activity
     private ArrayList<User> allPlayers = new ArrayList<>();
 
+    /**
+     *
+     * @param savedInstanceState this is for saving state and data on the display
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +90,10 @@ public class LeaderBoardActivity extends AppCompatActivity{
 
     }
 
+    /**
+     * This function sets the adapter to the search perfernce of the user
+     * @param text User search input inside the search section is returned here
+     */
     private void filter(String text){
         ArrayList<User> fList = new ArrayList<>();
         for(User u : allPlayers){
@@ -95,6 +104,9 @@ public class LeaderBoardActivity extends AppCompatActivity{
         adapter.filterList(fList);
     }
 
+    /**
+     * Initializing recycle display
+     */
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.recycle_view);
         adapter = new LeaderBoardAdapter(allPlayers, this);
@@ -102,6 +114,9 @@ public class LeaderBoardActivity extends AppCompatActivity{
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * We restore the data from the firestore
+     */
     public void setup(){
 
         allPlayers.clear();

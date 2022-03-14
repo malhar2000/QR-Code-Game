@@ -33,6 +33,7 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     Button backButton;
     Button addButton;
 
+    //gets detail about current User
     private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
     Map<String, Object> comments = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -40,7 +41,10 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<String> getComments = new ArrayList<>();
 
-
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +69,10 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function adds User comment to the firestore with the UserName
+     * @param view The onClick button for the Add
+     */
     public void storeComments(View view){
         comments.put(currentUserHelper.getUsername(), FieldValue.arrayUnion(currentUserHelper.getUsername()+": "+addComments.getText().toString()));
         db.collection("Comments").document(getIntent().getStringExtra("QRCodeCommentActivity"))
@@ -74,6 +82,9 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         addComments.setText("");
     }
 
+    /**
+     *Restores comment for the particular QRCode from the fireStore
+     */
     public void getData(){
         DocumentReference reference = FirebaseFirestore.getInstance().collection("Comments").document(getIntent().getStringExtra("QRCodeCommentActivity"));
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -97,6 +108,9 @@ public class QRCodeCommentActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *Initlizing the recycleView to start displaying content
+     */
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.recycle_view_comments);
         adapter = new CommentRecycleViewAdapter(getComments, this);
