@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.qrcodegame.adapters.CommentRecycleViewAdapter;
@@ -31,8 +32,10 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     TextView setQRCodeWorth;
     EditText addComments;
     Button backButton;
+    ImageButton homeButton;
     Button addButton;
 
+    //gets detail about current User
     private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
     Map<String, Object> comments = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -40,7 +43,10 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<String> getComments = new ArrayList<>();
 
-
+    /**
+     * Deafult onCreate method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +56,8 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         addComments = findViewById(R.id.add_comments);
         backButton = findViewById(R.id.back_button_comments);
         addButton = findViewById(R.id.addButtonComments);
+        homeButton = findViewById(R.id.imageHomeButton);
+
 
         getData();
 
@@ -63,8 +71,19 @@ public class QRCodeCommentActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
     }
 
+    /**
+     * This function adds User comment to the firestore with the UserName
+     * @param view The onClick button for the Add
+     */
     public void storeComments(View view){
         comments.put(currentUserHelper.getUsername(), FieldValue.arrayUnion(currentUserHelper.getUsername()+": "+addComments.getText().toString()));
         db.collection("Comments").document(getIntent().getStringExtra("QRCodeCommentActivity"))
@@ -74,6 +93,9 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         addComments.setText("");
     }
 
+    /**
+     *Restores comment for the particular QRCode from the fireStore
+     */
     public void getData(){
         DocumentReference reference = FirebaseFirestore.getInstance().collection("Comments").document(getIntent().getStringExtra("QRCodeCommentActivity"));
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -97,6 +119,9 @@ public class QRCodeCommentActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *Initlizing the recycleView to start displaying content
+     */
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.recycle_view_comments);
         adapter = new CommentRecycleViewAdapter(getComments, this);
