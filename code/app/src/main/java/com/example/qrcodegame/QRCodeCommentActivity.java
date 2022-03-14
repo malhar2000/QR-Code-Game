@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+// the activity where the users can see and add comments to a qr code scanned by themselves or others
+// no issues
 public class QRCodeCommentActivity extends AppCompatActivity {
 
     TextView setQRCodeWorth;

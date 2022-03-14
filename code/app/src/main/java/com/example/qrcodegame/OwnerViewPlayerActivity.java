@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+// yet to be completed
+// no issues
 public class OwnerViewPlayerActivity extends AppCompatActivity {
 
     @Override
