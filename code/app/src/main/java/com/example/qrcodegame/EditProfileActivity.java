@@ -25,13 +25,13 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        init_items();
+        initItems();
     }
 
     /**
      * Initialising Buttons and Edit Text items. Returns void, Arguments: None
      */
-    private void init_items(){
+    private void initItems(){
         currentUserHelper = CurrentUserHelper.getInstance();
         userDocument = FirebaseFirestore.getInstance().collection("Users")
                 .document(currentUserHelper.getFirebaseId());

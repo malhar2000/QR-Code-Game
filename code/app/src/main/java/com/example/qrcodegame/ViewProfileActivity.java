@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.qrcodegame.adapters.qrCodeRecyclerViewAdapter;
 import com.example.qrcodegame.controllers.FireStoreController;
+import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.example.qrcodegame.utils.QRCodeDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,12 +23,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecyclerViewAdapter.QRProfileListener {
 
-    private ArrayList<String> qrCodeNames;
-    private ArrayList<String> qrCodeScores;
+//    private ArrayList<String> qrCodeNames;
+//    private ArrayList<String> qrCodeScores;
+//    private ArrayList<String> qrCodeCountry;
+
+    private ArrayList<QRCode> qrCodes;
+
     private TextView txtViewTotalScore;
     private TextView txtViewTotalCodes;
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
@@ -46,8 +52,11 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
     @Override
     protected void onStart() {
         super.onStart();
-        qrCodeNames = new ArrayList<String>();
-        qrCodeScores = new ArrayList<String>();
+//        qrCodeNames = new ArrayList<String>();
+//        qrCodeScores = new ArrayList<String>();
+//        qrCodeCountry = new ArrayList<String>();
+
+        qrCodes = new ArrayList<>();
         ImageButton btnEditProfile = findViewById(R.id.buttonEditProfile);
         btnOpenQRCode = findViewById(R.id.buttonOpenShareQRCode);
         txtViewTotalCodes = findViewById(R.id.textViewTotalCodes);
@@ -94,7 +103,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.qrCodeRecyclerView);
-        qrCodeRecyclerViewAdapter adapter = new qrCodeRecyclerViewAdapter(qrCodeNames, qrCodeScores, this, this);
+        qrCodeRecyclerViewAdapter adapter = new qrCodeRecyclerViewAdapter(qrCodes, this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -104,14 +113,20 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    for (DocumentSnapshot existingUser : queryDocumentSnapshots) {
-                        qrCodeNames.add("" + existingUser.get("id"));
-                        qrCodeScores.add("Score: "+existingUser.get("worth").toString());
-                        totalScore += Integer.parseInt(existingUser.get("worth").toString());
+                    for (DocumentSnapshot existingQR : queryDocumentSnapshots) {
+                        // Convert to qr code
+                        QRCode qrCode = existingQR.toObject(QRCode.class);
+                        qrCodes.add(qrCode);
+                        totalScore += qrCode.getWorth();
+                        if(qrCode.getAddress() == null)
+                            qrCode.setAddress("No Location!");
                     }
+
+                    qrCodes.sort((qrCode, t1) -> t1.getWorth() - qrCode.getWorth());
+
                     initRecyclerView();
                     txtViewTotalScore.setText("Total score: " + totalScore);
-                    txtViewTotalCodes.setText("Total number of codes scanned: " + qrCodeNames.size());
+                    txtViewTotalCodes.setText("Total number of codes scanned: " + qrCodes.size());
                 }
             });
     }

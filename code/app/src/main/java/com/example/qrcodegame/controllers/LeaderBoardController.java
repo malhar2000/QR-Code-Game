@@ -23,6 +23,9 @@ public class LeaderBoardController {
     public int getScoreByRank(ArrayList<User> allPlayers) {
         // Calculating Score based on Rank
         allPlayers.sort((user, t1) -> t1.getTotalScore() - user.getTotalScore());
+        for(int i = 0; i < allPlayers.size(); i++){
+            allPlayers.get(i).setUserRank(i+1);
+        }
         for (int i = 0; i < allPlayers.size(); i++) {
             if (allPlayers.get(i).getUsername().equals(currentUserHelper.getUsername())) {
                 return i + 1;
