@@ -12,14 +12,11 @@ import com.example.qrcodegame.controllers.QRCodeController;
 
 public class QRCodeTest {
 
-    QRCodeController qrCodeController = new QRCodeController(InstrumentationRegistry.getInstrumentation().getContext(), null, null);
 
 
     // Test to check hashing properly
     @Test
     public void hashing_correct() {
-        String testStr = "HelloWorld";
-        qrCodeController.initNewCode();
 
     }
 
