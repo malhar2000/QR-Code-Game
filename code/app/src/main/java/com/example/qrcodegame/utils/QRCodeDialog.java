@@ -18,6 +18,7 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 // dialog of the users identifiable qr code
+// no issues
 public class QRCodeDialog extends AppCompatDialogFragment {
 
     ImageView imgViewQRCode;

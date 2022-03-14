@@ -6,6 +6,7 @@ import com.example.qrcodegame.utils.CurrentUserHelper;
 import java.util.ArrayList;
 
 // aids in getting data from the leaderboard
+// no issues
 public class LeaderBoardController {
 
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();

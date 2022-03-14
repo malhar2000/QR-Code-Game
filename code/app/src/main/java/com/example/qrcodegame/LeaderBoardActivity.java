@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 
 // This is the leaderboard card view where users can see each others and their ranking
+// no issues
 public class LeaderBoardActivity extends AppCompatActivity{
 
     // View elements
