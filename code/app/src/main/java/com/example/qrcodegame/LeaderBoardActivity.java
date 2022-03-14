@@ -44,7 +44,7 @@ public class LeaderBoardActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     TextView myScoreByRank;
     TextView myScoreByCode;
-    ImageButton backBtn;
+    Button backBtn;
     EditText searchPlayer;
 
     // Other things we need
