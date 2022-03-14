@@ -37,7 +37,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements CodeSavedListener, OnProfileTransferedListener {
 
-    // View Elements
     TextView welcomeText;
     TextView analyzeText;
     TextView resultText;
