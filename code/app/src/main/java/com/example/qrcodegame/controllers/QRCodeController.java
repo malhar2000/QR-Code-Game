@@ -102,7 +102,7 @@ public class QRCodeController {
      * Calculates the worth of the code.
      * @param qrCodeContent String content of the hash scanned
      */
-    public  void calculateWorth(String qrCodeContent) {
+    public void calculateWorth(String qrCodeContent) {
         try {
             // calculate sha-256
             // Citation: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha256-in-java
