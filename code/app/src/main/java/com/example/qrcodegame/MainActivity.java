@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
             }
 
             locationPhotoBtn.setText("TAKE PHOTO");
+            qrCodeController.setLocationImage(null);
             locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
             Toast.makeText(this, "Image removed!", Toast.LENGTH_SHORT).show();
         });
