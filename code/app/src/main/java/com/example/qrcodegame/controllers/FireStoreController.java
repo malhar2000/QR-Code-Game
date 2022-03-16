@@ -47,7 +47,7 @@ public class FireStoreController {
     private final CollectionReference userCollectionReference = FirebaseFirestore.getInstance().collection("Users");
     private final CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
     private final CollectionReference commentsCollectionReference = FirebaseFirestore.getInstance().collection("Comments");
-    private final StorageReference imageLocationStorage = FirebaseStorage.getInstance().getReference().child("images");
+//    private final StorageReference imageLocationStorage = FirebaseStorage.getInstance().getReference().child("images");
 
     public Task<QuerySnapshot> getAllCodesWithLocation() {
         return qrCollectionReference.whereNotEqualTo("coordinates", new ArrayList<>()).get();
@@ -68,21 +68,6 @@ public class FireStoreController {
     public Task<DocumentSnapshot> getSingleQRCode(String qrCodeId) {
         return qrCollectionReference.document(qrCodeId).get();
     }
-
-    public DocumentReference setListenerForSingleQRCodeComments(String codeID) {
-        return commentsCollectionReference.document(codeID);
-    }
-
-    public Task<DocumentSnapshot> getSingleQRCodeComments(String codeID) {
-        return commentsCollectionReference.document(codeID).get();
-    }
-
-    public void storeCommentAtId(String codeID, SingleComment commentToStore) {
-        commentsCollectionReference
-                .document(codeID)
-                .update("allComments", FieldValue.arrayUnion(commentToStore));
-    }
-
     public Task<Void> switchProfile(String newUserNameToSwitchTo){
         Task<Void> removeFromCurrentUserProfile = userCollectionReference.document(currentUserHelper.getFirebaseId()).update("devices", FieldValue.arrayRemove(currentUserHelper.getUniqueID()));
         Task<Void> addToNewUserProfile = userCollectionReference.document(newUserNameToSwitchTo).update("devices", FieldValue.arrayUnion(currentUserHelper.getUniqueID()));

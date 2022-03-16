@@ -5,9 +5,9 @@
       <map>
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_edit_profile.xml" value="0.32447916666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_find_qractivity.xml" value="0.16145833333333334" />
-        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_first_time.xml" value="0.34010416666666665" />
+        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_first_time.xml" value="0.25" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_leader_board.xml" value="0.34010416666666665" />
-        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_owner_home.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_owner_view_player.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_qrcode_comment.xml" value="0.33" />
@@ -56,5 +56,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.18" />
+      </ProjectState>
+    </option>
   </component>
 </project>
