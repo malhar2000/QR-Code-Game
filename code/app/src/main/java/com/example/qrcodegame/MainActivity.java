@@ -157,8 +157,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         saveQRtoCloudBtn.setOnClickListener(v -> {
             qrCodeController.saveCode(locationToggle.isChecked());
-            Toast.makeText(this, "Starting to save! Wait!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Starting to save! Wait!", Toast.LENGTH_SHORT).show();
+            saveQRtoCloudBtn.setEnabled(false);
         });
+
 
         leaderboardBtn.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class)));
 
@@ -186,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         locationPhotoBtn.setText("TAKE PHOTO");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         locationToggle.setChecked(false);
+        saveQRtoCloudBtn.setEnabled(true);
     }
 
     @Override
