@@ -37,6 +37,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+// The page where users can see QR code locations on google maps in 3d view
+// no issues
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationHelper.LocationHelperListener {
 
     private GoogleMap mMap;

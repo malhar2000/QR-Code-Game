@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * CurrentUserHelper Class:
  *
  * This handles all the user info across the app
+ * no issues
  */
 public class CurrentUserHelper {
 

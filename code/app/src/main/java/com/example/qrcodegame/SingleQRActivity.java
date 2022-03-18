@@ -28,6 +28,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+// when a user clicks a qr code, the info about the qr code is presented here
+// no issues
  public class SingleQRActivity extends AppCompatActivity implements OnMapReadyCallback {
 
      private ImageView surroudingImage;

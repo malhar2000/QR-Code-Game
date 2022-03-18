@@ -35,6 +35,10 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
+/**
+ * Main Activity!
+ * No issues
+ */
 public class MainActivity extends AppCompatActivity implements CodeSavedListener, OnProfileTransferedListener {
 
     TextView welcomeText;
@@ -90,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
 
         // Requesting permission
-//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
