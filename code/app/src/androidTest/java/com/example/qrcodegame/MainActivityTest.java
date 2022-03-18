@@ -4,23 +4,49 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
 
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.service.autofill.Validators.not;
 
+import android.util.Log;
+
+import com.example.qrcodegame.utils.CurrentUserHelper;
+
+import org.hamcrest.Matchers;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class MainActivityTest {
 
+    private CurrentUserHelper currentUserHelper;
+
+
+    @Before
+    public void setupCurrentUserHelper(){
+        currentUserHelper = CurrentUserHelper.getInstance();
+        currentUserHelper.setUsername("Shaishav");
+        currentUserHelper.setPhone("7800000000");
+        currentUserHelper.setUniqueID("f2ca80b75173362d");
+        currentUserHelper.setFirebaseId("Shaishav");
+        Log.d("TEST","HERE");
+    }
+
+
     /**
      * This makes sure that the main activity launches
      */
     @Test
     public void mainActivityLaunches() {
+        String currentUserName = currentUserHelper.getUsername();
+        ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
+        onView(withId(R.id.welcomeText)).check(matches(withText("Welcome " + currentUserName + "!")));
     }
 
     /**
@@ -28,6 +54,9 @@ public class MainActivityTest {
      */
     @Test
     public void successfulQrCodeScannerOpen() {
+        ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
+        onView(withId(R.id.scanQRCodeBtn)).perform(click());
+        onView(withText("Scanning Code")).check(matches(isDisplayed()));
     }
 
     /**
@@ -35,7 +64,17 @@ public class MainActivityTest {
      */
     @Test
     public void successfulQRCodeWithGeolocation(){
-
+        ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
+        onView(withId(R.id.saveLocationCheckBox)).perform(click());
+        onView(withId(R.id.saveQRtoCloudBtn)).perform(click());
+        onView(withId(R.id.saveQRtoCloudBtn)).check(matches(Matchers.not(isEnabled())));
+        try {
+            Thread.sleep(3000);
+            onView(withId(R.id.saveQRtoCloudBtn)).check(matches(isEnabled()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
 
 }
