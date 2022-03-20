@@ -21,8 +21,11 @@ import java.util.Objects;
 // no issues
 public class SplashScreenActivity extends AppCompatActivity {
 
+    // FOR DEVELOPMENT PURPOSES
+    private boolean APP_IN_TEST_MODE = true;
+
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
-    CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
+    private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             currentUserHelper.setFirebaseId(currentUser.getUsername());
                             currentUserHelper.setEmail(currentUser.getEmail());
                             currentUserHelper.setPhone(currentUser.getPhone());
+                            currentUserHelper.setAppInTestMode(APP_IN_TEST_MODE);
 
                             // Switch to the correct activity.
                             Intent intent;

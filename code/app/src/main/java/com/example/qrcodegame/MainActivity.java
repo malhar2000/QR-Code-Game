@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Main Activity!
@@ -99,11 +101,8 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         //BottomNavigationView navigationView = findViewById(R.id.bottom_nav);
 
-
-
-
-                // Update Title
-                welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
+        // Update Title
+        welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
 
         // Requesting permission
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -151,8 +150,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         locationPhotoBtn.setOnClickListener(view -> {
 
-            // TODO
-            // ADD CHECK HERE
+            if (!currentUserHelper.getIsAppInTestMode() && qrCodeController.getCurrentQrCode().getId() == null) {
+                Toast.makeText(this, "Scan a QR code first!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (qrCodeController.getLocationImage() == null) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -168,8 +169,19 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
 
         saveQRtoCloudBtn.setOnClickListener(v -> {
+
+            // Check if valid QR Code
+            if (qrCodeController.getCurrentQrCode().getId() == null || qrCodeController.getCurrentQrCode().getId().isEmpty() || qrCodeController.getCurrentQrCode().getWorth() == 0) {
+                if (currentUserHelper.getIsAppInTestMode()) {
+                    qrCodeController.getCurrentQrCode().setId(UUID.randomUUID().toString());
+                    qrCodeController.getCurrentQrCode().setWorth((int) Math.floor(Math.random()*1000));
+                } else {
+                    Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            };
+
             qrCodeController.saveCode(locationToggle.isChecked());
-//            Toast.makeText(this, "Starting to save! Wait!", Toast.LENGTH_SHORT).show();
             saveQRtoCloudBtn.setEnabled(false);
         });
 
@@ -220,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
      * Resets the UI to match a new state.
      */
     public void resetUI() {
+        Log.d("Test","RESETING UI");
         locationPhotoBtn.setText("TAKE PHOTO");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         locationToggle.setChecked(false);

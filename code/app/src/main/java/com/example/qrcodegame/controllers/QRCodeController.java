@@ -176,6 +176,7 @@ public class QRCodeController {
      * If it does, it will update the info, else, creates the code.
      */
     public void saveCode(Boolean locationIsChecked) {
+
         // Check if QR code already exists
         fireStoreController.checkQRExists(currentQrCode.getId())
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -198,14 +199,6 @@ public class QRCodeController {
             addLocationThingsToQrCode();
         };
 
-        if (currentQrCode.getId() == null || currentQrCode.getId().isEmpty() || currentQrCode.getWorth() == 0) {
-            /*Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
-            return;*/
-            // TODO
-            // REMOVE
-            currentQrCode.setId(UUID.randomUUID().toString());
-            currentQrCode.setWorth((int) Math.floor(Math.random()*1000));
-        };
 
         if (locationImage != null) {
             // Save Image
