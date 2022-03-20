@@ -9,15 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qrcodegame.models.User;
+
 import java.util.ArrayList;
 
 public class playerAdapter extends RecyclerView.Adapter<playerAdapter.MyViewHolder> {
 
     Context context;
+    ArrayList<User> list;
 
-    ArrayList<Player_data> list;
-
-    public playerAdapter(Context context, ArrayList<Player_data> list) {
+    public playerAdapter(Context context, ArrayList<User> list) {
         this.context = context;
         this.list = list;
     }
@@ -33,9 +34,9 @@ public class playerAdapter extends RecyclerView.Adapter<playerAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Player_data player_data = list.get(position);
-        holder.user_name.setText(player_data.getPlayer_username());
-        holder.score.setText(player_data.getScore());
+        User player_data = list.get(position);
+        holder.user_name.setText(player_data.getUsername());
+        holder.score.setText(""+player_data.getTotalScore());
 
     }
 
