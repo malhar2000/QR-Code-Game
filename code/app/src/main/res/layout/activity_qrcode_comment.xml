@@ -5,16 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
+    android:background="#f8eee3"
     tools:context=".QRCodeCommentActivity">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="#faebd7"
         android:src="@drawable/homebutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/imageHomeButton"/>
+
+    <ImageButton
+        android:id="@+id/back_button_comments"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="#4faaa1"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_comments"
@@ -28,10 +40,14 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="116dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/recycle_view_comments"
-        app:layout_constraintStart_toStartOf="@+id/recycle_view_comments"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycle_view_comments">
 
         <EditText
@@ -47,13 +63,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/black"
             android:onClick="storeComments"
             android:text="Add"
             android:textSize="15dp" />
 
     </LinearLayout>
 
-    <Button
+    <!--<Button
         android:id="@+id/back_button_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,18 +80,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />-->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewTextViewWorth"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:backgroundTint="@color/black"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="#a57c00"
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="15dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textViewDisplayWorth"
@@ -95,6 +114,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="39dp"
         android:text="Comments:"
+        android:textColor="@color/black"
+        android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardViewTextViewWorth" />

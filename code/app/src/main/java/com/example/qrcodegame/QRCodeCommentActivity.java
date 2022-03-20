@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,12 +29,13 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class QRCodeCommentActivity extends AppCompatActivity {
 
     TextView setQRCodeWorth;
     EditText addComments;
-    Button backButton;
+    ImageButton backButton;
     ImageButton homeButton;
     Button addButton;
 
@@ -51,6 +55,8 @@ public class QRCodeCommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_comment);
+
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
 
         setQRCodeWorth = findViewById(R.id.textViewDisplayWorth);
         addComments = findViewById(R.id.add_comments);

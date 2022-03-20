@@ -6,8 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ViewProfileActivity"
-    android:background="#aaa7cc"
+    android:background="#f8eee3"
+    android:padding="10dp"
    >
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/qrCodeRecyclerView"
@@ -47,7 +49,7 @@
         android:layout_marginTop="20dp"
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
-        app:cardBackgroundColor="#CED2C2"
+        app:cardBackgroundColor="#f2f0e6"
         android:id="@+id/cardViewViewProfile"
         >
 
@@ -60,6 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"
                 />
@@ -70,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewTotalScore"
                 android:layout_marginTop="20dp"
-
+                android:textColor="@color/black"
                 android:text="TextView"
                 android:textSize="20sp" />
         </RelativeLayout>
@@ -106,6 +109,7 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:paddingLeft="15dp"
             />
     </androidx.cardview.widget.CardView>

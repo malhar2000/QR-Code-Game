@@ -27,27 +27,33 @@
         <entry key="..\:/Users/shahm/Moxil's Things/University Things/CMPUT 301/Final Project/QR-Code-Game/code/app/src/main/res/layout/activity_view_profile.xml" value="0.4" />
         <entry key="..\:/Users/shahm/Moxil's Things/University Things/CMPUT 301/Final Project/QR-Code-Game/code/app/src/main/res/layout/qr_code_layout.xml" value="0.6" />
         <entry key="..\:/Users/shahm/Moxil's Things/University Things/CMPUT 301/Final Project/QR-Code-Game/code/app/src/main/res/layout/qr_code_recycler_view_layout.xml" value="0.4" />
+        <entry key="app/src/main/res/drawable-v24/ic_home.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/ic_leaderboard.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/edit_text_shape.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.211" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/shape.xml" value="0.2535" />
-        <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/actionbar.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_find_qractivity.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/activity_first_time.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_leader_board.xml" value="0.20714285714285716" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3496806957103588" />
+        <entry key="app/src/main/res/layout/activity_leader_board.xml" value="0.3373918805803572" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_owner_home.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/activity_owner_qractivity.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/activity_owner_view_player.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/activity_qrcode_comment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_single_qractivity.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.3880208333333333" />
-        <entry key="app/src/main/res/layout/activity_view_profile.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/layout_comment_display.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_view_profile.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/element_single_username.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/layout/layout_comment_display.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_for_leaderboard_recycleview.xml" value="0.25" />
         <entry key="app/src/main/res/layout/qr_code_layout.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/qr_code_recycler_view_layout.xml" value="0.4058334350585938" />
         <entry key="app/src/main/res/layout/test.xml" value="0.2953125" />
+        <entry key="app/src/main/res/menu/item_menu.xml" value="0.3527777777777778" />
       </map>
     </option>
   </component>

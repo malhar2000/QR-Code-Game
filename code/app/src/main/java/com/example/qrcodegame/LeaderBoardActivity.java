@@ -36,6 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class LeaderBoardActivity extends AppCompatActivity{
 
@@ -44,7 +45,7 @@ public class LeaderBoardActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     TextView myScoreByRank;
     TextView myScoreByCode;
-    Button backBtn;
+    ImageButton backBtn;
     EditText searchPlayer;
 
     // Other things we need
@@ -63,6 +64,7 @@ public class LeaderBoardActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         setup();
 
