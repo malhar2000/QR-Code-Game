@@ -18,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Objects;
 
+// The page where the user can change their contact info
+// no issues
 public class EditProfileActivity extends AppCompatActivity {
     Button backBtn;
     EditText editUsername, editEmail, editPhone;

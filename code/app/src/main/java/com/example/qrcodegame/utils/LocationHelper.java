@@ -17,6 +17,7 @@ import android.location.LocationListener;
 
 /**
  * Class to handle Location services within the app
+ * no issues
  */
 public class LocationHelper implements LocationListener {
 

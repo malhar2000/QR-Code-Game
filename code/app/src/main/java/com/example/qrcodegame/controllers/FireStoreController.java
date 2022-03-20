@@ -1,25 +1,23 @@
 package com.example.qrcodegame.controllers;
 
-//import com.example.qrcodegame.models.Comment;
 import com.example.qrcodegame.models.QRCode;
-import com.example.qrcodegame.models.SingleComment;
 import com.example.qrcodegame.models.User;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * controller class that aids in fetching data from the firestore
+ * no issues
+ */
 public class FireStoreController {
 
     private static FireStoreController singleInstance = null;
@@ -43,15 +41,13 @@ public class FireStoreController {
     CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
     // Firestore Variables
-    //private final
     private final CollectionReference userCollectionReference = FirebaseFirestore.getInstance().collection("Users");
     private final CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
     private final CollectionReference commentsCollectionReference = FirebaseFirestore.getInstance().collection("Comments");
-//    private final StorageReference imageLocationStorage = FirebaseStorage.getInstance().getReference().child("images");
 
     public Task<QuerySnapshot> getAllCodesWithLocation() {
         return qrCollectionReference.whereNotEqualTo("coordinates", new ArrayList<>()).get();
-    };
+    }
 
     public Task<QuerySnapshot> getAllPlayers() {
         return userCollectionReference.whereNotEqualTo("isOwner", true).get();
@@ -88,6 +84,13 @@ public class FireStoreController {
         return qrCollectionReference.whereEqualTo("id",id).get();
     }
 
+    /**
+     * Saves a new code to the DB by doing the following:
+     * 1. Stores the QR code
+     * 2. Updates the player's profile whoever found it
+     * @param codeToSave the QR code to save
+     * @return A Task which is completed once both of these subtasks are done.
+     */
     public Task<Void> saveNewQrCode(QRCode codeToSave){
 
         HashMap<String, Object> updates = new HashMap<>();
@@ -100,6 +103,13 @@ public class FireStoreController {
         );
     }
 
+    /**
+     * Updates a code in the DB by doing the following:
+     * 1. Adding player name to QR code
+     * 2. Updates the player's profile whoever found it
+     * @param codeToSave QRCode to update
+     * @return A Task which is completed once both of these subtasks are done.
+     */
     public Task<Void> updateExistingQrCode(QRCode codeToSave){
         HashMap<String, Object> updates = new HashMap<>();
         updates.put("collectedCodes", FieldValue.arrayUnion(codeToSave.getId()));
