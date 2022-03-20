@@ -35,6 +35,7 @@ public class MainActivityTest {
         currentUserHelper.setPhone("7800000000");
         currentUserHelper.setUniqueID("f2ca80b75173362d");
         currentUserHelper.setFirebaseId("Shaishav");
+        currentUserHelper.setAppInTestMode(false);
     }
 
 
@@ -63,6 +64,7 @@ public class MainActivityTest {
      */
     @Test
     public void successfulQRCodeWithGeolocation(){
+        currentUserHelper.setAppInTestMode(true);
         ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
         onView(withId(R.id.saveLocationCheckBox)).perform(click());
         onView(withId(R.id.saveQRtoCloudBtn)).perform(click());
@@ -73,6 +75,26 @@ public class MainActivityTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Make sure player can't click "ADD QR CODE" without any code scanned
+     */
+    @Test
+    public void testToastOnSaveIfNoQRCodeScanned(){
+        ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
+        onView(withId(R.id.saveQRtoCloudBtn)).perform(click());
+        onView(withId(R.id.saveQRtoCloudBtn)).check(matches(isEnabled()));
+    }
+
+    /**
+     * Make sure player can't click "TAKE PHOTO" without any code scanned
+     */
+    @Test
+    public void testNoPhotoIfNoQRCodeScanned(){
+        ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
+        onView(withId(R.id.takeLocationBtn)).perform(click());
+        onView(withId(R.id.takeLocationBtn)).check(matches(isEnabled()));
     }
 
 
