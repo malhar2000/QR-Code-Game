@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +36,6 @@ public class QRCodeCommentActivity extends AppCompatActivity {
 
     TextView setQRCodeWorth;
     EditText addComments;
-    ImageButton backButton;
     ImageButton homeButton;
     Button addButton;
 
@@ -57,10 +57,10 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode_comment);
 
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         setQRCodeWorth = findViewById(R.id.textViewDisplayWorth);
         addComments = findViewById(R.id.add_comments);
-        backButton = findViewById(R.id.back_button_comments);
         addButton = findViewById(R.id.addButtonComments);
         homeButton = findViewById(R.id.imageHomeButton);
 
@@ -70,13 +70,6 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Comments for: "+getIntent().getStringExtra("QRCodeCommentActivity"));
         setQRCodeWorth.setText("Worth: "+getIntent().getStringExtra("Worth"));
 
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,5 +128,12 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/imageHomeButton"/>
 
-    <ImageButton
+   <!-- <ImageButton
         android:id="@+id/back_button_comments"
         android:layout_width="50dp"
         android:layout_height="45dp"
@@ -26,7 +26,7 @@
         android:backgroundTint="#4faaa1"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_comments"

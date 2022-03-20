@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -59,6 +60,7 @@ import java.util.Objects;
                 .findFragmentById(R.id.qrMap);
         mapFragment.getMapAsync(this);
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         surroudingImage = findViewById(R.id.surroundingImage);
         usernamesRecyclerView = findViewById(R.id.usernameList);
@@ -133,4 +135,12 @@ import java.util.Objects;
              }
          }.start();
     }
+
+     @Override
+     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+         if (item.getItemId() == android.R.id.home) {
+             onBackPressed();  return true;
+         }
+         return super.onOptionsItemSelected(item);
+     }
  }

@@ -9,57 +9,62 @@
     android:background="#f8eee3"
     >
 
-    <ImageButton
+<!--    <ImageButton
         android:id="@+id/backButtonLeaderBoard"
         android:layout_width="50dp"
         android:layout_height="45dp"
         android:layout_weight="1"
         android:backgroundTint="#4faaa1"
-        android:src="@drawable/ic_arrow_back"/>
+        android:src="@drawable/ic_arrow_back"/>-->
 
 
-    <TextView
+    <!--<TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:paddingTop="15dp"
-        android:layout_below="@+id/backButtonLeaderBoard"
         android:text="Your Estimate: "
         android:textColor="#CC1F1F"
         android:textSize="19dp"
 
-        />
+        />-->
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewLeaderB"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_below="@id/textView4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        app:cardBackgroundColor="#D8E2DC"
         app:cardCornerRadius="10dp"
-        app:cardUseCompatPadding="true"
-        android:id="@+id/cardViewLeaderB"
-        app:cardBackgroundColor="#D8E2DC">
+        app:cardUseCompatPadding="true">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp">
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp">
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="15dp"
-                android:text="Rank By Score: "
-                android:textSize="19dp" />
+                android:textColor="@color/black"
+                android:text="Your Rank By Score: "
+                android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/editTextRankByScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="XXth"
-                android:textSize="19dp"
-                android:paddingTop="15dp"
                 android:layout_toRightOf="@+id/textView3"
+                android:paddingTop="15dp"
+                android:text="XXth"
+                android:textColor="@color/black"
+                android:textSize="17dp"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
@@ -68,18 +73,20 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView3"
                 android:paddingTop="15dp"
-                android:text="Rank By Number of Code Scanned: "
-                android:textSize="19dp" />
+                android:textColor="@color/black"
+                android:text="Your Rank By Number of Code Scanned: "
+                android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/editTextRankByScanned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView3"
-                android:textSize="19dp"
-                android:text="XXth"
-                android:paddingTop="15dp"
                 android:layout_toRightOf="@+id/textView2"
+                android:paddingTop="15dp"
+                android:text="XXth"
+                android:textSize="17dp"
+                android:textColor="@color/black"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
                 app:layout_constraintEnd_toEndOf="parent" />
         </RelativeLayout>
