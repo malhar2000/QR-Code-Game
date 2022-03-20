@@ -48,7 +48,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -71,7 +71,8 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         txtViewTotalScore = findViewById(R.id.textViewTotalScore);
         totalScore = 0;
 
-
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
@@ -133,5 +134,12 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
             Intent intent = new Intent(ViewProfileActivity.this , SingleQRActivity.class);
             intent.putExtra("codeID", qrId);
             startActivity(intent);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

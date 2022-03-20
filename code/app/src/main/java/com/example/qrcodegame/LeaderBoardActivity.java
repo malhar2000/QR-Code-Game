@@ -1,15 +1,20 @@
 package com.example.qrcodegame;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,7 +52,6 @@ public class LeaderBoardActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     TextView myScoreByRank;
     TextView myScoreByCode;
-    ImageButton backBtn;
     EditText searchPlayer;
 
     // Other things we need
@@ -58,6 +62,14 @@ public class LeaderBoardActivity extends AppCompatActivity{
     // Storing Data for activity
     private ArrayList<User> allPlayers = new ArrayList<>();
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      *
      * @param savedInstanceState this is for saving state and data on the display
@@ -66,7 +78,11 @@ public class LeaderBoardActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+
+
 
         setup();
 
@@ -88,9 +104,6 @@ public class LeaderBoardActivity extends AppCompatActivity{
                 filter(editable.toString());
             }
         });
-
-        backBtn = findViewById(R.id.backButtonLeaderBoard);
-        backBtn.setOnClickListener(view -> finish());
 
     }
 
