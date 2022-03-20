@@ -7,6 +7,7 @@
      android:padding="20dp"
      tools:context=".MainActivity"
     android:background="#f8eee3"
+    android:id="@+id/mainActivityMainLayout"
     >
 
    <TextView
@@ -31,6 +32,18 @@
         android:src="@drawable/profile"
         app:layout_constraintBaseline_toBaselineOf="@+id/welcomeText"
         app:layout_constraintEnd_toEndOf="parent" />
+   
+<!--  <ImageButton
+     android:id="@+id/viewProfileBtn"
+     style="@style/Widget.AppCompat.Button.Small"
+     android:layout_height="wrap_content"
+     android:layout_centerHorizontal="true"
+     android:layout_centerVertical="true"
+     android:padding="0dp"
+     android:src="@drawable/profile"
+     app:layout_constraintBaseline_toBaselineOf="@+id/welcomeText"
+     app:layout_constraintEnd_toEndOf="parent"
+     android:layout_width="wrap_content" /> -->
 
     <View
         android:id="@+id/divider"
@@ -249,6 +262,17 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       android:id="@+id/bottom_nav"/>-->
+<!-- <Button
+    android:id="@+id/saveQRtoCloudBtn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:text="add qr code"
+    android:textAllCaps="true"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" /> -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

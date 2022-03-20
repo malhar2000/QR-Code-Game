@@ -41,6 +41,10 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
+/**
+ * Main Activity!
+ * No issues
+ */
 public class MainActivity extends AppCompatActivity implements CodeSavedListener, OnProfileTransferedListener {
 
     TextView welcomeText;
@@ -102,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
                 welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
 
         // Requesting permission
-//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
@@ -166,8 +169,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         saveQRtoCloudBtn.setOnClickListener(v -> {
             qrCodeController.saveCode(locationToggle.isChecked());
-            Toast.makeText(this, "Starting to save! Wait!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Starting to save! Wait!", Toast.LENGTH_SHORT).show();
+            saveQRtoCloudBtn.setEnabled(false);
         });
+
 
         leaderboardBtn.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class)));
 
@@ -218,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         locationPhotoBtn.setText("TAKE PHOTO");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         locationToggle.setChecked(false);
+        saveQRtoCloudBtn.setEnabled(true);
     }
 
     @Override

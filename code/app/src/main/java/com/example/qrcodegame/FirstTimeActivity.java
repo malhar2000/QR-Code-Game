@@ -18,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Objects;
 
+// if the device is not recognized in the firebase database, the user has to sign up for the first time with required and optional contact info
+// no issues
 public class FirstTimeActivity extends AppCompatActivity {
 
 

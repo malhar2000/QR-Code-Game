@@ -4,34 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.qrcodegame.SplashScreenActivity;
 import com.example.qrcodegame.ViewProfileActivity;
 import com.example.qrcodegame.interfaces.CodeSavedListener;
 import com.example.qrcodegame.interfaces.OnProfileTransferedListener;
 import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.example.qrcodegame.utils.LocationHelper;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Aids in getting and setting QR code related data
+ * No Issues
+ */
 public class QRCodeController {
 
     private QRCode currentQrCode;
@@ -102,7 +98,7 @@ public class QRCodeController {
      * Calculates the worth of the code.
      * @param qrCodeContent String content of the hash scanned
      */
-    public  void calculateWorth(String qrCodeContent) {
+    public void calculateWorth(String qrCodeContent) {
         try {
             // calculate sha-256
             // Citation: https://stackoverflow.com/questions/5531455/how-to-hash-some-string-with-sha256-in-java

@@ -17,7 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Objects;
 
-
+// splash screen
+// no issues
 public class SplashScreenActivity extends AppCompatActivity {
 
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
