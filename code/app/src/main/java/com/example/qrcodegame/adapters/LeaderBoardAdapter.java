@@ -31,7 +31,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
             "#FFE6E8", "#DCD0FF", "#FCDFFF", "#F8F6F0", "#FAF0DD", "#FBFBF9", "#FFFAFA",
             "#FEFCFF", "#FFF9E3", "#b83800", "#dd0244", "#c90000", "#465400",
             "#ff004d", "#ff6700", "#5d6eff", "#3955ff", "#0a24ff", "#004380", "#6b2e53",
-            "#a5c996", "#f94fad", "#ff85bc", "#ff906b", "#b6bc68", "#296139"};
+            "#a5c996", "#f84fad", "#ff85bc", "#ff906b", "#b6bc68", "#296139"};
     Random random = new Random();
 
     public LeaderBoardAdapter(List<User> saveLeaderInfos, Context context) {

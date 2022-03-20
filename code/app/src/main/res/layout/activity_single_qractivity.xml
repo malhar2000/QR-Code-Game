@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SingleQRActivity"
-    android:background="@drawable/yellow_background">
+    android:background="#f8eee3"
+    >
 
     <TextView
         android:id="@+id/worthTxt"
@@ -15,6 +16,7 @@
         android:layout_marginLeft="15dp"
         android:text="Worth: XXXX"
         android:textSize="20dp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +28,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:drawableRight="@android:drawable/sym_action_chat"
+        android:drawableTint="@color/black"
         android:text="Comments"
+        android:textColor="@color/black"
         app:layout_constraintBaseline_toBaselineOf="@+id/worthTxt"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -73,7 +77,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:text="Other Players with this Hash!"
+        android:textColor="@color/black"
         android:textStyle="bold"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/surroundingImage"
         app:layout_constraintTop_toBottomOf="@+id/surroundingImage" />
 

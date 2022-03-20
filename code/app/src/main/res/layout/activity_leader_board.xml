@@ -6,16 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".LeaderBoardActivity"
     android:padding="15dp"
+    android:background="#f8eee3"
     >
 
-    <Button
+    <ImageButton
         android:id="@+id/backButtonLeaderBoard"
-        android:layout_width="165dp"
+        android:layout_width="50dp"
         android:layout_height="45dp"
         android:layout_weight="1"
-        android:text="Go Back"
         android:backgroundTint="#4faaa1"
-        />
+        android:src="@drawable/ic_arrow_back"/>
 
 
     <TextView
@@ -84,20 +84,21 @@
                 app:layout_constraintEnd_toEndOf="parent" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-    <TextView
+
+   <!-- <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="All Players: "
-        android:textColor="#CC1F1F"
+        android:layout_below="@+id/cardViewLeaderB"
         android:paddingTop="15dp"
-        android:textSize="19dp"
-        android:layout_below="@+id/cardViewLeaderB" />
+        android:text="All Players: "
+        android:textColor="@color/black"
+        android:textSize="19dp" />-->
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="73dp"
-        android:layout_below="@id/textView5"
+        android:layout_below="@id/cardViewLeaderB"
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
         android:id="@+id/cardViewSearch"

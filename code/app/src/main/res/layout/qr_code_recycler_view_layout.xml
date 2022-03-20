@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Test"
+            android:textColor="@color/black"
             android:textStyle="bold"
             />
 
@@ -27,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Test"
+            android:textColor="@color/black"
             android:layout_marginTop="8dp"
             android:layout_below="@+id/eachQRCode" />
 
@@ -35,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/eachQRCodeScore"
             android:text="Country"
+            android:textColor="@color/black"
             android:layout_marginTop="8dp"
             android:id="@+id/eachQRCodeCountry"/>
     </RelativeLayout>

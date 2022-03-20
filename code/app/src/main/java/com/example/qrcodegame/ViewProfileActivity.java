@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +45,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
 
     }
 
@@ -56,6 +59,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         txtViewTotalCodes = findViewById(R.id.textViewTotalCodes);
         txtViewTotalScore = findViewById(R.id.textViewTotalScore);
         totalScore = 0;
+
 
 
         // Get the Intent that started this activity and extract the string
