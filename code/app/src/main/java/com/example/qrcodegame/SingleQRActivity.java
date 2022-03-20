@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,26 +17,22 @@ import android.widget.TextView;
 import com.example.qrcodegame.adapters.QrUsernameAdapter;
 import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.models.QRCode;
-import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
- // when a user clicks a qr code, the info about the qr code is presented here
+// when a user clicks a qr code, the info about the qr code is presented here
 // no issues
- public class SingleQRActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SingleQRActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-     private ImageView surroudingImage;
+     private ImageView surroundingImage;
      private TextView worthTxt;
      private RecyclerView usernamesRecyclerView;
      Button commentBtn;
@@ -60,8 +57,9 @@ import java.util.Objects;
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.qrMap);
         mapFragment.getMapAsync(this);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
 
-        surroudingImage = findViewById(R.id.surroundingImage);
+        surroundingImage = findViewById(R.id.surroundingImage);
         usernamesRecyclerView = findViewById(R.id.usernameList);
         worthTxt = findViewById(R.id.worthTxt);
         commentBtn = findViewById(R.id.commentBtn);
@@ -132,7 +130,7 @@ import java.util.Objects;
 
                              // Image
                              if (currentQRcode.getImageUrl() != null && !currentQRcode.getImageUrl().isEmpty()) {
-                                 Picasso.get().load(currentQRcode.getImageUrl()).into(surroudingImage);
+                                 Picasso.get().load(currentQRcode.getImageUrl()).into(surroundingImage);
                              }
 
                              // Usernames

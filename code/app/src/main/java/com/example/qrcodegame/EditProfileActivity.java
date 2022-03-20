@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.qrcodegame.utils.CurrentUserHelper;
@@ -15,6 +16,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 // The page where the user can change their contact info
 // no issues
@@ -27,6 +29,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         initItems();
     }
 
@@ -49,6 +52,13 @@ public class EditProfileActivity extends AppCompatActivity {
         editPhone.setText(currentUserHelper.getPhone());
         editUsername = findViewById(R.id.editUsername);
         editUsername.setText(currentUserHelper.getUsername());
+        ImageButton img = findViewById(R.id.imageHomeButtonEdit);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
     }
 
     /**
