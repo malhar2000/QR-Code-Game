@@ -34,7 +34,7 @@ public class SplashScreenActivityTest {
         ActivityScenario<SplashScreenActivity> activityScenario = ActivityScenario.launch(SplashScreenActivity.class);
         new Thread(() -> {
             try {
-                wait(5000);
+                Thread.sleep(5000);
                 onView(withId(R.id.splashScreenActivity)).check(doesNotExist());
             } catch (InterruptedException e) {
                 e.printStackTrace();

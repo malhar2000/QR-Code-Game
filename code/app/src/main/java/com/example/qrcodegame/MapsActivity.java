@@ -97,7 +97,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(MapsActivity.this, SingleQRActivity.class);
         intent.putExtra("codeID", marker.getTitle());
         startActivity(intent);
-        finish();
         return false;
     }
 
