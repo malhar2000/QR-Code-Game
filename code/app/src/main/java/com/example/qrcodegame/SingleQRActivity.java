@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +29,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-// when a user clicks a qr code, the info about the qr code is presented here
+import java.util.Objects;
+
+ // when a user clicks a qr code, the info about the qr code is presented here
 // no issues
  public class SingleQRActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -52,6 +55,7 @@ import com.squareup.picasso.Picasso;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_qractivity);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.qrMap);
@@ -63,15 +67,26 @@ import com.squareup.picasso.Picasso;
         commentBtn = findViewById(R.id.commentBtn);
 
         // Malhar's Edit
-        commentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), QRCodeCommentActivity.class);
-                intent.putExtra("QRCodeCommentActivity", codeID);
-                intent.putExtra("Worth", worth);
-                startActivity(intent);
-            }
+        commentBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), QRCodeCommentActivity.class);
+            intent.putExtra("QRCodeCommentActivity", codeID);
+            intent.putExtra("Worth", worth);
+            startActivity(intent);
         });
+    }
+
+    /**
+     * For back button
+     * @param item No need to know. This is called by android
+     * @return No need to know. This is called by android
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
      /**

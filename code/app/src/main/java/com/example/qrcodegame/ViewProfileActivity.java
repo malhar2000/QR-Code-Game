@@ -1,11 +1,15 @@
 package com.example.qrcodegame;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -43,7 +47,17 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -56,6 +70,7 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         txtViewTotalCodes = findViewById(R.id.textViewTotalCodes);
         txtViewTotalScore = findViewById(R.id.textViewTotalScore);
         totalScore = 0;
+
 
 
         // Get the Intent that started this activity and extract the string

@@ -35,7 +35,6 @@ public class MainActivityTest {
         currentUserHelper.setPhone("7800000000");
         currentUserHelper.setUniqueID("f2ca80b75173362d");
         currentUserHelper.setFirebaseId("Shaishav");
-        Log.d("TEST","HERE");
     }
 
 
