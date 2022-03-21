@@ -85,16 +85,17 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
 
         btnEditProfile.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), EditProfileActivity.class)));
 
-        btnOpenQRCode.setOnClickListener(v -> openDialog("View-Profile=" + username));
+        btnOpenQRCode.setOnClickListener(v -> openDialog("View-Profile=" + username, "Share your Profile! (Not Transfer)"));
 
-        ((Button) findViewById(R.id.profileTransferBtn)).setOnClickListener(v -> openDialog("Transfer-Profile=" + username));
+        ((Button) findViewById(R.id.profileTransferBtn)).setOnClickListener(v -> openDialog("Transfer-Profile=" + username, "Transfer your Profile!"));
 
         fetchQRCodesOfUser(username);
     }
 
-    public void openDialog(String message) {
+    public void openDialog(String message, String title) {
         Intent intent = new Intent(this, QRCodeDialog.class);
         intent.putExtra("content", message);
+        intent.putExtra("title", title);
         Bundle args = (intent.getExtras());
 
         QRCodeDialog qrCodeDialog = new QRCodeDialog();
