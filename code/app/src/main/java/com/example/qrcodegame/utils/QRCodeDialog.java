@@ -33,6 +33,7 @@ public class QRCodeDialog extends AppCompatDialogFragment {
 
         Bundle passedUsername = getArguments();
         if (passedUsername != null) {
+
             String content = (String) passedUsername.get("content");
 
             MultiFormatWriter writer = new MultiFormatWriter();
@@ -47,7 +48,7 @@ public class QRCodeDialog extends AppCompatDialogFragment {
             }
         }
         builder.setView(view)
-                .setTitle("Your Unique QR Code")
+                .setTitle(passedUsername.getString("title"))
                 .setNegativeButton("Back", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
