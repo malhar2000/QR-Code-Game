@@ -12,6 +12,9 @@ public class User {
     private String email;
     private String phone;
     private int totalScore;
+
+
+
     private boolean isOwner;
     private ArrayList<String> collectedCodes = new ArrayList<>();
     private ArrayList<String> devices = new ArrayList<>();
@@ -144,4 +147,5 @@ public class User {
     public void setCollectedCodes(ArrayList<String> collectedCodes) {
         this.collectedCodes = collectedCodes;
     }
+
 }

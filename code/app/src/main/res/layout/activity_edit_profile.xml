@@ -60,6 +60,7 @@
         app:layout_constraintHorizontal_bias="0.352"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
+        android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></EditText>
 
@@ -78,6 +79,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:enabled="false"
         android:paddingLeft="10dp"
         android:id="@+id/editUsername"
         android:layout_width="291dp"
