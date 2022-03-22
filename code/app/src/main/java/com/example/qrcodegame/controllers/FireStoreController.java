@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -55,6 +56,10 @@ public class FireStoreController {
 
     public Task<QuerySnapshot> getAllPlayers() {
         return userCollectionReference.whereNotEqualTo("isOwner", true).get();
+    }
+
+    public Task<QuerySnapshot> getAllQRCodes() {
+        return qrCollectionReference.get();
     }
 
     public Task<QuerySnapshot> getAllUsers() {
@@ -123,5 +128,27 @@ public class FireStoreController {
                 FirebaseFirestore.getInstance().collection("Users").document(currentUserHelper.getFirebaseId()).update(updates)
         );
     }
+
+    public Task<Void> deleteQRCode(QRCode qrCodeToDelete) {
+
+        // All pending tasks
+        ArrayList<Task<Void>> allTasks = new ArrayList<>();
+
+        // Decreasing score and qrCode
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put("collectedCodes", FieldValue.arrayRemove(qrCodeToDelete.getId()));
+        updates.put("totalScore", FieldValue.increment( -1 * qrCodeToDelete.getWorth()));
+
+        // Put all updates in one tasks
+        qrCodeToDelete.getPlayers().forEach(playerUsername -> {
+            Task<Void> updateTask =  userCollectionReference.document(playerUsername).update(updates);
+            allTasks.add(updateTask);
+        });
+        // Delete qr code.
+        allTasks.add(qrCollectionReference.document(qrCodeToDelete.getId()).delete());
+        //
+        return Tasks.whenAll(allTasks);
+    }
+
 
 }

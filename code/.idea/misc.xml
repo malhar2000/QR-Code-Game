@@ -9,6 +9,7 @@
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_leader_board.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_owner_home.xml" value="0.34010416666666665" />
+        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_owner_qractivity.xml" value="0.33" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_owner_view_player.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_qrcode_comment.xml" value="0.33" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/activity_single_qractivity.xml" value="0.33" />
@@ -18,7 +19,8 @@
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/layout_comment_display.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/layout_for_leaderboard_recycleview.xml" value="0.34010416666666665" />
         <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/qr_code_layout.xml" value="0.34010416666666665" />
-        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/qr_code_recycler_view_layout.xml" value="0.67" />
+        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/qr_code_recycler_view_layout.xml" value="0.3606789250353607" />
+        <entry key="..\:/Coding Stuff/CMPUT301/QR-Code-Game/code/app/src/main/res/layout/single_owner_qr_code.xml" value="0.3474114441416894" />
         <entry key="..\:/Uni/CMPUT 301/QR code 1/QR-Code-Game/code/app/src/main/res/layout/activity_leader_board.xml" value="0.25052083333333336" />
         <entry key="..\:/Uni/CMPUT 301/QR code 1/QR-Code-Game/code/app/src/main/res/layout/activity_owner_home.xml" value="0.25052083333333336" />
         <entry key="..\:/Uni/CMPUT 301/QR code 1/QR-Code-Game/code/app/src/main/res/layout/activity_owner_qractivity.xml" value="0.25052083333333336" />
