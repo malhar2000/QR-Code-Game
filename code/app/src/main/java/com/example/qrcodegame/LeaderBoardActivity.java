@@ -27,6 +27,7 @@ import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.controllers.LeaderBoardController;
 import com.example.qrcodegame.models.User;
 import com.example.qrcodegame.utils.CurrentUserHelper;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -36,10 +37,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
