@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="#8a8a8a"
+    android:id="@+id/cardview_in_ownerQRCode"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id='@+id/QRCodeNameTextView'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Id: "
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id='@+id/QRCodeLocationTextView'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/QRCodeNameTextView"
+            android:layout_marginTop="8dp"
+            android:text="Location: "
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/QRCodeWorthTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/QRCodeLocationTextView"
+            android:layout_marginTop="8dp"
+            android:text="Worth: "
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
