@@ -1,17 +1,16 @@
 package com.example.qrcodegame;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-
 import com.example.qrcodegame.adapters.OwnerQRCodeAdapter;
 import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.models.QRCode;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class OwnerQRActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OwnerQRCodeAdapter ownerQRCodeAdapter;
     private ArrayList<QRCode> allQRCodes;
-    private FireStoreController fireStoreController = FireStoreController.getInstance();
+    private final FireStoreController fireStoreController = FireStoreController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +37,14 @@ public class OwnerQRActivity extends AppCompatActivity {
     private void initQRCodes() {
         fireStoreController.getAllQRCodes()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> {
-                        allQRCodes.add(documentSnapshot.toObject(QRCode.class));
-                    });
+                    queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> allQRCodes.add(documentSnapshot.toObject(QRCode.class)));
                     initList();
                 })
-                .addOnFailureListener(e -> e.printStackTrace());
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 
     private void initList() {
-        ownerQRCodeAdapter = new OwnerQRCodeAdapter(allQRCodes, this);
+        ownerQRCodeAdapter = new OwnerQRCodeAdapter(allQRCodes);
         recyclerView.setAdapter(ownerQRCodeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -64,9 +61,9 @@ public class OwnerQRActivity extends AppCompatActivity {
             fireStoreController.deleteQRCode(qrCodeToDelete)
                     .addOnSuccessListener(v -> {
                         allQRCodes.remove(qrCodeToDelete);
-                        ownerQRCodeAdapter.notifyDataSetChanged();
+                        ownerQRCodeAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
                     })
-                    .addOnFailureListener(e -> e.printStackTrace());
+                    .addOnFailureListener(Throwable::printStackTrace);
         }
     };
 

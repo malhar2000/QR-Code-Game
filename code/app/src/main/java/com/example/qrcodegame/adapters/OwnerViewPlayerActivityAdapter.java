@@ -1,4 +1,4 @@
-package com.example.qrcodegame;
+package com.example.qrcodegame.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,19 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qrcodegame.R;
 import com.example.qrcodegame.models.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 public class OwnerViewPlayerActivityAdapter extends RecyclerView.Adapter<OwnerViewPlayerActivityAdapter.MyViewHolder> implements Filterable {
 
     Context context;
     ArrayList<User> list;
-    static ArrayList<User> listAll;
+    public static ArrayList<User> listAll;
     String[] mColors = {
             "#AAF0D1", "#99C68E", "#DBF9DB", "#FAEBD7", "#FFEFD5", "#FFE4C4", "#FDD7E4",
             "#FFE6E8", "#DCD0FF", "#FCDFFF", "#F8F6F0", "#FAF0DD", "#FBFBF9", "#FFFAFA",
