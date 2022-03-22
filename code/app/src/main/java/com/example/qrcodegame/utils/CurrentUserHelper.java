@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * CurrentUserHelper Class:
  *
  * This handles all the user info across the app
+ * no issues
  */
 public class CurrentUserHelper {
 
@@ -22,6 +23,7 @@ public class CurrentUserHelper {
         return singleInstance;
     }
 
+    private boolean appInTestMode = false;
     private String username;
     private String email;
     private String phone;
@@ -88,5 +90,21 @@ public class CurrentUserHelper {
 
     public void setOwner(Boolean owner) {
         isOwner = owner;
+    }
+
+    /**
+     * returns whether or not app in test mode
+     * @return test mode status
+     */
+    public boolean getIsAppInTestMode() {
+        return appInTestMode;
+    }
+
+    /**
+     * set whether or not app in test mode
+     * @param appInTestMode
+     */
+    public void setAppInTestMode(boolean appInTestMode) {
+        this.appInTestMode = appInTestMode;
     }
 }

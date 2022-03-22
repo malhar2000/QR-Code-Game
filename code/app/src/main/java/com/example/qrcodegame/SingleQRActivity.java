@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,22 +18,22 @@ import android.widget.TextView;
 import com.example.qrcodegame.adapters.QrUsernameAdapter;
 import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.models.QRCode;
-import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
- public class SingleQRActivity extends AppCompatActivity implements OnMapReadyCallback {
+import java.util.Objects;
 
-     private ImageView surroudingImage;
+// when a user clicks a qr code, the info about the qr code is presented here
+// no issues
+public class SingleQRActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+     private ImageView surroundingImage;
      private TextView worthTxt;
      private RecyclerView usernamesRecyclerView;
      Button commentBtn;
@@ -50,26 +53,40 @@ import com.squareup.picasso.Picasso;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_qractivity);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.qrMap);
         mapFragment.getMapAsync(this);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        surroudingImage = findViewById(R.id.surroundingImage);
+        surroundingImage = findViewById(R.id.surroundingImage);
         usernamesRecyclerView = findViewById(R.id.usernameList);
         worthTxt = findViewById(R.id.worthTxt);
         commentBtn = findViewById(R.id.commentBtn);
 
         // Malhar's Edit
-        commentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), QRCodeCommentActivity.class);
-                intent.putExtra("QRCodeCommentActivity", codeID);
-                intent.putExtra("Worth", worth);
-                startActivity(intent);
-            }
+        commentBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), QRCodeCommentActivity.class);
+            intent.putExtra("QRCodeCommentActivity", codeID);
+            intent.putExtra("Worth", worth);
+            startActivity(intent);
         });
+    }
+
+    /**
+     * For back button
+     * @param item No need to know. This is called by android
+     * @return No need to know. This is called by android
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
      /**
@@ -115,7 +132,7 @@ import com.squareup.picasso.Picasso;
 
                              // Image
                              if (currentQRcode.getImageUrl() != null && !currentQRcode.getImageUrl().isEmpty()) {
-                                 Picasso.get().load(currentQRcode.getImageUrl()).into(surroudingImage);
+                                 Picasso.get().load(currentQRcode.getImageUrl()).into(surroundingImage);
                              }
 
                              // Usernames
@@ -128,4 +145,12 @@ import com.squareup.picasso.Picasso;
              }
          }.start();
     }
+
+     @Override
+     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+         if (item.getItemId() == android.R.id.home) {
+             onBackPressed();  return true;
+         }
+         return super.onOptionsItemSelected(item);
+     }
  }

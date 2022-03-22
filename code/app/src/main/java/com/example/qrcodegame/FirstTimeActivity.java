@@ -18,17 +18,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Objects;
 
+// if the device is not recognized in the firebase database, the user has to sign up for the first time with required and optional contact info
+// no issues
 public class FirstTimeActivity extends AppCompatActivity {
+
 
     private EditText edtTxtUserName;
     private EditText edtTxtEmail;
     private EditText edtTxtPhoneNumber;
     private EditText edtTxtAdminPin;
 
+    private Button btnGo; //, scanQRCodeNewUserBtn;
+
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
     private final CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
-    ArrayList<String> allUsernames = new ArrayList<>();
-
+    private final ArrayList<String> allUsernames = new ArrayList<>();
     private final Integer ADMIN_PIN = 9999;
 
     /**
@@ -53,6 +57,7 @@ public class FirstTimeActivity extends AppCompatActivity {
 
         btnGo.setOnClickListener(v -> submitDetails());
     }
+
 
     /**
      * Given a User object, this method saves it to the database. User must be checked for unique username before calling this method.
@@ -81,6 +86,7 @@ public class FirstTimeActivity extends AppCompatActivity {
                     }
                     // Switch
                     startActivity(intent);
+                    // finish this activity
                     finish();
                 })
                 .addOnFailureListener(e -> Log.w("add user fail", "Error adding document", e));

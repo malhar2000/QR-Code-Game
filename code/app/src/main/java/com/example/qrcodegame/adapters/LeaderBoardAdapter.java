@@ -31,7 +31,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
             "#FFE6E8", "#DCD0FF", "#FCDFFF", "#F8F6F0", "#FAF0DD", "#FBFBF9", "#FFFAFA",
             "#FEFCFF", "#FFF9E3", "#b83800", "#dd0244", "#c90000", "#465400",
             "#ff004d", "#ff6700", "#5d6eff", "#3955ff", "#0a24ff", "#004380", "#6b2e53",
-            "#a5c996", "#f94fad", "#ff85bc", "#ff906b", "#b6bc68", "#296139"};
+            "#a5c996", "#f84fad", "#ff85bc", "#ff906b", "#b6bc68", "#296139"};
     Random random = new Random();
 
     public LeaderBoardAdapter(List<User> saveLeaderInfos, Context context) {
@@ -40,6 +40,12 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         int size = saveLeaderInfos.size();
     }
 
+    /**
+     *
+     * @param parent default parameters of override function.
+     * @param viewType
+     * @return  a viewHolder for the recycleView
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,6 +54,13 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         return new ViewHolder(view);
     }
 
+    /**
+     * This method bind or display all the LeaderRank, Name, Score for particular User
+     *  on the display
+     * @param holder holder is the holder for the view elements on recycleView
+     * @param position adjust the positions to display of the recycle view on the when User scrolls
+     *      *                 or adjust the LeaderRank View.
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.textViewUserName.setText(saveLeaderInfos.get(position).getUsername());
@@ -63,16 +76,29 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         });
     }
 
+    /**
+     *
+     * @return the size of the list that content all the UserInfo
+     */
     @Override
     public int getItemCount() {
         return saveLeaderInfos.size();
     }
 
+    /**
+     * This function filters the arrayList according to the User input to search A User
+     * @param fList A list contenting all Players details
+     */
     public void filterList(ArrayList<User> fList){
         saveLeaderInfos = fList;
         notifyDataSetChanged();
     }
 
+    /**
+     * This class connects all the Views for the recycleView display layout.(i.leaderboard_r-
+     * ecycleview)
+     * ViewHolder class for the recycleView
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewUserScore;

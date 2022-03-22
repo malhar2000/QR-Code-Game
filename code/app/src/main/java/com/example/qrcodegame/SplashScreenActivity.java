@@ -17,17 +17,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Objects;
 
-
+// splash screen
+// no issues
 public class SplashScreenActivity extends AppCompatActivity {
 
+    // FOR DEVELOPMENT PURPOSES
+    private boolean APP_IN_TEST_MODE = true;
+
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
-    CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
+    private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        //Objects.requireNonNull(getSupportActionBar()).hide();
     }
 
     /**
@@ -68,6 +72,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             currentUserHelper.setFirebaseId(currentUser.getUsername());
                             currentUserHelper.setEmail(currentUser.getEmail());
                             currentUserHelper.setPhone(currentUser.getPhone());
+                            currentUserHelper.setAppInTestMode(APP_IN_TEST_MODE);
 
                             // Switch to the correct activity.
                             Intent intent;

@@ -2,6 +2,7 @@ package com.example.qrcodegame;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,12 +17,16 @@ import android.graphics.Bitmap;
 
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.qrcodegame.controllers.QRCodeController;
 import com.example.qrcodegame.interfaces.CodeSavedListener;
@@ -29,15 +34,21 @@ import com.example.qrcodegame.interfaces.OnProfileTransferedListener;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
+import java.util.UUID;
 
+/**
+ * Main Activity!
+ * No issues
+ */
 public class MainActivity extends AppCompatActivity implements CodeSavedListener, OnProfileTransferedListener {
 
-    // View Elements
     TextView welcomeText;
     TextView analyzeText;
     TextView resultText;
@@ -66,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Permissions
@@ -87,11 +99,12 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         locationToggle = findViewById(R.id.saveLocationCheckBox);
         profileViewBtn = findViewById(R.id.viewProfileBtn);
 
+        //BottomNavigationView navigationView = findViewById(R.id.bottom_nav);
+
         // Update Title
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
 
         // Requesting permission
-//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
@@ -137,8 +150,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         locationPhotoBtn.setOnClickListener(view -> {
 
-            // TODO
-            // ADD CHECK HERE
+            if (!currentUserHelper.getIsAppInTestMode() && qrCodeController.getCurrentQrCode().getId() == null) {
+                Toast.makeText(this, "Scan a QR code first!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (qrCodeController.getLocationImage() == null) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -147,17 +162,54 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
             }
 
             locationPhotoBtn.setText("TAKE PHOTO");
+            qrCodeController.setLocationImage(null);
             locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
             Toast.makeText(this, "Image removed!", Toast.LENGTH_SHORT).show();
         });
 
 
         saveQRtoCloudBtn.setOnClickListener(v -> {
+
+            // Check if valid QR Code
+            if (qrCodeController.getCurrentQrCode().getId() == null || qrCodeController.getCurrentQrCode().getId().isEmpty() || qrCodeController.getCurrentQrCode().getWorth() == 0) {
+                if (currentUserHelper.getIsAppInTestMode()) {
+                    qrCodeController.getCurrentQrCode().setId(UUID.randomUUID().toString());
+                    qrCodeController.getCurrentQrCode().setWorth((int) Math.floor(Math.random()*1000));
+                } else {
+                    Toast.makeText(this, "Scan a QR Code first!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            };
+
             qrCodeController.saveCode(locationToggle.isChecked());
-            Toast.makeText(this, "Starting to save! Wait!", Toast.LENGTH_SHORT).show();
+            saveQRtoCloudBtn.setEnabled(false);
         });
 
+
         leaderboardBtn.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class)));
+
+       /* navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.nav_explore:
+                        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+                        break;
+                    case R.id.nav_leader:
+                        startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class));
+                        break;
+                    case R.id.nav_profile:
+                        Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
+                        intent.putExtra("username", currentUserHelper.getUsername());
+                        startActivity(intent);
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });*/
 
     }
 
@@ -180,9 +232,11 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
      * Resets the UI to match a new state.
      */
     public void resetUI() {
+        Log.d("Test","RESETING UI");
         locationPhotoBtn.setText("TAKE PHOTO");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         locationToggle.setChecked(false);
+        saveQRtoCloudBtn.setEnabled(true);
     }
 
     @Override

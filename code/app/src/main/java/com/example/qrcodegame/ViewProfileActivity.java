@@ -1,13 +1,16 @@
 package com.example.qrcodegame;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,18 +22,16 @@ import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.example.qrcodegame.utils.QRCodeDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Objects;
 
+/**
+ * what a user sees when they view another users profile
+ * no issues
+ */
 public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecyclerViewAdapter.QRProfileListener {
-
-//    private ArrayList<String> qrCodeNames;
-//    private ArrayList<String> qrCodeScores;
-//    private ArrayList<String> qrCodeCountry;
 
     private ArrayList<QRCode> qrCodes;
 
@@ -46,15 +47,22 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        qrCodeNames = new ArrayList<String>();
-//        qrCodeScores = new ArrayList<String>();
-//        qrCodeCountry = new ArrayList<String>();
 
         qrCodes = new ArrayList<>();
         ImageButton btnEditProfile = findViewById(R.id.buttonEditProfile);
@@ -63,6 +71,8 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         txtViewTotalScore = findViewById(R.id.textViewTotalScore);
         totalScore = 0;
 
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
@@ -73,20 +83,11 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
             ((Button) findViewById(R.id.profileTransferBtn)).setVisibility(View.INVISIBLE);
         }
 
-        btnEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
-            }
-        });
+        btnEditProfile.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), EditProfileActivity.class)));
 
-        btnOpenQRCode.setOnClickListener(v -> {
-            openDialog("View-Profile=" + username);
-        });
+        btnOpenQRCode.setOnClickListener(v -> openDialog("View-Profile=" + username));
 
-        ((Button) findViewById(R.id.profileTransferBtn)).setOnClickListener(v -> {
-            openDialog("Transfer-Profile=" + username);
-        });
+        ((Button) findViewById(R.id.profileTransferBtn)).setOnClickListener(v -> openDialog("Transfer-Profile=" + username));
 
         fetchQRCodesOfUser(username);
     }
@@ -110,24 +111,21 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
 
     protected void fetchQRCodesOfUser(String username) {
        fireStoreController.getSpecifiedUsersCodes(username)
-            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    for (DocumentSnapshot existingQR : queryDocumentSnapshots) {
-                        // Convert to qr code
-                        QRCode qrCode = existingQR.toObject(QRCode.class);
-                        qrCodes.add(qrCode);
-                        totalScore += qrCode.getWorth();
-                        if(qrCode.getAddress() == null)
-                            qrCode.setAddress("No Location!");
-                    }
-
-                    qrCodes.sort((qrCode, t1) -> t1.getWorth() - qrCode.getWorth());
-
-                    initRecyclerView();
-                    txtViewTotalScore.setText("Total score: " + totalScore);
-                    txtViewTotalCodes.setText("Total number of codes scanned: " + qrCodes.size());
+            .addOnSuccessListener(queryDocumentSnapshots -> {
+                for (DocumentSnapshot existingQR : queryDocumentSnapshots) {
+                    // Convert to qr code
+                    QRCode qrCode = existingQR.toObject(QRCode.class);
+                    qrCodes.add(qrCode);
+                    totalScore += qrCode.getWorth();
+                    if(qrCode.getAddress() == null)
+                        qrCode.setAddress("No Location!");
                 }
+
+                qrCodes.sort((qrCode, t1) -> t1.getWorth() - qrCode.getWorth());
+
+                initRecyclerView();
+                txtViewTotalScore.setText("Total score: " + totalScore);
+                txtViewTotalCodes.setText("Total number of codes scanned: " + qrCodes.size());
             });
     }
 
@@ -136,5 +134,12 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
             Intent intent = new Intent(ViewProfileActivity.this , SingleQRActivity.class);
             intent.putExtra("codeID", qrId);
             startActivity(intent);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

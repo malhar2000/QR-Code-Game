@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+// yet to be completed
 public class OwnerHomeActivity extends AppCompatActivity {
 
     private Button btnViewPlayers;

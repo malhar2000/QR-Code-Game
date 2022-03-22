@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
+// yet to be completed
+// no issues
 public class OwnerViewPlayerActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;

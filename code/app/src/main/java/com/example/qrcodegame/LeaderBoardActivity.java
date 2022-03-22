@@ -1,18 +1,24 @@
 package com.example.qrcodegame;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +31,10 @@ import com.example.qrcodegame.utils.CurrentUserHelper;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
+// This is the leaderboard card view where users can see each others and their ranking
+// no issues
 public class LeaderBoardActivity extends AppCompatActivity{
 
     // View elements
@@ -33,7 +42,6 @@ public class LeaderBoardActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     TextView myScoreByRank;
     TextView myScoreByCode;
-    Button backBtn;
     EditText searchPlayer;
 
     // Other things we need
@@ -45,9 +53,26 @@ public class LeaderBoardActivity extends AppCompatActivity{
     private ArrayList<User> allPlayers = new ArrayList<>();
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     *
+     * @param savedInstanceState this is for saving state and data on the display
+     */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+
+
 
         setup();
 
@@ -70,11 +95,12 @@ public class LeaderBoardActivity extends AppCompatActivity{
             }
         });
 
-        backBtn = findViewById(R.id.backButtonLeaderBoard);
-        backBtn.setOnClickListener(view -> finish());
-
     }
 
+    /**
+     * This function sets the adapter to the search perfernce of the user
+     * @param text User search input inside the search section is returned here
+     */
     private void filter(String text){
         ArrayList<User> fList = new ArrayList<>();
         for(User u : allPlayers){
@@ -85,6 +111,9 @@ public class LeaderBoardActivity extends AppCompatActivity{
         adapter.filterList(fList);
     }
 
+    /**
+     * Initializing recycle display
+     */
     private void initRecyclerView(){
         recyclerView = findViewById(R.id.recycle_view);
         adapter = new LeaderBoardAdapter(allPlayers, this);
@@ -92,6 +121,9 @@ public class LeaderBoardActivity extends AppCompatActivity{
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * We restore the data from the firestore
+     */
     public void setup(){
 
         allPlayers.clear();

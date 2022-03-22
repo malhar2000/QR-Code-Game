@@ -1,12 +1,17 @@
 package com.example.qrcodegame;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.qrcodegame.utils.CurrentUserHelper;
@@ -15,9 +20,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Objects;
 
+// The page where the user can change their contact info
+// no issues
 public class EditProfileActivity extends AppCompatActivity {
-    Button backBtn;
+
     EditText editUsername, editEmail, editPhone;
     DocumentReference userDocument; //, emailDocument, phoneDocument;
     CurrentUserHelper currentUserHelper;
@@ -25,6 +33,8 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         initItems();
     }
 
@@ -40,23 +50,20 @@ public class EditProfileActivity extends AppCompatActivity {
 //        phoneDocument = FirebaseFirestore.getInstance().collection("Users")
 //                .document(currentUserHelper.getFirebaseId());
 //        linkAccount = findViewById(R.id.linkAccount);
-        backBtn = findViewById(R.id.backBtn);
+
         editEmail = findViewById(R.id.editEmail);
         editEmail.setText(currentUserHelper.getEmail());
         editPhone = findViewById(R.id.editPhone);
         editPhone.setText(currentUserHelper.getPhone());
         editUsername = findViewById(R.id.editUsername);
         editUsername.setText(currentUserHelper.getUsername());
-    }
-
-    /**
-     * OnClick function for back Button
-     * Returns : None
-     * @param view Takes Back Button View as input
-     */
-    public void backBtnOnClick(View view){
-//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
+        ImageButton img = findViewById(R.id.imageHomeButtonEdit);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
     }
 
     /**
@@ -89,5 +96,12 @@ public class EditProfileActivity extends AppCompatActivity {
         CurrentUserHelper.getInstance().setUsername(username);
         Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
         finish();
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
