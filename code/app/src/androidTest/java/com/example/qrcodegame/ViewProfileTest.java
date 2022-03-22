@@ -15,6 +15,7 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.qrcodegame.utils.CurrentUserHelper;
 

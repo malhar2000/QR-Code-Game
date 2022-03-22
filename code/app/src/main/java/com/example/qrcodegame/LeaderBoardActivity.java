@@ -27,6 +27,7 @@ import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.controllers.LeaderBoardController;
 import com.example.qrcodegame.models.User;
 import com.example.qrcodegame.utils.CurrentUserHelper;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -80,9 +81,6 @@ public class LeaderBoardActivity extends AppCompatActivity{
         setContentView(R.layout.activity_leader_board);
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
-
-
 
         setup();
 
@@ -156,6 +154,7 @@ public class LeaderBoardActivity extends AppCompatActivity{
                     e.printStackTrace();
                     Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                 });
+
 
 
     }
