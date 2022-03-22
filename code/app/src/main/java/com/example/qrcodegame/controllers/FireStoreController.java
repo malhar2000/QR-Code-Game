@@ -49,6 +49,10 @@ public class FireStoreController {
         return qrCollectionReference.whereNotEqualTo("coordinates", new ArrayList<>()).get();
     }
 
+    public Task<QuerySnapshot> getAllCodes(){
+        return qrCollectionReference.get();
+    }
+
     public Task<QuerySnapshot> getAllPlayers() {
         return userCollectionReference.whereNotEqualTo("isOwner", true).get();
     }

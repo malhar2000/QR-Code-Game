@@ -4,25 +4,19 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="8dp"
-    app:cardCornerRadius="8dp"
-    android:layout_margin="16dp">
+    android:layout_margin="10dp"
+    app:cardCornerRadius="15dp"
+    android:id="@+id/player_list_cardView"
+
+    >
 
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-
+        android:padding="8dp"
+        >
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
@@ -30,12 +24,8 @@
                 android:text="USERNAME: "
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="26sp"></TextView>
-
-
-
-        </LinearLayout>
-
+                android:paddingLeft="10dp"
+                android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/score"
@@ -43,16 +33,11 @@
             android:layout_height="wrap_content"
             android:text="Score: "
             android:textColor="@color/black"
+            android:layout_below="@+id/user_name"
             android:textStyle="bold"
-            android:textSize="26sp"></TextView>
-        <Button
-            android:id="@+id/delete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete" />
-
-    </LinearLayout>
-
+            android:paddingLeft="10dp"
+            android:textSize="26sp"/>
+    </RelativeLayout>
 
 
 
