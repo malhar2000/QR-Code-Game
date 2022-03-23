@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OwnerHomeActivity">
+    tools:context=".OwnerHomeActivity"
+    android:background="#f8eee3">
 
     <Button
         android:id="@+id/viewOrEditPlayer"
@@ -14,7 +15,8 @@
         android:text="View/Edit All Players"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/black"/>
 
     <Button
         android:id="@+id/viewOrEditQR"
@@ -26,6 +28,7 @@
         android:text="View/Edit All QR codes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/viewOrEditPlayer" />
 
     <TextView
@@ -35,8 +38,10 @@
         android:layout_marginTop="40dp"
         android:layout_marginBottom="400dp"
         android:text="ADMIN VIEW"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/viewOrEditPlayer"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="50sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

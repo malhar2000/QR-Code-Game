@@ -1,6 +1,9 @@
 package com.example.qrcodegame;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.models.QRCode;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class OwnerQRActivity extends AppCompatActivity {
@@ -25,6 +29,8 @@ public class OwnerQRActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0F9D58")));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_owner_qractivity);
         recyclerView = findViewById(R.id.allQRCodesOwner);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
@@ -66,5 +72,12 @@ public class OwnerQRActivity extends AppCompatActivity {
                     .addOnFailureListener(Throwable::printStackTrace);
         }
     };
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }
