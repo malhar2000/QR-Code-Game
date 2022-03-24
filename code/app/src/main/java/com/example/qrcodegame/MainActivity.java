@@ -188,6 +188,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         leaderboardBtn.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class)));
 
+
+        qrCodeController = new QRCodeController(this, this, this);
+        resetUI();
+
        /* navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -213,26 +217,13 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
     }
 
-    /**
-     * Updates the UI, as well starts location services
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        analyzeText.setVisibility(View.INVISIBLE);
-        resultText.setVisibility(View.INVISIBLE);
-
-        qrCodeController = new QRCodeController(this, this, this);
-
-        resetUI();
-    }
 
     /**
      * Resets the UI to match a new state.
      */
     public void resetUI() {
-        Log.d("Test","RESETING UI");
+        analyzeText.setVisibility(View.INVISIBLE);
+        resultText.setVisibility(View.INVISIBLE);
         locationPhotoBtn.setText("TAKE PHOTO");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         locationToggle.setChecked(false);
@@ -266,8 +257,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
             // Displaying text
             analyzeText.setVisibility(View.VISIBLE);
             resultText.setVisibility(View.VISIBLE);
+            System.out.println(qrCodeController.getCurrentQrCode().getWorth());
             String message = "This Hash is worth: " + qrCodeController.getCurrentQrCode().getWorth();
             resultText.setText(message);
+            System.out.println("TEXT " + resultText.getText().toString());
         }
     }
 

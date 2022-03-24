@@ -30,6 +30,7 @@
         android:backgroundTint="#f8eee3"
         android:layout_centerHorizontal="true"
         android:src="@drawable/profile"
+        android:contentDescription="profile button"
         app:layout_constraintBaseline_toBaselineOf="@+id/welcomeText"
         app:layout_constraintEnd_toEndOf="parent" />
    
@@ -135,24 +136,25 @@
       android:layout_width="300dp"
       android:layout_height="wrap_content"
       android:padding="10dp">
-    <TextView
-        android:id="@+id/analyzeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="QR CODE ANALYZED!"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
 
-   <TextView
-       android:id="@+id/codeWorthText"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_below="@+id/analyzeText"
-       android:text="This Code is worth: XXXX"
-       android:textColor="@color/black"
-       android:textSize="18sp"
-       android:textStyle="bold" />
+      <TextView
+          android:id="@+id/analyzeText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="QR CODE ANALYZED!"
+          android:textColor="@color/black"
+          android:textSize="18sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/codeWorthText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/analyzeText"
+          android:text="This Code is worth: XXXX"
+          android:textColor="@color/black"
+          android:textSize="18sp"
+          android:textStyle="bold" />
   </RelativeLayout>
  </androidx.cardview.widget.CardView>
 
