@@ -22,7 +22,7 @@ import java.util.Objects;
 public class SplashScreenActivity extends AppCompatActivity {
 
     // FOR DEVELOPMENT PURPOSES
-    private boolean APP_IN_TEST_MODE = false;
+    private boolean APP_IN_TEST_MODE = true;
 
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
     private CurrentUserHelper currentUserHelper = CurrentUserHelper.getInstance();

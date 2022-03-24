@@ -77,21 +77,27 @@ public class LeaderBoardTest {
     }
 
     @Test
-    public void checkTheTenthPositionInTheView(){
+    public void checkTheFirstPositionInTheView(){
         ActivityScenario<LeaderBoardActivity> activityScenario = ActivityScenario.launch(changeActivity());
         try{
             Thread.sleep(5000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        onView(withId(R.id.recycle_view)).perform(RecyclerViewActions.actionOnItemAtPosition
-                (10, click()));
+        onView(withId(R.id.recycle_view))
+                .perform(RecyclerViewActions.actionOnItemAtPosition
+                (1, click()));
         onView(withId(R.id.viewProfileActivity)).check(matches(isDisplayed()));
         //Open a menu if we have one and then do onView(withText("xyz")).perform(click());
         //openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
         //https://stackoverflow.com/questions/23985181/click-home-icon-with-espresso/26898398#26898398
         onView(withContentDescription(("Navigate up"))).perform(click());
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
         onView(withId(R.id.recycle_view)).check(matches(isDisplayed()));
     }
 
