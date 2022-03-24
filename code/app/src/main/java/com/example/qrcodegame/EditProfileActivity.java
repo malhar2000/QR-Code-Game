@@ -45,12 +45,6 @@ public class EditProfileActivity extends AppCompatActivity {
         currentUserHelper = CurrentUserHelper.getInstance();
         userDocument = FirebaseFirestore.getInstance().collection("Users")
                 .document(currentUserHelper.getFirebaseId());
-//        emailDocument = FirebaseFirestore.getInstance().collection("Users")
-//                .document(currentUserHelper.getFirebaseId());
-//        phoneDocument = FirebaseFirestore.getInstance().collection("Users")
-//                .document(currentUserHelper.getFirebaseId());
-//        linkAccount = findViewById(R.id.linkAccount);
-
         editEmail = findViewById(R.id.editEmail);
         editEmail.setText(currentUserHelper.getEmail());
         editPhone = findViewById(R.id.editPhone);
@@ -76,27 +70,33 @@ public class EditProfileActivity extends AppCompatActivity {
         String username = editUsername.getText().toString();
         String email = editEmail.getText().toString();
         String phone = editPhone.getText().toString();
-        if (username.equals("")){
-            Toast.makeText(EditProfileActivity.this,
-                    "Username is blank", Toast.LENGTH_LONG).show();
-            return;
-        }
+//        if (username.equals("")){
+//            Toast.makeText(EditProfileActivity.this,
+//                    "Username is blank", Toast.LENGTH_LONG).show();
+//            return;
+//        }
 
-        if(email.equals("")) {
-            Toast.makeText(EditProfileActivity.this,
-                    "Email Address is blank", Toast.LENGTH_LONG).show();
-            return;
-        }
+//        if(email.equals("")) {
+//            Toast.makeText(EditProfileActivity.this,
+//                    "Email Address is blank", Toast.LENGTH_LONG).show();
+//            return;
+//        }
         updates.put("username", username);
         updates.put("email", email);
         updates.put("phone", phone);
-        userDocument.update(updates);
-        CurrentUserHelper.getInstance().setPhone(phone);
-        CurrentUserHelper.getInstance().setEmail(email);
-        CurrentUserHelper.getInstance().setUsername(username);
-        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
-        finish();
+        userDocument.update(updates)
+            .addOnSuccessListener(v -> {
+                CurrentUserHelper.getInstance().setPhone(phone);
+                CurrentUserHelper.getInstance().setEmail(email);
+                CurrentUserHelper.getInstance().setUsername(username);
+                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+                finish();
+            }).addOnFailureListener(e -> {
+                e.printStackTrace();
+                Toast.makeText(this, "Error Saving!", Toast.LENGTH_SHORT).show();
+            });
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
