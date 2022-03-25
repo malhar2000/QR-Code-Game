@@ -1,44 +1,30 @@
 package com.example.qrcodegame;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrcodegame.adapters.LeaderBoardAdapter;
 import com.example.qrcodegame.controllers.FireStoreController;
 import com.example.qrcodegame.controllers.LeaderBoardController;
+import com.example.qrcodegame.models.QRCode;
 import com.example.qrcodegame.models.User;
 import com.example.qrcodegame.utils.CurrentUserHelper;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 // This is the leaderboard card view where users can see each others and their ranking
@@ -50,6 +36,7 @@ public class LeaderBoardActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     TextView myScoreByRank;
     TextView myScoreByCode;
+    TextView myScoreByUniqueNess;
     EditText searchPlayer;
 
     // Other things we need
@@ -83,6 +70,8 @@ public class LeaderBoardActivity extends AppCompatActivity{
 
         myScoreByCode = findViewById(R.id.editTextRankByScanned);
         myScoreByRank = findViewById(R.id.editTextRankByScore);
+        myScoreByUniqueNess = findViewById(R.id.rankByUniqueQRCode);
+
         searchPlayer = findViewById(R.id.editTextSearchForPlayers);
 
         searchPlayer.addTextChangedListener(new TextWatcher() {
@@ -135,9 +124,7 @@ public class LeaderBoardActivity extends AppCompatActivity{
         fireStoreController.getAllPlayers()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     // Adding users to list
-                    queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> {
-                        allPlayers.add(documentSnapshot.toObject(User.class));
-                    });
+                    queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> allPlayers.add(documentSnapshot.toObject(User.class)));
 
                     // Set Ranks
                     int rankByNumOfCodes = leaderBoardController.getScoreByNumberOfQrScanned(allPlayers);
@@ -152,6 +139,20 @@ public class LeaderBoardActivity extends AppCompatActivity{
                     Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                 });
 
+        // Used for getting the unique QR code rank
+        fireStoreController.getAllQRCodes().addOnSuccessListener(queryDocumentSnapshots -> {
+            int rank = 1;
+            for (DocumentSnapshot d : queryDocumentSnapshots.getDocuments()) {
+                QRCode qrcode = d.toObject(QRCode.class);
+                assert qrcode != null;
+                if (qrcode.getPlayers().contains(currentUserHelper.getUsername())) {
+                    break;
+                } else {
+                    rank++;
+                }
+            }
+            myScoreByUniqueNess.setText("Your Rank By Unique Code: " + rank);
+        });
 
 
     }

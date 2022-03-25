@@ -59,7 +59,7 @@ public class FireStoreController {
     }
 
     public Task<QuerySnapshot> getAllQRCodes() {
-        return qrCollectionReference.get();
+        return qrCollectionReference.orderBy("worth").get();
     }
 
     public Task<QuerySnapshot> getAllUsers() {
