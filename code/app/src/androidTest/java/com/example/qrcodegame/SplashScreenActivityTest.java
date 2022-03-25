@@ -32,14 +32,12 @@ public class SplashScreenActivityTest {
     @Test
     public void successfulRedirect() {
         ActivityScenario<SplashScreenActivity> activityScenario = ActivityScenario.launch(SplashScreenActivity.class);
-        new Thread(() -> {
-            try {
-                Thread.sleep(5000);
-                onView(withId(R.id.splashScreenActivity)).check(doesNotExist());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        try {
+            Thread.sleep(5000);
+            onView(withId(R.id.splashScreenActivity)).check(doesNotExist());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

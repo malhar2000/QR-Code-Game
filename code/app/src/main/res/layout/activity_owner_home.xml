@@ -4,15 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OwnerHomeActivity">
+    tools:context=".OwnerHomeActivity"
+    android:background="#f8eee3">
 
-    <TextView
-        android:id="@+id/textView6"
+    <Button
+        android:id="@+id/viewOrEditPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Owner Activity (Replace This)"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="459dp"
+        android:text="View/Edit All Players"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/black"/>
+
+    <Button
+        android:id="@+id/viewOrEditQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="162dp"
+        android:text="View/Edit All QR codes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/viewOrEditPlayer" />
+
+    <TextView
+        android:id="@+id/adminView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="400dp"
+        android:text="ADMIN VIEW"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/viewOrEditPlayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="50sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,8 @@ public class CurrentUserHelper {
     private String uniqueID;
     private boolean isOwner;
     private String firebaseId;
+
+
     private ArrayList<Double> currentLocation = new ArrayList<>();
 
     private CurrentUserHelper() {
