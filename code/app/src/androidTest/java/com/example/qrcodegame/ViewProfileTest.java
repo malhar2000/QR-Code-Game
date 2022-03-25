@@ -93,13 +93,13 @@ public class ViewProfileTest {
         onView(withText("Share your Profile! (Not Transfer)")).check(matches(isDisplayed()));
     }
 
-//    @Test
-//    public void testEditProfileBtnWorks(){
-////        ActivityScenario<ViewProfileActivity> activityScenario = ActivityScenario.launch(mockIntentForPersonalProfile());
-////        onView(withId(R.id.buttonEditProfile))
-////                .check(matches(isDisplayed()))
-////                .perform(click());
-////        onView(withText("Profile Editing")).check(matches(isDisplayed()));
-//    }
+    @Test
+    public void testEditProfileBtnWorks(){
+        ActivityScenario<ViewProfileActivity> activityScenario = ActivityScenario.launch(mockIntentForPersonalProfile());
+        onView(withId(R.id.buttonEditProfile))
+                .check(matches(isDisplayed()))
+                .perform(click());
+        onView(withText("Profile Editing")).check(matches(isDisplayed()));
+    }
 
 }
