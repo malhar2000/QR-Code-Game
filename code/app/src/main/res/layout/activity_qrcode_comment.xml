@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:padding="15dp"
     android:background="#f8eee3"
-    tools:context=".QRCodeCommentActivity">
+    tools:context=".QRCodeCommentActivity"
+    android:id="@+id/commentActivityMainLayout">
 
     <ImageButton
         android:layout_width="wrap_content"
