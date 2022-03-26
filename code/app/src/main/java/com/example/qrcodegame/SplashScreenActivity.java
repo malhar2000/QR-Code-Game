@@ -3,6 +3,7 @@ package com.example.qrcodegame;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -40,38 +42,35 @@ public class SplashScreenActivity extends AppCompatActivity implements AwaitingP
 
     // UI
     Button locationReqBtn, cameraReqBtn;
+    ConstraintLayout reqLayout;
 
     // Others
     ActivityResultLauncher<String[]> locationPermissionRequest =
-            registerForActivityResult(new ActivityResultContracts
-                            .RequestMultiplePermissions(), result -> {
-                        Boolean fineLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_FINE_LOCATION, false);
-                        Boolean coarseLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_COARSE_LOCATION,false);
-                        if (fineLocationGranted != null && fineLocationGranted) {
-                            awaitingPermissionsHelper.setLocationGranted(true);
-                            toggleButton(locationReqBtn, "LOCATION");
-                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                            Toast.makeText(this, "Grant Precise Location!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, "Grant Location!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-            );
+        registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+            Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
+            Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION,false);
+            if (fineLocationGranted != null && fineLocationGranted) {
+                awaitingPermissionsHelper.setLocationGranted(true);
+                toggleButton(locationReqBtn);
+            } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                Toast.makeText(this, "Grant Precise Location!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Grant Location!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    );
 
     ActivityResultLauncher<String[]> cameraPermissionRequest =
-            registerForActivityResult(new ActivityResultContracts
-                            .RequestMultiplePermissions(), result -> {
-                        Boolean cameraGranted = result.getOrDefault(Manifest.permission.CAMERA, false);
-                        if (cameraGranted) {
-                            awaitingPermissionsHelper.setCameraGranted(true);
-                            toggleButton(cameraReqBtn, "CAMERA");
-                        } else {
-                            Toast.makeText(this, "Grant Camera!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-            );
+        registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+            Boolean cameraGranted = result.getOrDefault(Manifest.permission.CAMERA, false);
+            if (cameraGranted) {
+                awaitingPermissionsHelper.setCameraGranted(true);
+                toggleButton(cameraReqBtn);
+            } else {
+                Toast.makeText(this, "Grant Camera!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,22 +79,18 @@ public class SplashScreenActivity extends AppCompatActivity implements AwaitingP
         Objects.requireNonNull(getSupportActionBar()).hide();
         locationReqBtn = findViewById(R.id.reqLocationBtn);
         cameraReqBtn = findViewById(R.id.reqCameraBtn);
+        reqLayout = findViewById(R.id.requestPermissionsLayout);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            awaitingPermissionsHelper.setLocationGranted(true);
-            toggleButton(locationReqBtn, "LOCATION");
-        }
+        checkInitialPermissions();
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            awaitingPermissionsHelper.setCameraGranted(true);
-            toggleButton(cameraReqBtn, "CAMERA");
+        if ( !(awaitingPermissionsHelper.isCameraGranted() && awaitingPermissionsHelper.isLocationGranted()) ) {
+            reqLayout.setVisibility(View.VISIBLE);
         }
 
         locationReqBtn.setOnClickListener(view -> locationPermissionRequest.launch(new String[] {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         }));
-
 
         cameraReqBtn.setOnClickListener(view -> cameraPermissionRequest.launch(new String[] {
                 Manifest.permission.CAMERA,
@@ -171,16 +166,24 @@ public class SplashScreenActivity extends AppCompatActivity implements AwaitingP
         }
     }
 
-    private void toggleButton(Button b, String type) {
+    private void toggleButton(Button b) {
         if (b.isEnabled()) {
             b.setEnabled(false);
             b.setBackgroundColor(0xFF00FF00);
             b.setText("Granted");
-        } else {
-            b.setEnabled(false);
-            b.setBackgroundColor(0xFF0000FF);
-            b.setText("GRANT " + type);
         }
     }
+
+    private void checkInitialPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            awaitingPermissionsHelper.setLocationGranted(true);
+            toggleButton(locationReqBtn);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            awaitingPermissionsHelper.setCameraGranted(true);
+            toggleButton(cameraReqBtn);
+        }
+    };
 
 }

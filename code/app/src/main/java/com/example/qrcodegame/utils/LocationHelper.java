@@ -71,7 +71,7 @@ public class LocationHelper implements LocationListener {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 10, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
