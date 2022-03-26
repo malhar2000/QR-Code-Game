@@ -1,0 +1,13 @@
+In the Codes Collection:
+
+- We need a code with the hash/id: 2dfcdc9c-003c-4ebd-a595-8c94458dce16
+
+In the Users Collection, we need:
+
+User with these details:
+
+currentUserHelper.setUsername("Shaishav");
+currentUserHelper.setPhone("7800000000");
+currentUserHelper.setUniqueID("f2ca80b75173362d");
+currentUserHelper.setFirebaseId("Shaishav");
+currentUserHelper.setAppInTestMode(false);
