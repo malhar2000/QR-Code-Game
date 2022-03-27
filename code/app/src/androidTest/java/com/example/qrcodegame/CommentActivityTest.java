@@ -3,6 +3,7 @@ package com.example.qrcodegame;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -103,6 +104,9 @@ public class CommentActivityTest {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
+//        onView(withId(R.id.recycle_view_comments))
+//                .perform(RecyclerViewActions.scrollToHolder(new ));
+
         onView(withText(String.format("%s: %s", currentUserHelper.getUsername(), time))).check(matches(isDisplayed()));
     }
 

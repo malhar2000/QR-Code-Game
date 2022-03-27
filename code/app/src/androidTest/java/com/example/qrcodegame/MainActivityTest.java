@@ -66,10 +66,10 @@ public class MainActivityTest {
         ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
         onView(withId(R.id.saveLocationCheckBox)).perform(click());
         onView(withId(R.id.saveQRtoCloudBtn)).perform(click());
-        onView(withId(R.id.saveQRtoCloudBtn)).check(matches(Matchers.not(isEnabled())));
+        onView(withId(R.id.saveQRtoCloudBtn)).check(matches(Matchers.not(isClickable())));
         try {
             Thread.sleep(3000);
-            onView(withId(R.id.saveQRtoCloudBtn)).check(matches(isEnabled()));
+            onView(withId(R.id.saveQRtoCloudBtn)).check(matches(isClickable()));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class MainActivityTest {
     public void testToastOnSaveIfNoQRCodeScanned(){
         ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
         onView(withId(R.id.saveQRtoCloudBtn)).perform(click());
-        onView(withId(R.id.saveQRtoCloudBtn)).check(matches(isEnabled()));
+        onView(withId(R.id.saveQRtoCloudBtn)).check(matches(isClickable()));
     }
 
     /**
@@ -92,7 +92,7 @@ public class MainActivityTest {
     public void testNoPhotoIfNoQRCodeScanned(){
         ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
         onView(withId(R.id.takeLocationBtn)).perform(click());
-        onView(withId(R.id.takeLocationBtn)).check(matches(isEnabled()));
+        onView(withId(R.id.takeLocationBtn)).check(matches(isClickable()));
     }
 
 

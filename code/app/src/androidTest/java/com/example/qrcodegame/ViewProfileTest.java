@@ -65,6 +65,11 @@ public class ViewProfileTest {
         onView(withId(R.id.buttonOpenShareQRCode))
                 .check(matches(isDisplayed()))
                 .perform(click());
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
         onView(withText("Share your Profile! (Not Transfer)")).check(matches(isDisplayed()));
     }
 
@@ -74,12 +79,22 @@ public class ViewProfileTest {
         onView(withId(R.id.profileTransferBtn))
                 .check(matches(isDisplayed()))
                 .perform(click());
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
         onView(withText("Transfer your Profile!")).check(matches(isDisplayed()));
     }
 
     @Test
     public void testTransferProfileNotAvaliableOnNonPersonalProfile(){
         ActivityScenario<ViewProfileActivity> activityScenario = ActivityScenario.launch(mockIntentForNonPersonalProfile());
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
         onView(withId(R.id.profileTransferBtn))
                 .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
     }
@@ -90,6 +105,11 @@ public class ViewProfileTest {
         onView(withId(R.id.buttonOpenShareQRCode))
                 .check(matches(isDisplayed()))
                 .perform(click());
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
         onView(withText("Share your Profile! (Not Transfer)")).check(matches(isDisplayed()));
     }
 
@@ -99,6 +119,11 @@ public class ViewProfileTest {
         onView(withId(R.id.buttonEditProfile))
                 .check(matches(isDisplayed()))
                 .perform(click());
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
         onView(withText("Profile Editing")).check(matches(isDisplayed()));
     }
 
