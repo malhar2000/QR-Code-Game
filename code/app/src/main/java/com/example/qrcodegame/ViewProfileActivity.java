@@ -2,6 +2,7 @@ package com.example.qrcodegame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +35,7 @@ import java.util.Objects;
 public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecyclerViewAdapter.QRProfileListener {
 
     private ArrayList<QRCode> qrCodes;
-
+    private qrCodeRecyclerViewAdapter adapter;
     private TextView txtViewTotalScore;
     private TextView txtViewTotalCodes;
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
@@ -105,10 +106,31 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.qrCodeRecyclerView);
-        qrCodeRecyclerViewAdapter adapter = new qrCodeRecyclerViewAdapter(qrCodes, this, this);
+        adapter = new qrCodeRecyclerViewAdapter(qrCodes, this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (getIntent().getExtras().get("username").toString().equals(currentUserHelper.getUsername())) {
+            new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
+        }
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            QRCode qrCodeToDelete = qrCodes.get(viewHolder.getLayoutPosition());
+            fireStoreController.deleteQRCode(qrCodeToDelete)
+                    .addOnSuccessListener(v -> {
+                        qrCodes.remove(viewHolder.getAbsoluteAdapterPosition());
+                        adapter.notifyItemRemoved(viewHolder.getAbsoluteAdapterPosition());
+                    })
+                    .addOnFailureListener(Throwable::printStackTrace);
+        }
+    };
 
     protected void fetchQRCodesOfUser(String username) {
        fireStoreController.getSpecifiedUsersCodes(username)

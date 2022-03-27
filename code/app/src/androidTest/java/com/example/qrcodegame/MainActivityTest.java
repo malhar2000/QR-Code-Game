@@ -27,7 +27,6 @@ public class MainActivityTest {
 
     private CurrentUserHelper currentUserHelper;
 
-
     @Before
     public void setupCurrentUserHelper(){
         currentUserHelper = CurrentUserHelper.getInstance();
@@ -37,7 +36,6 @@ public class MainActivityTest {
         currentUserHelper.setFirebaseId("Shaishav");
         currentUserHelper.setAppInTestMode(false);
     }
-
 
     /**
      * This makes sure that the main activity launches

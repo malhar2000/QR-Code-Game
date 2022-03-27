@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (currentUserHelper.getCurrentLocation().size() > 0) {
             LatLng userLocation = new LatLng(currentUserHelper.getCurrentLocation().get(0), currentUserHelper.getCurrentLocation().get(1));
             //zooming on the user location
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 13));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
         }
     }
 

@@ -80,13 +80,6 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        // Permissions
-        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION
-            }, 100);
-        }
-
         // Binding
         welcomeText = findViewById(R.id.welcomeText);
         analyzeText = findViewById(R.id.analyzeText);
@@ -104,13 +97,6 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         // Update Title
         welcomeText.setText("Welcome " + currentUserHelper.getUsername() + "!");
 
-        // Requesting permission
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
 
         exploreMap.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MapsActivity.class)));
 
@@ -182,7 +168,8 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
             };
 
             qrCodeController.saveCode(locationToggle.isChecked());
-            saveQRtoCloudBtn.setEnabled(false);
+            saveQRtoCloudBtn.setText("WAIT...");
+            saveQRtoCloudBtn.setClickable(false);
         });
 
 
@@ -191,29 +178,6 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
 
         qrCodeController = new QRCodeController(this, this, this);
         resetUI();
-
-       /* navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()){
-                    case R.id.nav_explore:
-                        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
-                        break;
-                    case R.id.nav_leader:
-                        startActivity(new Intent(getApplicationContext(), LeaderBoardActivity.class));
-                        break;
-                    case R.id.nav_profile:
-                        Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
-                        intent.putExtra("username", currentUserHelper.getUsername());
-                        startActivity(intent);
-                        break;
-                    default:
-                        return true;
-                }
-                return true;
-            }
-        });*/
 
     }
 
@@ -225,9 +189,10 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         analyzeText.setVisibility(View.INVISIBLE);
         resultText.setVisibility(View.INVISIBLE);
         locationPhotoBtn.setText("TAKE PHOTO");
+        saveQRtoCloudBtn.setText("ADD QR CODE");
         locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
         locationToggle.setChecked(false);
-        saveQRtoCloudBtn.setEnabled(true);
+        saveQRtoCloudBtn.setClickable(true);
     }
 
     @Override
