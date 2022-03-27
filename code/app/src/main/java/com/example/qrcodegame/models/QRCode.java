@@ -99,10 +99,11 @@ public class QRCode {
 
     /**
      * Sets the QR Code's coordinates to coordinates.
-     * @param coordinates This is a double array of the coordinates that are assigned.
+     * @param coordinates1 This is a double array of the coordinates that are assigned.
      */
-    public void setCoordinates(ArrayList<Double> coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinates(ArrayList<Double> coordinates1) {
+        if (coordinates1.size() == 2)
+            this.coordinates = coordinates1;
     }
 
     /**

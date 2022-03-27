@@ -32,11 +32,11 @@ android {
         viewBinding true
     }
 
-//    testOptions{
-//        unitTests.all{
-//            useJUnitPlatform()
-//        }
-//    }
+    testOptions{
+        unitTests.all{
+            useJUnitPlatform()
+        }
+    }
 
     buildToolsVersion '32.0.0'
 }
