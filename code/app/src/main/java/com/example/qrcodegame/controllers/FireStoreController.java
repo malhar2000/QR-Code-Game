@@ -150,5 +150,16 @@ public class FireStoreController {
         return Tasks.whenAll(allTasks);
     }
 
+    public Task<Void> removeUserFromQRCode(QRCode qrCode) {
+
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put("collectedCodes", FieldValue.arrayRemove(qrCode.getId()));
+        updates.put("totalScore", FieldValue.increment( -1 * qrCode.getWorth()));
+
+        return Tasks.whenAll(
+            userCollectionReference.document(currentUserHelper.getFirebaseId()).update(updates),
+            qrCollectionReference.document(qrCode.getId()).update("players", FieldValue.arrayRemove(currentUserHelper.getUsername()))
+        );
+    }
 
 }

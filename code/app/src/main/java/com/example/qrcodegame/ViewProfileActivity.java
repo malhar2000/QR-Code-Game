@@ -123,12 +123,14 @@ public class ViewProfileActivity extends AppCompatActivity implements qrCodeRecy
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             QRCode qrCodeToDelete = qrCodes.get(viewHolder.getLayoutPosition());
-            fireStoreController.deleteQRCode(qrCodeToDelete)
-                    .addOnSuccessListener(v -> {
-                        qrCodes.remove(viewHolder.getAbsoluteAdapterPosition());
-                        adapter.notifyItemRemoved(viewHolder.getAbsoluteAdapterPosition());
-                    })
-                    .addOnFailureListener(Throwable::printStackTrace);
+            fireStoreController.removeUserFromQRCode(qrCodeToDelete)
+                .addOnSuccessListener(v -> {
+                    qrCodes.remove(viewHolder.getAbsoluteAdapterPosition());
+                    adapter.notifyItemRemoved(viewHolder.getAbsoluteAdapterPosition());
+//                    txtViewTotalScore.setText("Total Score: "+(totalScore - qrCodeToDelete.getWorth()));
+//                    txtViewTotalCodes.setText("Total Codes Scanned: "+(Integer.parseInt(txtViewTotalCodes.getText().toString().split(":")[1]) - 1));
+                })
+                .addOnFailureListener(Throwable::printStackTrace);
         }
     };
 
