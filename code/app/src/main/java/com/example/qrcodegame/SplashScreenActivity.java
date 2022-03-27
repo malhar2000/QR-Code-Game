@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qrcodegame.controllers.FireStoreController;
@@ -43,6 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity implements AwaitingP
     // UI
     Button locationReqBtn, cameraReqBtn;
     ConstraintLayout reqLayout;
+    TextView permissionTxt;
 
     // Others
     ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -80,11 +82,13 @@ public class SplashScreenActivity extends AppCompatActivity implements AwaitingP
         locationReqBtn = findViewById(R.id.reqLocationBtn);
         cameraReqBtn = findViewById(R.id.reqCameraBtn);
         reqLayout = findViewById(R.id.requestPermissionsLayout);
+        permissionTxt = findViewById(R.id.grantPermissionsTxt);
 
         checkInitialPermissions();
 
         if ( !(awaitingPermissionsHelper.isCameraGranted() && awaitingPermissionsHelper.isLocationGranted()) ) {
             reqLayout.setVisibility(View.VISIBLE);
+            permissionTxt.setVisibility(View.VISIBLE);
         }
 
         locationReqBtn.setOnClickListener(view -> locationPermissionRequest.launch(new String[] {

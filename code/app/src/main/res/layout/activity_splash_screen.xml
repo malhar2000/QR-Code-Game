@@ -67,4 +67,18 @@
                 android:text="Grant Camera" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/grantPermissionsTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:lines="2"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:text="GRANT ALL PERMISSIONS TO MOVE FORWARD!!! \n  CAMERA PERMISSON + PRESICE LOCATION"
+        app:layout_constraintBottom_toTopOf="@+id/requestPermissionsLayout"
+        app:layout_constraintEnd_toEndOf="@+id/requestPermissionsLayout"
+        app:layout_constraintStart_toStartOf="@+id/requestPermissionsLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

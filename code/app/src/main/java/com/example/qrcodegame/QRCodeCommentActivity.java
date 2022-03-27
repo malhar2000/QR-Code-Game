@@ -128,7 +128,7 @@ public class QRCodeCommentActivity extends AppCompatActivity {
         adapter = new CommentRecycleViewAdapter(getComments, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //recyclerView.smoothScrollToPosition(getComments.size() - 1);
+//        recyclerView.smoothScrollToPosition(getComments.size() - 1);
     }
 
     @Override
