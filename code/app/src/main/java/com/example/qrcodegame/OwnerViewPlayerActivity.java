@@ -36,7 +36,10 @@ public class OwnerViewPlayerActivity extends AppCompatActivity {
     ArrayList<User> listOfUsers;
 
 
-
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,11 @@ public class OwnerViewPlayerActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Filters recycleView on user's search input
+     * @param menu setting the serach option in the menu
+     * @return true if succesfully added search to the toolbar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -79,6 +87,9 @@ public class OwnerViewPlayerActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Deleting users on swipe right
+     */
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -112,6 +123,10 @@ public class OwnerViewPlayerActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Initlizing the recycleView
+     * @param userArrayList contains all the Users in the game
+     */
     private void initRecycleView(ArrayList<User> userArrayList){
         recyclerView = findViewById(R.id.playerList);
         player_adapter = new OwnerViewPlayerActivityAdapter(this, userArrayList);
@@ -120,6 +135,11 @@ public class OwnerViewPlayerActivity extends AppCompatActivity {
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
     }
 
+    /**
+     *
+     * @param item backButton in the toolbar
+     * @return backButton true success
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

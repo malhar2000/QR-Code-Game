@@ -31,6 +31,7 @@ import android.widget.Toolbar;
 import com.example.qrcodegame.controllers.QRCodeController;
 import com.example.qrcodegame.interfaces.CodeSavedListener;
 import com.example.qrcodegame.interfaces.OnProfileTransferedListener;
+import com.example.qrcodegame.models.User;
 import com.example.qrcodegame.utils.CurrentUserHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -40,6 +41,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
     Button exploreMap;
     Button leaderboardBtn;
     CheckBox locationToggle;
+    static ArrayList<User> allPlayers = new ArrayList<>();
 
     // Other needed variables
     QRCodeController qrCodeController;
@@ -190,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements CodeSavedListener
         resultText.setVisibility(View.INVISIBLE);
         locationPhotoBtn.setText("TAKE PHOTO");
         saveQRtoCloudBtn.setText("ADD QR CODE");
-        locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_200, null));
+        locationPhotoBtn.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.black, null));
         locationToggle.setChecked(false);
         saveQRtoCloudBtn.setClickable(true);
     }

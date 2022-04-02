@@ -116,7 +116,9 @@ public class LeaderBoardActivity extends AppCompatActivity{
     }
 
     /**
-     * We restore the data from the firestore
+     * We restore the data from the firestore by getting allplayers and turning into object User
+     * and then sorting by worth and size of collectionCodes.
+     * Very Expensive and time consuming.
      */
     public void setup(){
 
