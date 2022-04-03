@@ -14,6 +14,9 @@ import com.example.qrcodegame.R;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for the usernames in viewing single QR code
+ */
 public class QrUsernameAdapter extends RecyclerView.Adapter<QrUsernameAdapter.viewHolder>{
 
     private Context context;

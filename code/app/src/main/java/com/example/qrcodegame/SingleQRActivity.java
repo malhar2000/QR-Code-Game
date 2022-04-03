@@ -29,8 +29,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
-// when a user clicks a qr code, the info about the qr code is presented here
-// no issues
+/**
+ * when a user clicks a qr code, the info about the qr code is presented here
+ * no issues
+ */
 public class SingleQRActivity extends AppCompatActivity implements OnMapReadyCallback {
 
      private ImageView surroundingImage;

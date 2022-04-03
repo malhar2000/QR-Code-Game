@@ -25,8 +25,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Objects;
 
-// yet to be completed
-// no issues
+/**
+ * Activity for owners to delete player
+ */
 public class OwnerViewPlayerActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;

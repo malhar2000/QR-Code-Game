@@ -22,8 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Objects;
 
-// The page where the user can change their contact info
-// no issues
+/**
+ * The page where the user can change their contact info
+ * no issues
+ */
 public class EditProfileActivity extends AppCompatActivity {
 
     EditText editUsername, editEmail, editPhone;
@@ -70,17 +72,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String username = editUsername.getText().toString();
         String email = editEmail.getText().toString();
         String phone = editPhone.getText().toString();
-//        if (username.equals("")){
-//            Toast.makeText(EditProfileActivity.this,
-//                    "Username is blank", Toast.LENGTH_LONG).show();
-//            return;
-//        }
 
-//        if(email.equals("")) {
-//            Toast.makeText(EditProfileActivity.this,
-//                    "Email Address is blank", Toast.LENGTH_LONG).show();
-//            return;
-//        }
         updates.put("username", username);
         updates.put("email", email);
         updates.put("phone", phone);

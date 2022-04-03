@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
+/**
+ * QR activity for owner to delete QR codes.
+ */
 public class OwnerQRActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;

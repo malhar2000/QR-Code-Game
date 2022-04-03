@@ -34,7 +34,7 @@ import java.util.Objects;
 public class SplashScreenActivity extends AppCompatActivity implements AwaitingPermissionsHelper.AllVariablesTrueListener {
 
     // FOR DEVELOPMENT PURPOSES
-    private final boolean APP_IN_TEST_MODE = true;
+    private final boolean APP_IN_TEST_MODE = false;
 
     // Helpers
     private final FireStoreController fireStoreController = FireStoreController.getInstance();
@@ -136,7 +136,7 @@ public class SplashScreenActivity extends AppCompatActivity implements AwaitingP
     private void fetchUserInfoFromDB() {
         // Update the central user helper
         currentUserHelper.setUniqueID(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
-
+        System.out.println("UNIQUE ID = " + currentUserHelper.getUniqueID());
         // Checking in db if this user exists
         // Furthermore, fetch whether or not this user is a admin or a regular user
         fireStoreController.findUserBasedOnDeviceId()

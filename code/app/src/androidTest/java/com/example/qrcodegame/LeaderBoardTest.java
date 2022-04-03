@@ -73,7 +73,7 @@ public class LeaderBoardTest {
         }catch(InterruptedException e){
             e.printStackTrace();
         }
-        onView(withText("Shaishav")).check(matches(isDisplayed()));
+        onView(withText("Naruto Uzumaki")).check(matches(isDisplayed()));
     }
 
     @Test

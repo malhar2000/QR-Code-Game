@@ -46,49 +46,99 @@ public class FireStoreController {
     private final CollectionReference qrCollectionReference = FirebaseFirestore.getInstance().collection("Codes");
     private final CollectionReference commentsCollectionReference = FirebaseFirestore.getInstance().collection("Comments");
 
+    /**
+     * Get all QR codes which have a location
+     * @return a Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> getAllCodesWithLocation() {
         return qrCollectionReference.whereNotEqualTo("coordinates", new ArrayList<>()).get();
     }
 
+    /**
+     * Get all QR codes ( no filters )
+     * @return a Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> getAllCodes(){
         return qrCollectionReference.get();
     }
 
+    /**
+     * Gets all players, no owners included
+     * @returna Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> getAllPlayers() {
         return userCollectionReference.whereNotEqualTo("isOwner", true).get();
     }
 
+    /**
+     * Gets all QR codes, ordered by worth
+     * @return a Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> getAllQRCodes() {
         return qrCollectionReference.orderBy("worth").get();
     }
 
+    /**
+     * Gets all users, ( No filters, owners included )
+     * @return a Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> getAllUsers() {
         return userCollectionReference.get();
     }
 
+    /**
+     * gets a specific users QR codes
+     * @param username user
+     * @return a Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> getSpecifiedUsersCodes(String username) {
         return qrCollectionReference.whereArrayContains("players", username).get();
     }
 
+    /**
+     * Gets the full info of a single QR code
+     * @param qrCodeId the code ID
+     * @return a Task object with the DocumentSnapshot inside
+     */
     public Task<DocumentSnapshot> getSingleQRCode(String qrCodeId) {
         return qrCollectionReference.document(qrCodeId).get();
     }
+
+    /**
+     * Transfer current users profile to the provided username's profile
+     * @param newUserNameToSwitchTo new user to transfer to
+     * @return a Task object with a Void inside. So no return values.
+     */
     public Task<Void> switchProfile(String newUserNameToSwitchTo){
         Task<Void> removeFromCurrentUserProfile = userCollectionReference.document(currentUserHelper.getFirebaseId()).update("devices", FieldValue.arrayRemove(currentUserHelper.getUniqueID()));
         Task<Void> addToNewUserProfile = userCollectionReference.document(newUserNameToSwitchTo).update("devices", FieldValue.arrayUnion(currentUserHelper.getUniqueID()));
         return Tasks.whenAll(removeFromCurrentUserProfile, addToNewUserProfile);
     }
 
+    /**
+     * Add user to db
+     * @param newUserToAdd User object to add to db
+     * @return a Task object with a Void inside. So no return values.
+     */
     public Task<Void> addUser(User newUserToAdd) {
         return userCollectionReference
                 .document(newUserToAdd.getUsername())
                 .set(newUserToAdd);
     }
 
+    /**
+     * Find user based on unique android id stored in currentUserHelper
+     * @return a Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> findUserBasedOnDeviceId(){
         return userCollectionReference.whereArrayContains("devices", currentUserHelper.getUniqueID()).get();
     }
 
+    /**
+     * check if QR code exists
+     * @param id id of QR code
+     * @return a Task object with the QuerySnapshot inside
+     */
     public Task<QuerySnapshot> checkQRExists(String id) {
         return qrCollectionReference.whereEqualTo("id",id).get();
     }
@@ -129,6 +179,11 @@ public class FireStoreController {
         );
     }
 
+    /**
+     * Delete a QR code.
+     * @param qrCodeToDelete QRCode to delete, with ID and score fields
+     * @return A Task which is completed once both of these subtasks are done.
+     */
     public Task<Void> deleteQRCode(QRCode qrCodeToDelete) {
 
         // All pending tasks
@@ -150,6 +205,11 @@ public class FireStoreController {
         return Tasks.whenAll(allTasks);
     }
 
+    /**
+     * Removes a QR code from the db
+     * @param qrCode qrCode to delete
+     * @return A Task which is completed once both of these subtasks are done.
+     */
     public Task<Void> removeUserFromQRCode(QRCode qrCode) {
 
         HashMap<String, Object> updates = new HashMap<>();

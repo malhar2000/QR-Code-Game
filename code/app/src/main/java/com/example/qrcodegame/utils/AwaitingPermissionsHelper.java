@@ -6,6 +6,9 @@ import android.util.Log;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+/**
+ * Helper class to manage permission status
+ */
 public class AwaitingPermissionsHelper {
 
     private int userFoundInDB;
@@ -14,6 +17,10 @@ public class AwaitingPermissionsHelper {
     private AllVariablesTrueListener listener;
 
 
+    /**
+     * Constructor
+     * @param listener object which responds once all permissions granted
+     */
     public AwaitingPermissionsHelper(AllVariablesTrueListener listener) {
         userFoundInDB = 0; // 1 = user in db    2 = new user
         locationGranted = false;

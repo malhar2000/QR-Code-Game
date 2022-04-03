@@ -37,8 +37,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-// The page where users can see QR code locations on google maps in 3d view
-// no issues
+/**
+ * The page where users can see QR code locations on google maps in 3d view
+ * no issues
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationHelper.LocationHelperListener {
 
     private GoogleMap mMap;
@@ -67,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (currentUserHelper.getCurrentLocation().size() > 0) {
             LatLng userLocation = new LatLng(currentUserHelper.getCurrentLocation().get(0), currentUserHelper.getCurrentLocation().get(1));
             //zooming on the user location
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
         }
     }
 

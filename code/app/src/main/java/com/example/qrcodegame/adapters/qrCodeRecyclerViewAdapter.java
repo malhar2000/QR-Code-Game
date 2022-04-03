@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+/**
+ * Adapter for the the QR code in profile
+ */
 public class qrCodeRecyclerViewAdapter extends RecyclerView.Adapter<qrCodeRecyclerViewAdapter.ViewHolder> {
 
     private final Context context;

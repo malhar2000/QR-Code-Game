@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Adapter for the owner activities' users
+ */
 public class OwnerViewPlayerActivityAdapter extends RecyclerView.Adapter<OwnerViewPlayerActivityAdapter.MyViewHolder> implements Filterable {
 
     Context context;

@@ -19,6 +19,9 @@ import com.example.qrcodegame.models.QRCode;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Adapter for the owner activities' qr codes
+ */
 public class OwnerQRCodeAdapter extends RecyclerView.Adapter<OwnerQRCodeAdapter.viewHolder>{
 
     private ArrayList<QRCode> qrCodes;

@@ -11,7 +11,10 @@ import android.widget.Button;
 
 import java.util.Objects;
 
-// yet to be completed
+/**
+ * Owner's home activity that redirects to player and QR activites.
+ * No issues
+ */
 public class OwnerHomeActivity extends AppCompatActivity {
 
     private Button btnViewPlayers;
